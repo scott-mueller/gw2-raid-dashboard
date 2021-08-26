@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/gw2-raid-dashboard/static/css/main.c0419a63.chunk.css",
+    "main.js": "/gw2-raid-dashboard/static/js/main.13cf6389.chunk.js",
+    "main.js.map": "/gw2-raid-dashboard/static/js/main.13cf6389.chunk.js.map",
+    "runtime-main.js": "/gw2-raid-dashboard/static/js/runtime-main.54431625.js",
+    "runtime-main.js.map": "/gw2-raid-dashboard/static/js/runtime-main.54431625.js.map",
+    "static/js/2.6babfabf.chunk.js": "/gw2-raid-dashboard/static/js/2.6babfabf.chunk.js",
+    "static/js/2.6babfabf.chunk.js.map": "/gw2-raid-dashboard/static/js/2.6babfabf.chunk.js.map",
+    "index.html": "/gw2-raid-dashboard/index.html",
+    "static/css/main.c0419a63.chunk.css.map": "/gw2-raid-dashboard/static/css/main.c0419a63.chunk.css.map",
+    "static/js/2.6babfabf.chunk.js.LICENSE.txt": "/gw2-raid-dashboard/static/js/2.6babfabf.chunk.js.LICENSE.txt",
+    "static/media/logo.b2e5a01e.svg": "/gw2-raid-dashboard/static/media/logo.b2e5a01e.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.54431625.js",
+    "static/js/2.6babfabf.chunk.js",
+    "static/css/main.c0419a63.chunk.css",
+    "static/js/main.13cf6389.chunk.js"
+  ]
+}
