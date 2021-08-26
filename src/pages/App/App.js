@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import { Counter } from '../Counter/Counter';
+import { Counter } from '../../components/Counter/Counter';
 import './App.css';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          We did it!
         </p>
         <span>
           <span>Learn </span>
