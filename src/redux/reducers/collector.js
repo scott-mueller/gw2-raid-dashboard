@@ -17,7 +17,7 @@ const collectorStatsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 fetching: false,
-                stats: action.payload
+                stats: action.payload.stats
             }
         }
         default:

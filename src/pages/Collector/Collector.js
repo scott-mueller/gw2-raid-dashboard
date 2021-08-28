@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import queryString from 'query-string'
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FETCH_COLLECTOR_DATA } from '../../redux/actions';
 
 const Collector = () => {
 
+    const { search } = useLocation();
     const dispatch = useDispatch();
     const stats = useSelector((state) => state.collectorStats);
 
-    const dispatchAction = () => {
-        return dispatch({type: FETCH_COLLECTOR_DATA})
-    }
-
+    useEffect(() => {
+        const qsValues = queryString.parse(search);
+        return dispatch({type: FETCH_COLLECTOR_DATA, payload: qsValues.collectorId})
+    }, [search, dispatch]);
+    
     return (
         <div>
             <p>Hello Collector</p>
-            <button onClick={dispatchAction}>Click me!</button>
+            <p>This code isn't pushed yet!</p>
             <p>{JSON.stringify(stats)}</p>
         </div>
     )

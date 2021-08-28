@@ -1,8 +1,10 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { getCollectorStatsById } from '../../apis/gw2rba';
 import { FETCH_COLLECTOR_DATA, FETCH_COLLECTOR_DATA_RESPONSE } from '../actions';
 
 const fetchCollectorData = function*(action) {
-    yield put({type: FETCH_COLLECTOR_DATA_RESPONSE, payload: {foo: 'bar'}})
+    const stats = yield call(getCollectorStatsById, action.payload)
+    yield put({type: FETCH_COLLECTOR_DATA_RESPONSE, payload: { stats }})
 }
 
 const collectorSaga = function*() {
