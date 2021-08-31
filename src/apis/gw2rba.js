@@ -14,8 +14,6 @@ const login = async () => {
 
     const mongodb = mongoSession.app.currentUser.mongoClient('mongodb-atlas');
     mongoSession.db = mongodb.db('gw2-rba');
-
-    console.log('Logged in!!');
   };
 
 export const getCollectorStatsById = async (collectorId) => {
@@ -24,6 +22,6 @@ export const getCollectorStatsById = async (collectorId) => {
         await login();
     }
 
-    const collector = mongoSession.db.collection('collectors').findOne({ _id: 'ANCJsIlO' });
+    const collector = mongoSession.db.collection('collectors').findOne({ _id: collectorId });
     return collector;
 };
