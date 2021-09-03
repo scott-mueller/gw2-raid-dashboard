@@ -10,7 +10,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
 import OverviewStatsCard from '../../components/OverviewStatsCard/OverviewStatsCard';
