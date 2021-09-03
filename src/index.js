@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { injectGlobal } from '@emotion/css';
 
 import configureStore from './redux/store';
 import { Provider } from 'react-redux';
@@ -7,6 +8,13 @@ import * as serviceWorker from './serviceWorker';
 import Routes from './routes';
 
 const store = configureStore();
+
+injectGlobal`
+  @font-face {
+    font-family: 'Raleway',
+    src
+  }
+`
 
 ReactDOM.render(
   <React.StrictMode>
