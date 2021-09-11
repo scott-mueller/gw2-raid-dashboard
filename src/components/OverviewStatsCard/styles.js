@@ -9,11 +9,12 @@ const styles = {
         backgroundColor: '#f0f6ff'
     },
     fixedHeight: {
-        height: 240,
+        height: 205,
     },
     cardText: {
         fontFamily: 'Oxanium',
-        lineHeight: 0.1,
+        display: 'flex',
+        alignItems: 'center',
         paddingLeft: '10px'
     },
     cardTitle: {
@@ -21,13 +22,27 @@ const styles = {
         fontSize: '2.2em',
         textDecoration: 'underline'
     },
+    titleGrid: {
+        paddingBottom: 0
+    },
+    contentGrid: {
+        paddingTop: 0,
+        paddingBottom: 0
+    },
+    subheadingGrid: {
+        paddingTop: 0
+    },
     cardContent: {
+        display: 'block',
+        height: '110px',
+        verticalAlign: 'middle',
         fontWeight: 200,
         fontSize: '6em',
-        color: '#F57600'
+        color: '#F57600',
     },
     dps: {
-        fontSize: '4em',
+        paddingTop: '5px',
+        fontSize: '4.75em',
     },
     cardSubheading: {
         fontWeight: 700,

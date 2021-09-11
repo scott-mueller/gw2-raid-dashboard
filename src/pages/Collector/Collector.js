@@ -13,9 +13,12 @@ import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 
 import OverviewStatsCard from '../../components/OverviewStatsCard/OverviewStatsCard';
+import BossTable from '../../components/BossTable/BossTable';
 
 import { FETCH_COLLECTOR_DATA } from '../../redux/actions';
 import styles from './styles';
+import PlayerBreakdownTable from '../../components/PlayerBreakdownTable/PlayerBreakdownTable';
+
 
 const useStyles = makeStyles({
     colorPrimary: {
@@ -46,37 +49,29 @@ const Collector = () => {
             </AppBar>
             <main className={css(styles.content)}>
                 <div className={css(styles.appBarSpacer)} />
-                    <Container maxWidth="lg" className={css(styles.container)}>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} md={3} lg={3}>
-                              <OverviewStatsCard variant="successRate"/>
-                            </Grid>
-                        <Grid item xs={12} md={3} lg={3}>
+                <Container maxWidth="lg" className={css(styles.container)}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6} lg={3}>
+                            <OverviewStatsCard variant="successRate"/>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={3}>
                             <OverviewStatsCard variant="avgBossDps"/>
                         </Grid>
-                        <Grid item xs={12} md={3} lg={3}>
+                        <Grid item xs={12} md={6} lg={3}>
                             <OverviewStatsCard variant="avgCleaveDps"/>
                         </Grid>
-                        <Grid item xs={12} md={3} lg={3}>
+                        <Grid item xs={12} md={6} lg={3}>
                             <OverviewStatsCard variant="encounterTime"/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper className={css(styles.paper)}>
-                                <h2>Boss Table</h2>
-                            </Paper>
+                            <BossTable />
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper className={css(styles.paper)}>
-                                <h2>Player Breakdown Table</h2>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Paper className={css(styles.paper)}>
-                                <p>{JSON.stringify(collector)}</p>
-                            </Paper>
+                            <PlayerBreakdownTable />
                         </Grid>
                     </Grid>
                 </Container>
+                <div className={css(styles.appBarSpacer)} />
             </main>
         </div>
     )
