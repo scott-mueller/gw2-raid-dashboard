@@ -15,7 +15,7 @@ const PlayerBreakdownTableHead = ({ order, orderBy, onRequestSort }) => {
   
     const headCells = [
         { id: 'name', numeric: false, disablePadding: false, label: 'Account Name' },
-        { id: 'encounterCount', numeric: true, disablePadding: false, label: 'Encounter Count' },
+        { id: 'encounterCount', numeric: true, disablePadding: false, label: 'Encounters' },
         { id: 'avgBossDps', numeric: true, disablePadding: false, label: 'Avg Boss Dps' },
         { id: 'avgCleaveDps', numeric: true, disablePadding: false, label: 'Avg Cleave Dps' },
         { id: 'downs', numeric: true, disablePadding: false, label: 'Downs' },

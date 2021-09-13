@@ -36,13 +36,17 @@ const styles = {
         display: 'block',
         height: '110px',
         verticalAlign: 'middle',
-        fontWeight: 200,
+        fontWeight: 300,
         fontSize: '6em',
         color: '#F57600',
     },
     dps: {
         paddingTop: '5px',
         fontSize: '4.75em',
+    },
+    combatTime: {
+        paddingTop: '4px',
+        fontSize: '4.5em'
     },
     cardSubheading: {
         fontWeight: 700,

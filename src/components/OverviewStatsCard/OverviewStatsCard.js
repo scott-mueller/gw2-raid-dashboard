@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import moment from 'moment-timezone';
 import { css } from '@emotion/css';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,6 +8,26 @@ import Paper from '@material-ui/core/Paper';
 
 import { formatDPS } from '../../utils';
 import styles from './styles';
+
+// eslint-disable-next-line no-extend-native
+Number.prototype.formatMsToString = function () {
+    //return '88m 88s'
+    const input = this.valueOf()// + 1000000;
+
+    if(input > 3600000) {
+        const h = Math.floor(input / 3600000);
+        const m = Math.floor((input - (h * 3600000)) / 60000)
+        return `${h}h ${m}m`
+    }
+
+
+    const m = Math.floor(input / 60000).toString();
+    const s = Math.floor((input - (m * 60000)) / 1000).toString();
+    //const ms = (input - ((m * 60000) + (s * 1000))).toString();
+    return `${m}m ${s}s`
+
+    //return m.padStart(2, '0') + 'm ' + s.padStart(2, '0') + 's ' + ms.padStart(3, '0') + 'ms';
+};
 
 const useStyles = makeStyles({
     root: {
@@ -56,9 +77,9 @@ const OverviewStatsCard = ({ variant }) => {
         case 'encounterTime': {
             return (
                 <Paper classes={{ root: classes.root}}className={css(styles.paper, styles.fixedHeight)}>
-                    <div className={css(styles.cardText, styles.cardTitle)}>Combat Time</div>
-                    <div className={css(styles.cardText, styles.cardContent)}>{`N/A`}</div>
-                    <div className={css(styles.cardText, styles.cardSubheading)}>{`N/A Total Elapsed Time`}</div>
+                    <div className={css(styles.cardText, styles.cardTitle)}>Time in Combat</div>
+                    <div className={css(styles.cardText, styles.cardContent, styles.combatTime)}>{stats.combatTime.formatMsToString()}</div>
+                    <div className={css(styles.cardText, styles.cardSubheading)}>{`${moment(stats.lastEncounterEnd).diff(stats.firstEncounterStart).formatMsToString()} Total Elapsed Time`}</div>
                 </Paper>
             )
         }
