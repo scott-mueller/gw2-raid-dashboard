@@ -1,4 +1,12 @@
 const styles = {
+    bossIconContainer: {
+        display: 'flex',
+        justifyContent: 'left',
+        alignItems: 'center'
+    },
+    bossImage: {
+        borderRadius: '10px',
+    },
     paper: {
         padding: '12px',
         display: 'flex',

@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import BossTableHead from './BossTableHead';
-import { getComparator, stableSort } from '../../utils/tableSort';
+import { formatDPS, getComparator, stableSort } from '../../utils';
 import styles from './styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
       background: '#E6EEF0',
     },
     tableItem: styles.tableItem,
+    tableIconRow: {
+        paddingLeft: '16px',
+        paddingTop: '0px',
+        paddingBottom: '0px',
+        paddingRight: '16px'
+    },
     alternatingColor: {
         '&:nth-of-type(odd)': {
             backgroundColor: 'white',
@@ -30,15 +36,22 @@ const useStyles = makeStyles((theme) => ({
 const buildTableData = (bosses) => Object.keys(bosses).map((bossName) => {
     const boss = bosses[bossName];
     return {
+        icon: { iconLink: boss.icon, iconAlt: `${boss.name} Icon`},
         bossName: boss.name,
         successRate: {
             displayVal: `${((boss.success / (boss.success + boss.fail)) * 100).toFixed(0)}% - (${boss.success} of ${boss.success + boss.fail})`,
             sortVal: parseInt((boss.success / (boss.success + boss.fail)) * 100)
         },
-        avgBossDps: 'N/A',
-        avgCleaveDPS: 'N/A',
-        downs: 'N/A',
-        deaths: 'N/A'
+        avgBossDps: {
+            displayVal: formatDPS(parseInt(boss.totalBossDps / (boss.success + boss.fail))),
+            sortVal: parseInt(boss.totalBossDps / (boss.success + boss.fail)),
+        },
+        avgCleaveDPS: {
+            displayVal: formatDPS(parseInt(boss.totalCleaveDps / (boss.success + boss.fail))),
+            sortVal: parseInt(boss.totalCleaveDps / (boss.success + boss.fail)),
+        },
+        downs: boss.downs,
+        deaths: boss.deaths
     }
 });
 
@@ -89,14 +102,24 @@ const BossTable = () => {
                         {stableSort(tableData, getComparator(order, orderBy))
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row, index) => (
-                                <TableRow classes={{root: classes.alternatingColor}} key={row.name}>
-                                    <TableCell padding={'checkbox'}>@</TableCell>
+                                <TableRow classes={{root: classes.alternatingColor}} key={row.bossName}>
+                                    <TableCell classes={{ root: classes.tableIconRow }}>
+                                        <div className={css(styles.bossIconContainer)}>
+                                            <img 
+                                                src={row.icon.iconLink} 
+                                                alt={row.icon.iconAlt} 
+                                                width={40} 
+                                                height={40} 
+                                                className={css(styles.bossImage)}
+                                            />
+                                        </div>
+                                    </TableCell>
                                     <TableCell classes={{root: classes.tableItem}} component="th" scope="row" padding="none">
                                         {row.bossName}
                                     </TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.successRate.displayVal}</TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgBossDps}</TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDPS}</TableCell>
+                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgBossDps.displayVal}</TableCell>
+                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDPS.displayVal}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.deaths}</TableCell>
                                 </TableRow>

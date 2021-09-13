@@ -11,15 +11,19 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import PlayerBreakdownTableHead from './PlayerBreakdownTableHead';
-import { getComparator, stableSort } from '../../utils/tableSort';
-import { formatDPS } from '../../utils/displayFormat';
+import { getComparator, stableSort, formatDPS } from '../../utils';
 import styles from './styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       background: '#E6EEF0',
     },
-    tableItem: styles.tableItem
+    tableItem: styles.tableItem,
+    alternatingColor: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: 'white',
+        },
+    }
 }));
 
 const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => {
@@ -35,8 +39,10 @@ const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => 
             displayVal: formatDPS((account.totalCleaveDps / account.encounterCount).toFixed(0)),
             sortVal:  parseInt(account.totalCleaveDps / account.encounterCount)
         },
-        downs: account.downs,
-        deaths: account.deaths,
+        downs: account.downDeathStats.downs,
+        firstDowns: account.downDeathStats.firstDownCount,
+        deaths: account.downDeathStats.deaths,
+        firstDeaths: account.downDeathStats.firstDeathCount,
         revives: account.revives,
         reviveTime: parseFloat(account.reviveTime.toFixed(1))
     }
@@ -80,15 +86,17 @@ const PlayerBreakdownTable = () => {
                     <TableBody>
                         {stableSort(tableData, getComparator(order, orderBy))
                             .map((row, index) => (
-                                <TableRow key={row.name}>
-                                    <TableCell classes={{root: classes.tableItem}} component="th" scope="row" padding="none">
+                                <TableRow classes={{root: classes.alternatingColor}} key={row.name}>
+                                    <TableCell classes={{root: classes.tableItem}} component="th" scope="row">
                                         {row.name}
                                     </TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.encounterCount}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.avgBossDps.displayVal}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDps.displayVal}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
+                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.firstDowns}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.deaths}</TableCell>
+                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.firstDeaths}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.revives}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.reviveTime}</TableCell>
                                 </TableRow>

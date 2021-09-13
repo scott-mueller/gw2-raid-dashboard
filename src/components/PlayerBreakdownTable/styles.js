@@ -16,7 +16,7 @@ const styles = {
         paddingLeft: '10px'
     },
     table: {
-        minWidth: 750,
+        minWidth: 1280,
     },
     tablelHeadLabel: {
         fontFamily: 'Oxanium',

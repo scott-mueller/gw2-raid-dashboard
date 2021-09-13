@@ -35,3 +35,20 @@ export const stableSort = (array, comparator) => {
   });
   return stabilizedThis.map((el) => el[0]);
 }
+
+export const formatDPS = (val) => {
+    
+    const parts = val.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+
+    //return val.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+};
+
+export const mapBossNameToImage = (bossName) => {
+
+    return {
+        iconlink: 'https://wiki.guildwars2.com/images/f/fc/Mini_Air_Djinn.png',
+        iconAlt: 'Sabir'
+    }
+};

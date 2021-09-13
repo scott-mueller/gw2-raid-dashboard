@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,6 +22,9 @@ import PlayerBreakdownTable from '../../components/PlayerBreakdownTable/PlayerBr
 const useStyles = makeStyles({
     colorPrimary: {
         backgroundColor: 'black'
+    },
+    containerLg: {
+        maxWidth: '1500px'
     }
 });
 
@@ -49,7 +51,7 @@ const Collector = () => {
             </AppBar>
             <main className={css(styles.content)}>
                 <div className={css(styles.appBarSpacer)} />
-                <Container maxWidth="lg" className={css(styles.container)}>
+                <Container maxWidth="lg" classes = {{ maxWidthLg: classes.containerLg }} className={css(styles.container)}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6} lg={3}>
                             <OverviewStatsCard variant="successRate"/>

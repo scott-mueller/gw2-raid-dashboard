@@ -5,7 +5,7 @@ import { css } from '@emotion/css';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
-import { formatDPS } from '../../utils/displayFormat';
+import { formatDPS } from '../../utils';
 import styles from './styles';
 
 const useStyles = makeStyles({
