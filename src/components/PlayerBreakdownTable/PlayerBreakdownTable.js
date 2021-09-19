@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
       background: '#E6EEF0',
     },
     tableItem: styles.tableItem,
+    firstTableItem: styles.firstTableItem,
+    lastTableItem: styles.lastTableItem,
     alternatingColor: {
         '&:nth-of-type(odd)': {
             backgroundColor: 'white',
@@ -44,7 +46,15 @@ const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => 
         deaths: account.downDeathStats.deaths,
         firstDeaths: account.downDeathStats.firstDeathCount,
         revives: account.revives,
-        reviveTime: parseFloat(account.reviveTime.toFixed(1))
+        reviveTime: parseFloat(account.reviveTime.toFixed(1)),
+        breakbar: {
+            displayVal: formatDPS(account.totalBreakbarDamage),
+            sortVal: parseInt(account.totalBreakbarDamage)
+        },
+        totalDamageandBarrierTaken: {
+            displayVal: formatDPS(account.totalDamageTaken + account.totalBarrierTaken),
+            sortVal: parseInt(account.totalDamageTaken + account.totalBarrierTaken)
+        }
     }
 });
 
@@ -87,7 +97,7 @@ const PlayerBreakdownTable = () => {
                         {stableSort(tableData, getComparator(order, orderBy))
                             .map((row, index) => (
                                 <TableRow classes={{root: classes.alternatingColor}} key={row.name}>
-                                    <TableCell classes={{root: classes.tableItem}} component="th" scope="row">
+                                    <TableCell classes={{root: classes.firstTableItem}} component="th" scope="row">
                                         {row.name}
                                     </TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.encounterCount}</TableCell>
@@ -99,6 +109,8 @@ const PlayerBreakdownTable = () => {
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.firstDeaths}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.revives}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.reviveTime}</TableCell>
+                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.breakbar.displayVal}</TableCell>
+                                    <TableCell classes={{root: classes.lastTableItem}} align="right">{row.totalDamageandBarrierTaken.displayVal}</TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>

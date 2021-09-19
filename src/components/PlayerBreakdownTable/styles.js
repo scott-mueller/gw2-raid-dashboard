@@ -16,7 +16,7 @@ const styles = {
         paddingLeft: '10px'
     },
     table: {
-        minWidth: 1240,
+        minWidth: 1200,
     },
     tablelHeadLabel: {
         fontFamily: 'Oxanium',
@@ -26,7 +26,21 @@ const styles = {
     tableItem: {
         fontFamily: 'Oxanium',
         fontSize: '1em',
-        fontWeight: '400'
+        fontWeight: '400',
+        paddingLeft: '2px',
+        paddingRight: '2px'
+    },
+    firstTableItem: {
+        fontFamily: 'Oxanium',
+        fontSize: '1em',
+        fontWeight: '400',
+        paddingRight: '5px'
+    },
+    lastTableItem: {
+        fontFamily: 'Oxanium',
+        fontSize: '1em',
+        fontWeight: '400',
+        paddingLeft: '5px'
     },
     visuallyHidden: {
         border: 0,

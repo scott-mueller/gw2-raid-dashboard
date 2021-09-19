@@ -14,7 +14,7 @@ const styles = {
     titleText: {
         fontFamily: 'Oxanium',
         fontWeight: 400,
-        paddingLeft: '30px',
+        paddingLeft: '16px',
         color: '#F57600'
     },
     appBar: {

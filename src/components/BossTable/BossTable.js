@@ -46,7 +46,7 @@ const buildTableData = (bosses) => Object.keys(bosses).map((bossName) => {
             displayVal: formatDPS(parseInt(boss.totalBossDps / (boss.success + boss.fail))),
             sortVal: parseInt(boss.totalBossDps / (boss.success + boss.fail)),
         },
-        avgCleaveDPS: {
+        avgCleaveDps: {
             displayVal: formatDPS(parseInt(boss.totalCleaveDps / (boss.success + boss.fail))),
             sortVal: parseInt(boss.totalCleaveDps / (boss.success + boss.fail)),
         },
@@ -119,7 +119,7 @@ const BossTable = () => {
                                     </TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.successRate.displayVal}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.avgBossDps.displayVal}</TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDPS.displayVal}</TableCell>
+                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDps.displayVal}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.deaths}</TableCell>
                                 </TableRow>
