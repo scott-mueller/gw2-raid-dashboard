@@ -25,3 +25,18 @@ export const getCollectorStatsById = async (collectorId) => {
     const collector = mongoSession.db.collection('collectors').findOne({ _id: collectorId });
     return collector;
 };
+
+export const getEncountersinIdArray = async (encounterIds) => {
+
+    if (!mongoSession.user || !mongoSession.db) {
+        await login();
+    }
+
+    const encounters = await mongoSession.db.collection('encounters').find({
+        encounterId: {
+            '$in': encounterIds
+        }
+    });
+
+    return encounters;
+};

@@ -118,7 +118,7 @@ const BossTimeline = () => {
             </div>
             {selectedBoss ?
                 <div className={css(detailsContainerStyle)}>
-                    <TimelineDetails boss={selectedBoss} />
+                    <TimelineDetails boss={selectedBoss} resetOnClick={() => setSelectedBoss(null)} />
                 </div>
             : 
                 <div className={css(styles.detailsNoneSelected)}>
