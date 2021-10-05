@@ -15,7 +15,6 @@ import Link from '@material-ui/core/Link';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 
@@ -120,7 +119,7 @@ const TimelineDetails = ({ boss, resetOnClick }) => {
                         <div className={css({display: 'flex', justifyContent: 'right', paddingRight: '12px'})}>
                             <img 
                                 src={boss.icon} 
-                                alt={boss.name} 
+                                alt={boss.name}
                                 width={150} 
                                 height={150}
                                 className={css(styles.bossDetailsImage)}
@@ -167,7 +166,7 @@ const TimelineDetails = ({ boss, resetOnClick }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <div className={css({textAlign: 'right', paddingRight: '10px'})}>
-                            <Button onClick={resetOnClick} variant="contained">Reset</Button>
+                            <Button onClick={resetOnClick} variant="contained">Close</Button>
                         </div>
                     </Grid>
                 </Grid>

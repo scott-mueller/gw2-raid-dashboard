@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { css } from '@emotion/css';
 import queryString from 'query-string'
 import { useLocation } from 'react-router-dom';
@@ -14,6 +14,13 @@ import Divider from '@material-ui/core/Divider';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,7 +30,7 @@ import BossTimeline from '../../components/BossTimeline/BossTimeline';
 
 import { FETCH_COLLECTOR_DATA } from '../../redux/actions';
 import styles from './styles';
-import PlayerBreakdownTable from '../../components/PlayerBreakdownTable/PlayerBreakdownTable';
+import PlayerBreakdown from '../../components/PlayerBreakdown/PlayerBreakdown';
 
 
 const useStyles = makeStyles({
@@ -34,11 +41,11 @@ const useStyles = makeStyles({
         maxWidth: '1500px'
     },
     drawer: {
-        width: '220px',
+        width: '250px',
         flexShrink: 0,
     },
     drawerPaper: {
-        width: '220px',
+        width: '250px',
         zIndex: 0,
         background: '#E6EEF0',
     },
@@ -49,6 +56,24 @@ const useStyles = makeStyles({
         fontSize: '1.2em',
         fontWeight: '700',
     },
+    gutters: {
+        paddingLeft: '0px',
+        paddingRight: '0px',
+    },
+    listText: {
+        fontFamily: 'Oxanium',
+        fontWeight: '700',
+    },
+    root: {
+        width: '100%',
+        maxWidth: 360,
+      },
+    nested: {
+        paddingLeft: '15px'
+    },
+    scrollMargin: {
+        scrollMarginTop: '75px'
+    }
 });
 
 const collectorTheme = createTheme({
@@ -70,33 +95,63 @@ const collectorTheme = createTheme({
 });
 
 const Collector = ({window}) => {
-        
     const classes = useStyles();
 
+    const [playerBreakdownOpen, setPlayerBreakdownOpen] = useState(true);
     const { search } = useLocation();
     const dispatch = useDispatch();
     const collector = useSelector((state) => state?.collectorStats?.stats);
+
+    const overviewRef = useRef(null);
+    const timelineRef = useRef(null);
+    const bossTableRef = useRef(null);
+    const playerBreakddownRef = useRef(null);
+
 
     useEffect(() => {
         const qsValues = queryString.parse(search);
         return dispatch({type: FETCH_COLLECTOR_DATA, payload: qsValues.collectorId})
     }, [search, dispatch]);
     
+    const handlePlayerBreakdownClick = () => {
+        setPlayerBreakdownOpen(!playerBreakdownOpen);
+      };
+
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const drawerContent = () => (
         <div>
             <Toolbar />
             <div className={classes.drawerContainer}>
-                <p>Home</p>
-                <p>My Dashboard</p>
-                <p>Bosses</p>
-                <p>Log Browser</p>
-                <Divider />
-                <p className={css({ textDecoration: 'underline' })}>{`Collector: ${collector?._id}`}</p>
-                <p>Timeline</p>
-                <p>Boss Table</p>
-                <p>Player Breakdown</p>
+                <div className={css({ textDecoration: 'underline', paddingTop: '15px' })}>{`Collector: ${collector?._id}`}</div>
+                <List
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    className={classes.root}
+                >
+                    <ListItem button onClick={() => overviewRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
+                        <ListItemText primary="Overview" classes={{ primary: classes.listText }}/>
+                    </ListItem>
+                    <ListItem button onClick={() => timelineRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
+                        <ListItemText primary="Timeline" classes={{ primary: classes.listText }}/>
+                    </ListItem>
+                    <ListItem button onClick={() => bossTableRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
+                        <ListItemText primary="Boss Table" classes={{ primary: classes.listText }}/>
+                    </ListItem>
+                    <ListItem button onClick={() => playerBreakddownRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
+                        <ListItemText primary="Player Breakdown" classes={{ primary: classes.listText }}/>
+                        {playerBreakdownOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={playerBreakdownOpen} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            {Object.keys(collector?.stats?.accounts || {}).map((account) => (
+                                <ListItem button className={classes.nested}>
+                                    <ListItemText primary={collector.stats.accounts[account].accountName} classes={{ primary: classes.listText }}/>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Collapse>
+                </List>
             </div>
         </div>
     );
@@ -109,7 +164,7 @@ const Collector = ({window}) => {
                     <h1 className={css(styles.titleText)}>Showing Stats for Collector: {collector?._id}</h1>
                 </div>
             </AppBar>
-            {/*<Hidden smUp implementation="css">
+            <Hidden smUp implementation="css">
                 <Drawer
                     container={container}
                     variant="temporary"
@@ -130,13 +185,13 @@ const Collector = ({window}) => {
                 >
                     {drawerContent()}
                 </Drawer>
-            </Hidden> */}
-            <main className={css(styles.content)}>
+            </Hidden>
+            <main id={'mainContainer'} className={css(styles.content)}>
                 <div className={css(styles.appBarSpacer)} />
                 <ThemeProvider theme={collectorTheme}>
                     <Container maxWidth="lg" classes = {{ maxWidthLg: classes.containerLg }} className={css(styles.container)}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={6} lg={3}>
+                            <Grid ref={overviewRef} classes={{ root: classes.scrollMargin }} item xs={12} md={6} lg={3}>
                                 <OverviewStatsCard variant="successRate"/>
                             </Grid>
                             <Grid item xs={12} md={6} lg={3}>
@@ -148,15 +203,15 @@ const Collector = ({window}) => {
                             <Grid item xs={12} md={6} lg={3}>
                                 <OverviewStatsCard variant="encounterTime"/>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid ref={timelineRef} classes={{ root: classes.scrollMargin }} item xs={12}>
                                 <BossTimeline />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid ref={bossTableRef} classes={{ root: classes.scrollMargin }} item xs={12}>
                                 <BossTable />
                             </Grid>
 
-                            <Grid item xs={12}>
-                                <PlayerBreakdownTable />
+                            <Grid ref={playerBreakddownRef} classes={{ root: classes.scrollMargin }} item xs={12}>
+                                <PlayerBreakdown collectorId={collector?._id}/>
                             </Grid>
                         </Grid>
                     </Container>
@@ -168,35 +223,3 @@ const Collector = ({window}) => {
 };
 
 export default Collector;
-
-/**
- * General Stats
- *  -   4 cards along the top row
- *      -   Success Rate - success / fail counts on second row
- *      -   Average Boss DPS
- *      -   Average Cleave DPS
- *      -   Time in encounter - to see the faffing
- * 
- * Bosses Table
- *  -   Table showing information about each boss
- *      -   Boss Icon
- *      -   Boss Name
- *      -   Success
- *      -   Fail
- *      -   Success Rate
- *      -   Average Boss DPS
- *      -   Average Cleave DPS
- *      Collapsable
- *      -   Average boon uptimes - Might as well do all of them - with icons
- * Player Breakdown Table
- *  -   For each player
- *      -   Profession Icons
- *      -   Number of logs
- *      -   Avg dps (boss/cleave)
- *      -   Revives
- *      -   Revive Time
- *      -   Downs
- *      -   Deaths
- *  -   Each player has expandable section
- *      -   Roles and their counts as bubbles - roles colour coded
- */

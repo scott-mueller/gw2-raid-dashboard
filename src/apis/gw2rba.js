@@ -40,3 +40,23 @@ export const getEncountersinIdArray = async (encounterIds) => {
 
     return encounters;
 };
+
+export const getEncountersByPlayerAndCollector = async ({accountName, collectorId}) => {
+
+    if (!mongoSession.user || !mongoSession.db) {
+        await login();
+    }
+
+    let encounters = await mongoSession.db.collection('encounters').find({
+        collectors: collectorId
+    });
+
+    // Maybe its using the old collectorId field
+    if (encounters.length === 0) {
+        encounters = await mongoSession.db.collection('encounters').find({
+            collectorId
+        });
+    }
+
+    return encounters.filter((encounter) => encounter.accountNames.includes(accountName));
+};

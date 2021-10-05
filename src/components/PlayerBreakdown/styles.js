@@ -13,10 +13,25 @@ const styles = {
         paddingLeft: '10px'
     },
     tableContainer: {
-        paddingLeft: '10px'
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        paddingBottom: '10px'
     },
-    table: {
-        minWidth: 1200,
+    playerDetailsOuterContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: '30px',
+        paddingBottom: '30px'
+    },
+    playerDetailsContainer: {
+        width: '80%'
+    },
+    offensiveTable: {
+        minWidth: 920,
+    },
+    supportTable: {
+        minWidth: 1100,
     },
     tablelHeadLabel: {
         fontFamily: 'Oxanium',
@@ -42,6 +57,12 @@ const styles = {
         fontWeight: '400',
         paddingLeft: '5px'
     },
+    professionIcons: {
+        paddingLeft: '10px',
+        paddingRight: '2px',
+        paddingTop: '0px',
+        paddingBottom: '0px'
+    },
     visuallyHidden: {
         border: 0,
         clip: 'rect(0 0 0 0)',
@@ -53,6 +74,9 @@ const styles = {
         top: 20,
         width: 1,
     },
+    detailsTitle: {
+
+    }
 };
 
 export default styles;

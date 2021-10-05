@@ -7,7 +7,6 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
@@ -59,8 +58,6 @@ const BossTable = () => {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('bossName');
-    const [page, setPage] = React.useState(0);
-    const rowsPerPage = 10;
 
     const bosses = useSelector((state) => state?.collectorStats?.stats?.stats?.bosses);
     const [tableData, setTableData] = useState([]);
@@ -76,12 +73,6 @@ const BossTable = () => {
         setOrder(isDesc ? 'asc' : 'desc');
         setOrderBy(property);
     };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, tableData.length - page * rowsPerPage);
 
     return (
         <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
@@ -100,7 +91,6 @@ const BossTable = () => {
                     />
                     <TableBody>
                         {stableSort(tableData, getComparator(order, orderBy))
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row, index) => (
                                 <TableRow classes={{root: classes.alternatingColor}} key={row.bossName}>
                                     <TableCell classes={{ root: classes.tableIconRow }}>
@@ -124,22 +114,9 @@ const BossTable = () => {
                                     <TableCell classes={{root: classes.tableItem}} align="right">{row.deaths}</TableCell>
                                 </TableRow>
                             ))}
-                        {emptyRows > 0 && (
-                            <TableRow style={{ height: (53) * emptyRows }}>
-                            <TableCell colSpan={6} />
-                            </TableRow>
-                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10]}
-                component="div"
-                count={tableData.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-            />
         </Paper>
   );
 }

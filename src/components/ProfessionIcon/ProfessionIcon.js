@@ -24,7 +24,7 @@ const ProfessionIcon = ({ professionName, size = 20 }) => {
     );
 
     return(
-        <Tooltip title={tooltipText('Berserker')} placement={'top'} arrow>
+        <Tooltip title={tooltipText()} placement={'top'} arrow>
             <img 
                 src={professionIconMap[professionName.toLowerCase()]} 
                 alt={professionNameFormatted} 

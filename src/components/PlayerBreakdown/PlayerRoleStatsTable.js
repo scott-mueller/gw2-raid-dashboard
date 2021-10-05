@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const TimelineEncounterSimpleTable = ({ players = [] }) => {
+const PlayerRoleStatsTable = ({ roleAggs = [] }) => {
     const classes = useStyles();
 
     const [order, setOrder] = useState('desc');
@@ -41,29 +41,32 @@ const TimelineEncounterSimpleTable = ({ players = [] }) => {
     };
     
     const headCells = [
-        {id: 'name', numeric: false, disablePadding: false, label: 'Account'},
-        {id: 'icon', numeric: false, disablePadding: true, label: ''},
-        {id: 'bossDps', numeric: true, disablePadding: false, label: 'Boss Dps'},
-        {id: 'cleaveDps', numeric: true, disablePadding: false, label: 'Cleave Dps'},
-        {id: 'downs', numeric: true, disablePadding: false, label: 'Downs'},
+        {id: 'roles', numeric: false, disablePadding: false, label: 'Roles'},
+        {id: 'encounters', numeric: true, disablePadding: true, label: 'Encounters'},
+        {id: 'avgBossDps', numeric: true, disablePadding: true, label: 'Avg Boss Dps'},
+        {id: 'avgCleaveDps', numeric: true, disablePadding: false, label: 'Avg Cleave Dps'},
         {id: 'revives', numeric: true, disablePadding: false, label: 'Revives'},
-
+        {id: 'reviveTime', numeric: true, disablePadding: false, label: 'Revive Time'},
+        {id: 'downs', numeric: true, disablePadding: false, label: 'Downs'},
+        {id: 'deaths', numeric: true, disablePadding: false, label: 'Deaths'},
     ];
 
-    const tableData = players.map((player) => {
+    const tableData = roleAggs.map((agg) => {
         return {
-            name: player.accountName,
-            profession: player.profession,
-            bossDps: {
-                displayVal: formatDPS(player.dmgStats.targetDPS),
-                sortVal: player.dmgStats.targetDPS
+            roles: agg.roles,
+            encounters: agg.count,
+            avgBossDps: {
+                displayVal: formatDPS(parseInt(agg.totalBossDps / agg.count)),
+                sortVal: parseInt(agg.totalBossDps / agg.count)
             },
-            cleaveDps: {
-                displayVal: formatDPS(player.dmgStats.totalDPS),
-                sortVal: player.dmgStats.totalDPS
+            avgCleaveDps: {
+                displayVal: formatDPS(parseInt(agg.totalCleaveDps / agg.count)),
+                sortVal: parseInt(agg.totalCleaveDps / agg.count)
             },
-            downs: player.defensiveStats.downs.length,
-            revives: player.supportStats.revives
+            revives: agg.revives,
+            reviveTime: parseFloat(agg.reviveTime.toFixed(1)),
+            downs: agg.downs,
+            deaths: agg.deaths
         }
     });
 
@@ -103,17 +106,15 @@ const TimelineEncounterSimpleTable = ({ players = [] }) => {
                         .map((row, index) => (
                             <TableRow classes={{root: classes.alternatingColor}} key={row.name}>
                                 <TableCell classes={{root: classes.tableItem}} component="th" scope="row">
-                                    {row.name}
+                                    {row.roles}
                                 </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">
-                                    <div className={css({display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
-                                        <ProfessionIcon professionName={row.profession.toLowerCase()} size={20}/>
-                                    </div>
-                                </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.bossDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.cleaveDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
+                                <TableCell classes={{root: classes.tableItem}} align="right">{row.encounters}</TableCell>
+                                <TableCell classes={{root: classes.tableItem}} align="right">{row.avgBossDps.displayVal}</TableCell>
+                                <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDps.displayVal}</TableCell>
                                 <TableCell classes={{root: classes.tableItem}} align="right">{row.revives}</TableCell>
+                                <TableCell classes={{root: classes.tableItem}} align="right">{row.reviveTime}</TableCell>
+                                <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
+                                <TableCell classes={{root: classes.tableItem}} align="right">{row.deaths}</TableCell>
                             </TableRow>
                         ))}
                 </TableBody>
@@ -122,4 +123,4 @@ const TimelineEncounterSimpleTable = ({ players = [] }) => {
     )
 };
 
-export default TimelineEncounterSimpleTable;
+export default PlayerRoleStatsTable;

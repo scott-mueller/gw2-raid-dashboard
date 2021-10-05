@@ -2,14 +2,14 @@ const descendingComparator = (a, b, orderBy) => {
     let fieldA = a[orderBy];
     let fieldB = b[orderBy];
 
-    if (typeof(fieldA) === 'string') {
-        return fieldA.localeCompare(fieldB);
-    }
-
     if (typeof(fieldA) === 'object') {
         fieldA = fieldA.sortVal;
         fieldB = fieldB.sortVal;
     }
+
+  if (typeof(fieldA) === 'string') {
+    return fieldA.localeCompare(fieldB);
+}
 
   if (fieldB < fieldA) {
     return -1;
@@ -43,12 +43,4 @@ export const formatDPS = (val) => {
     return parts.join(".");
 
     //return val.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
-};
-
-export const mapBossNameToImage = (bossName) => {
-
-    return {
-        iconlink: 'https://wiki.guildwars2.com/images/f/fc/Mini_Air_Djinn.png',
-        iconAlt: 'Sabir'
-    }
 };

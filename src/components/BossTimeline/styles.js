@@ -24,8 +24,8 @@ const styles = {
     },
     detailsContainer: {
         width: '80%',
-        minWidth: '560px',
-        maxWidth: '700px',
+        minWidth: '610px',
+        maxWidth: '725px',
         paddingLeft: '10px',
         paddingBottom: '30px',
         paddingTop: '30px',

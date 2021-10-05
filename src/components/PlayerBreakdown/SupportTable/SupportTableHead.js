@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { makeStyles } from '@material-ui/core/styles';
 
-import styles from './styles';
+import styles from '../styles';
 
 const useStyles = makeStyles((theme) => ({
   tableItem: styles.tableItem,
@@ -24,28 +24,29 @@ const PlayerBreakdownTableHead = ({ order, orderBy, onRequestSort }) => {
 
     const getTableHeadClass = (headCell) => {
 
-      if (headCell.firstCell) {
+      if (headCell.type === 'firstCell') {
         return classes.firstTableItem;
       }
-      if (headCell.lastCell) {
+      if (headCell.type === 'lastCell') {
         return classes.lastTableItem;
+      }
+      if (headCell.type === 'profession') {
+        return classes.professionIcons
       }
       return classes.tableItem
     }
-  
+
     const headCells = [
-        { id: 'name', numeric: false, disablePadding: false, label: 'Account Name', firstCell: true },
+        { id: 'name', numeric: false, disablePadding: false, label: 'Account Name', type: 'firstCell' },
+        { id: 'professions', numeric: false, disablePadding: false, label: 'Professions', type: 'profession' },
         { id: 'encounterCount', numeric: true, disablePadding: false, label: 'Encounters' },
-        { id: 'avgBossDps', numeric: true, disablePadding: false, label: 'Avg Boss Dps' },
-        { id: 'avgCleaveDps', numeric: true, disablePadding: false, label: 'Avg Cleave Dps' },
         { id: 'downs', numeric: true, disablePadding: false, label: 'Downs' },
         { id: 'firstDowns', numeric: true, disablePadding: false, label: 'First Downs' },
         { id: 'deaths', numeric: true, disablePadding: false, label: 'Deaths' },
         { id: 'firstDeaths', numeric: true, disablePadding: false, label: 'First Deaths' },
         { id: 'revives', numeric: true, disablePadding: false, label: 'Revives' },
         { id: 'reviveTime', numeric: true, disablePadding: false, label: 'Revive Time' },
-        { id: 'breakbar', numeric: true, disablePadding: false, label: 'Breakbar'},
-        { id: 'totalDamageandBarrierTaken', numeric: true, disablePadding: false, label: 'Dmg + Barrier Taken', lastCell: true}
+        { id: 'totalDamageandBarrierTaken', numeric: true, disablePadding: false, label: 'Dmg + Barrier Taken', type: 'lastCell'}
     ];
   
     return (

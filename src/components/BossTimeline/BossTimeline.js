@@ -70,7 +70,7 @@ const BossTimeline = () => {
     window.addEventListener('resize', handleResize)
 
     const containerStyle = containerWidth < contentWidth ? styles.containerMobile : styles.container;
-    const detailsContainerStyle = containerWidth < detailsWidth ? styles.detailsOuterCOntainerMobile : styles.detailsOuterContainer;
+    const detailsContainerStyle = containerWidth < detailsWidth ? styles.detailsOuterContainerMobile : styles.detailsOuterContainer;
 
     const generateBreadcrumbItem = (item) => {
         switch(item) {
