@@ -10,6 +10,7 @@ import TimelineCard from './TimelineCard';
 import TimelineDetails from './TimelineDetails';
 
 import styles from './styles';
+import { Tooltip } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     ol:{ 
@@ -91,11 +92,25 @@ const BossTimeline = () => {
             }
             default: {
                 return (
-                    <TimelineCard boss={item} onClick={() => setSelectedBoss(item)} />
+                    <TimelineCard boss={item} onClick={() => selectedBoss === item ? setSelectedBoss(null) : setSelectedBoss(item)} />
                 );
             }
         }
     };
+
+    const tooltipText = (text) => (
+        <React.Fragment>
+            <div className={css(styles.timelineCardTooltip)}>
+                {text}
+            </div>
+        </React.Fragment>
+    );
+
+    const separator = (
+        <Tooltip  title={tooltipText('Separator')} placement={'top'} arrow>
+            <NavigateNextIcon fontSize="large" />
+        </Tooltip>
+    );
 
     // Satisfying older collectors
     if (!timeline) {
@@ -109,7 +124,7 @@ const BossTimeline = () => {
             <div id={'bossTimelineContainer'} className={css(containerStyle)}>
                 <div className={css(styles.breadcrumbs)}>
                     {createBreadcrumbsArray(timeline).map((row) => (
-                        <Breadcrumbs classes={{ol: classes.ol}} id={'bossTimelineContent'} maxItems={30} separator={<NavigateNextIcon fontSize="large" />}>
+                        <Breadcrumbs classes={{ol: classes.ol}} id={'bossTimelineContent'} maxItems={30} separator={separator}>
                             {row.map((item) => generateBreadcrumbItem(item))}
                         </Breadcrumbs>
                     ))}
@@ -121,9 +136,9 @@ const BossTimeline = () => {
                     <TimelineDetails boss={selectedBoss} resetOnClick={() => setSelectedBoss(null)} />
                 </div>
             : 
-                <div className={css(styles.detailsNoneSelected)}>
+                <p className={css(styles.detailsNoneSelected)}>
                     Select a boss to view details...
-                </div>
+                </p>
             }
         </Paper>
     );

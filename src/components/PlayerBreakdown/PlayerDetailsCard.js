@@ -16,6 +16,8 @@ import {
     RESET_PROFESSION_AND_ROLE_FILTERS
 } from '../../redux/actions';
 import { Chip } from '@material-ui/core';
+import ProfessionIconGroup from '../ProfessionIconGroup/ProfessionIconGroup';
+import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
 const useStyles = makeStyles((theme) => ({
     number: {
@@ -140,19 +142,37 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
         }
     }, [filteredEncounters, player.accountName, presentProfessions]);
 
+    const sortedProfessions = Object
+        .keys(player.professionAggrigates)
+        .map((profession) => {
+            let count = 0;
+            player.professionAggrigates[profession].forEach((roleAgg) => count += roleAgg.count);
+
+            return {
+                profession,
+                count
+            };
+        })
+        .sort((a, b) => b.count - a.count)
+        .map((profession) => profession.profession);
+
     return (
         <div className={css(styles.playerDetailsContainer)}>
             <Paper elevation={18}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                         <div className={css(styles.detailsTitle)}>{player.accountName}</div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ProfessionIconGroup nameArray={sortedProfessions || []} size={30}/>
                     </Grid>
                     <Grid item xs={12}>
                         <Button onClick={()=> dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS })} variant="contained">Reset Filters</Button>
                     </Grid>
                     <Grid item xs={12}>
                         {Object.keys(player.professionAggrigates).map((profession) => (
-                            <Chip 
+                            <Chip
+                                icon={<div className={css({ paddingLeft: '2px', display: 'flex', alignItems: 'center', justifyContent: 'center' })}><ProfessionIcon professionName={profession} size={25}/></div>}
                                 label={profession}
                                 onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
                                 disabled={!presentProfessions.includes(profession)}

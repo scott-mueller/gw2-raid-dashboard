@@ -75,8 +75,18 @@ const styles = {
         width: 1,
     },
     detailsTitle: {
-
-    }
+        fontFamily: 'Oxanium',
+        color: '#F57600',
+        fontSize: '2em',
+        textDecoration: 'underline',
+        paddingLeft: '16px'
+    },
+    detailsNoneSelected: {
+        fontFamily: 'Oxanium',
+        fontWeight: 700,
+        fontSize: '1.2em',
+        paddingLeft: '10px'
+    },
 };
 
 export default styles;

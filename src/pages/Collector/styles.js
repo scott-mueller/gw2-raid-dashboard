@@ -14,20 +14,28 @@ const styles = {
     titleText: {
         fontFamily: 'Oxanium',
         fontWeight: 400,
-        paddingLeft: '16px',
-        color: '#F57600'
+        color: '#F57600',
+        padding: '10px',
+        fontSize: '2.1em',
     },
     appBar: {
         backgroundColor: 'black'
     },
     appBarSpacer: {
-        height: 100
+        height: 80
     },
     content: {
         flexGrow: 1,
         height: '100vh',
         overflow: 'auto',
-        background: '#303F4B'
+        background: '#303F4B',
+        marginLeft: '250px',
+    },
+    contentDrawerClosed: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto',
+        background: '#303F4B',
     },
     container: {
         paddingTop: '10px',

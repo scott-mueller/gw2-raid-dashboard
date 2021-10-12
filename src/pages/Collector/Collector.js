@@ -20,6 +20,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from '@material-ui/core/IconButton';
 
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,9 +34,9 @@ import BossTimeline from '../../components/BossTimeline/BossTimeline';
 import { FETCH_COLLECTOR_DATA } from '../../redux/actions';
 import styles from './styles';
 import PlayerBreakdown from '../../components/PlayerBreakdown/PlayerBreakdown';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     colorPrimary: {
         backgroundColor: 'black'
     },
@@ -42,12 +45,13 @@ const useStyles = makeStyles({
     },
     drawer: {
         width: '250px',
-        flexShrink: 0,
+
     },
     drawerPaper: {
         width: '250px',
         zIndex: 0,
         background: '#E6EEF0',
+        flexShrink: 0,
     },
     drawerContainer: {
         padding: '16px',
@@ -55,6 +59,27 @@ const useStyles = makeStyles({
         fontFamily: 'Oxanium',
         fontSize: '1.2em',
         fontWeight: '700',
+    },
+    content: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto',
+        background: '#303F4B',
+        marginLeft: '250px',
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+    },
+    contentDrawerClosed: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto',
+        background: '#303F4B',
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
     },
     gutters: {
         paddingLeft: '0px',
@@ -73,8 +98,11 @@ const useStyles = makeStyles({
     },
     scrollMargin: {
         scrollMarginTop: '75px'
-    }
-});
+    },
+    menuIcon: {
+        color: '#F57600',
+    },
+}));
 
 const collectorTheme = createTheme({
     breakpoints: {
@@ -98,9 +126,12 @@ const Collector = ({window}) => {
     const classes = useStyles();
 
     const [playerBreakdownOpen, setPlayerBreakdownOpen] = useState(true);
+    const [drawerStatus, setDrawerStatus] = useState(true);
+    const [mobileDrawerStatus, setMobileDrawerStatus] = useState(false);
     const { search } = useLocation();
     const dispatch = useDispatch();
     const collector = useSelector((state) => state?.collectorStats?.stats);
+    const { width } = useWindowDimensions();
 
     const overviewRef = useRef(null);
     const timelineRef = useRef(null);
@@ -115,13 +146,26 @@ const Collector = ({window}) => {
     
     const handlePlayerBreakdownClick = () => {
         setPlayerBreakdownOpen(!playerBreakdownOpen);
+
+        if (!playerBreakdownOpen) {
+            playerBreakddownRef.current.scrollIntoView({ behavior: 'smooth' })
+        }
       };
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
-    const drawerContent = () => (
+    const drawerContent = (
         <div>
-            <Toolbar />
+            {width > 600 ? (
+                <Toolbar />
+            ) : (
+                <div className={css({ display: 'flex', justifyContent: 'right', paddingRight: '10px', paddingtop: '10px' })}>
+                    <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setMobileDrawerStatus(false)}>
+                        <ChevronLeftIcon classes={{root: classes.menuIcon}} fontSize="large"/>
+                    </IconButton>
+                </div>
+            )}
+
             <div className={classes.drawerContainer}>
                 <div className={css({ textDecoration: 'underline', paddingTop: '15px' })}>{`Collector: ${collector?._id}`}</div>
                 <List
@@ -138,7 +182,7 @@ const Collector = ({window}) => {
                     <ListItem button onClick={() => bossTableRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Boss Table" classes={{ primary: classes.listText }}/>
                     </ListItem>
-                    <ListItem button onClick={() => playerBreakddownRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
+                    <ListItem button onClick={() => handlePlayerBreakdownClick()} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Player Breakdown" classes={{ primary: classes.listText }}/>
                         {playerBreakdownOpen ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
@@ -156,37 +200,55 @@ const Collector = ({window}) => {
         </div>
     );
 
+    const handleMenuClick = () => {
+        if (width < 600) {
+            return setMobileDrawerStatus(true);
+        }
+
+        return setDrawerStatus(!drawerStatus);
+
+    }
+
     return (
         <div className={css(styles.root)}>
             <CssBaseline />
             <AppBar classes={{colorPrimary: classes.colorPrimary}}>
-                <div>
-                    <h1 className={css(styles.titleText)}>Showing Stats for Collector: {collector?._id}</h1>
-                </div>
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => handleMenuClick()}>
+                        <MenuIcon classes={{root: classes.menuIcon}} fontSize="large"/>
+                    </IconButton>
+                    <div className={css(styles.titleText)}>Collector: {collector?._id}</div>
+                </Toolbar>
             </AppBar>
             <Hidden smUp implementation="css">
                 <Drawer
                     container={container}
                     variant="temporary"
                     anchor={'left'}
-                    open={false}
+                    open={mobileDrawerStatus}
                     classes={{ paper: classes.drawerPaper }}
                     ModalProps={{ keepMounted: true }}
                 >
-                    {drawerContent()}
+                    {drawerContent}
                 </Drawer>
             </Hidden>
             <Hidden xsDown implementation="css">
                 <Drawer
-                    className={classes.drawer}
                     classes={{ paper: classes.drawerPaper }}
-                    variant="permanent"
-                    open
+                    variant="persistent"
+                    open={drawerStatus}
                 >
-                    {drawerContent()}
+                    {drawerContent}
                 </Drawer>
             </Hidden>
-            <main id={'mainContainer'} className={css(styles.content)}>
+            <main
+                id={'mainContainer'} 
+                className={
+                    width < 600 
+                        ? classes.contentDrawerClosed
+                        : drawerStatus ? classes.content : classes.contentDrawerClosed
+                }
+            >
                 <div className={css(styles.appBarSpacer)} />
                 <ThemeProvider theme={collectorTheme}>
                     <Container maxWidth="lg" classes = {{ maxWidthLg: classes.containerLg }} className={css(styles.container)}>

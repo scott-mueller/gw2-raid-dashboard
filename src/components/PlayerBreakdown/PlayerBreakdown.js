@@ -41,7 +41,7 @@ const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => 
                 count
             };
         })
-        .sort((a, b) => a.count < b.count)
+        .sort((a, b) => b.count - a.count)
         .map((profession) => profession.profession);
 
     return {
@@ -98,13 +98,6 @@ const PlayerBreakdown = ({ collectorId }) => {
     return (
         <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
             <div className={css(styles.text)}>Player Breakdown Table</div>
-            {/*selectedPlayer ? (
-                <div className={css(styles.playerDetailsOuterContainer)}>
-                    <PlayerDetailsCard player={selectedPlayer} collectorId={collectorId} resetOnClick={() => setSelectedPlayer(null)}/>
-                </div>
-            ) : (
-                <div>Select a player to view details</div>
-            )*/}
             <div className={css({ display: 'flex', justifyContent: 'center' })}>
                 <Tabs value={currentTab} onChange={(e, newVal) => setCurrentTab(newVal)}>
                     <Tab classes={{root: classes.tabRoot}} label="Damage Stats"/>
@@ -116,6 +109,15 @@ const PlayerBreakdown = ({ collectorId }) => {
             )}
             {currentTab === 1 && (
                 <SupportTable tableData={tableData} setSelectedPlayer={setSelectedPlayer}/>
+            )}
+            {selectedPlayer ? (
+                <div className={css(styles.playerDetailsOuterContainer)}>
+                    <PlayerDetailsCard player={selectedPlayer} collectorId={collectorId} resetOnClick={() => setSelectedPlayer(null)}/>
+                </div>
+            ) : (
+                <p className={css(styles.detailsNoneSelected)}>
+                    Select a player to view details...
+                </p>
             )}
         </Paper>
   );
