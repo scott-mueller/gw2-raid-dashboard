@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/gw2-raid-dashboard/static/css/main.e252cc75.chunk.css",
-    "main.js": "/gw2-raid-dashboard/static/js/main.4943d42f.chunk.js",
-    "main.js.map": "/gw2-raid-dashboard/static/js/main.4943d42f.chunk.js.map",
+    "main.js": "/gw2-raid-dashboard/static/js/main.33a23751.chunk.js",
+    "main.js.map": "/gw2-raid-dashboard/static/js/main.33a23751.chunk.js.map",
     "runtime-main.js": "/gw2-raid-dashboard/static/js/runtime-main.54431625.js",
     "runtime-main.js.map": "/gw2-raid-dashboard/static/js/runtime-main.54431625.js.map",
-    "static/js/2.6d7457e4.chunk.js": "/gw2-raid-dashboard/static/js/2.6d7457e4.chunk.js",
-    "static/js/2.6d7457e4.chunk.js.map": "/gw2-raid-dashboard/static/js/2.6d7457e4.chunk.js.map",
+    "static/js/2.266ac113.chunk.js": "/gw2-raid-dashboard/static/js/2.266ac113.chunk.js",
+    "static/js/2.266ac113.chunk.js.map": "/gw2-raid-dashboard/static/js/2.266ac113.chunk.js.map",
     "index.html": "/gw2-raid-dashboard/index.html",
     "static/css/main.e252cc75.chunk.css.map": "/gw2-raid-dashboard/static/css/main.e252cc75.chunk.css.map",
-    "static/js/2.6d7457e4.chunk.js.LICENSE.txt": "/gw2-raid-dashboard/static/js/2.6d7457e4.chunk.js.LICENSE.txt",
+    "static/js/2.266ac113.chunk.js.LICENSE.txt": "/gw2-raid-dashboard/static/js/2.266ac113.chunk.js.LICENSE.txt",
     "static/media/120px-Berserker.935b03de.png": "/gw2-raid-dashboard/static/media/120px-Berserker.935b03de.png",
     "static/media/120px-Bladesworn.37e67abc.png": "/gw2-raid-dashboard/static/media/120px-Bladesworn.37e67abc.png",
     "static/media/120px-Chronomancer.dc7d60a9.png": "/gw2-raid-dashboard/static/media/120px-Chronomancer.dc7d60a9.png",
@@ -45,8 +45,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.54431625.js",
-    "static/js/2.6d7457e4.chunk.js",
+    "static/js/2.266ac113.chunk.js",
     "static/css/main.e252cc75.chunk.css",
-    "static/js/main.4943d42f.chunk.js"
+    "static/js/main.33a23751.chunk.js"
   ]
 }
