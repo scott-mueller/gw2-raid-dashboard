@@ -22,10 +22,11 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: '30px',
-        paddingBottom: '30px'
+        paddingBottom: '30px',
+        scrollMarginTop: '60px'
     },
     playerDetailsContainer: {
-        width: '80%'
+        width: '85%',
     },
     offensiveTable: {
         minWidth: 920,
@@ -79,14 +80,37 @@ const styles = {
         color: '#F57600',
         fontSize: '2em',
         textDecoration: 'underline',
-        paddingLeft: '16px'
     },
     detailsNoneSelected: {
         fontFamily: 'Oxanium',
         fontWeight: 700,
         fontSize: '1.2em',
-        paddingLeft: '10px'
+        paddingLeft: '10px',
+        scrollMarginTop: '-300px'
     },
+
+    //PlayerDetailsStatTile
+    primaryTitle: {
+        fontFamily: 'Oxanium',
+        fontWeight: '400',
+        fontSize: '1.3em',
+        textDecoration: 'underline'
+    },
+    primaryData: {
+        fontFamily: 'Oxanium',
+        fontSize: '2.4em',
+        fontWeight: '300',
+        color: '#F57600',
+    },
+    secondaryTitle: {
+        fontFamily: 'Oxanium',
+        fontWeight: '700',
+        fontSize: '1.2em'
+    },
+    secondaryData: {
+        fontFamily: 'Oxanium',
+        fontSize: '1.0em'
+    }
 };
 
 export default styles;

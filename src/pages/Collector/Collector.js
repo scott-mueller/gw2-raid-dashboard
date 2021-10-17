@@ -10,7 +10,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
 
@@ -18,8 +17,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
@@ -125,9 +122,9 @@ const collectorTheme = createTheme({
 const Collector = ({window}) => {
     const classes = useStyles();
 
-    const [playerBreakdownOpen, setPlayerBreakdownOpen] = useState(true);
     const [drawerStatus, setDrawerStatus] = useState(true);
     const [mobileDrawerStatus, setMobileDrawerStatus] = useState(false);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
     const { search } = useLocation();
     const dispatch = useDispatch();
     const collector = useSelector((state) => state?.collectorStats?.stats);
@@ -137,6 +134,7 @@ const Collector = ({window}) => {
     const timelineRef = useRef(null);
     const bossTableRef = useRef(null);
     const playerBreakddownRef = useRef(null);
+    const playerDetailsCardRef = useRef(null);
 
 
     useEffect(() => {
@@ -144,15 +142,17 @@ const Collector = ({window}) => {
         return dispatch({type: FETCH_COLLECTOR_DATA, payload: qsValues.collectorId})
     }, [search, dispatch]);
     
-    const handlePlayerBreakdownClick = () => {
-        setPlayerBreakdownOpen(!playerBreakdownOpen);
-
-        if (!playerBreakdownOpen) {
-            playerBreakddownRef.current.scrollIntoView({ behavior: 'smooth' })
-        }
-      };
-
     const container = window !== undefined ? () => window().document.body : undefined;
+
+    const sidebarAccountClick = (accountName) => {
+
+        const account = collector?.stats?.accounts[accountName];
+        setSelectedPlayer(account);
+        setTimeout(() => {
+            playerDetailsCardRef.current.scrollIntoView({ behavior: 'smooth' });
+        }, 1000)
+
+    };
 
     const drawerContent = (
         <div>
@@ -182,14 +182,13 @@ const Collector = ({window}) => {
                     <ListItem button onClick={() => bossTableRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Boss Table" classes={{ primary: classes.listText }}/>
                     </ListItem>
-                    <ListItem button onClick={() => handlePlayerBreakdownClick()} classes={{ gutters: classes.gutters }}>
+                    <ListItem button onClick={() => playerBreakddownRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Player Breakdown" classes={{ primary: classes.listText }}/>
-                        {playerBreakdownOpen ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
-                    <Collapse in={playerBreakdownOpen} timeout="auto" unmountOnExit>
+                    <Collapse in={true} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             {Object.keys(collector?.stats?.accounts || {}).map((account) => (
-                                <ListItem button className={classes.nested}>
+                                <ListItem button onClick={() => sidebarAccountClick(account)} className={classes.nested}>
                                     <ListItemText primary={collector.stats.accounts[account].accountName} classes={{ primary: classes.listText }}/>
                                 </ListItem>
                             ))}
@@ -273,7 +272,7 @@ const Collector = ({window}) => {
                             </Grid>
 
                             <Grid ref={playerBreakddownRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                                <PlayerBreakdown collectorId={collector?._id}/>
+                                <PlayerBreakdown ref={playerDetailsCardRef} collectorId={collector?._id} setSelectedPlayer={setSelectedPlayer} selectedPlayer={selectedPlayer}/>
                             </Grid>
                         </Grid>
                     </Container>

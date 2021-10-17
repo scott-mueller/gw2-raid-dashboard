@@ -26,6 +26,10 @@ const useStyles = makeStyles(() => ({
         '&:nth-of-type(odd)': {
             backgroundColor: 'white',
         },
+        '&:hover': {
+            backgroundColor: '#d5d5d5',
+            cursor: 'pointer'
+        }
     },
     rowHovered: {
         backgroundColor: 'green'
@@ -79,7 +83,7 @@ const SupportTable = ({ tableData, setSelectedPlayer }) => {
                                 <TableCell classes={{root: classes.tableItem}} align="right">{row.firstDeaths}</TableCell>
                                 <TableCell classes={{root: classes.tableItem}} align="right">{row.revives}</TableCell>
                                 <TableCell classes={{root: classes.tableItem}} align="right">{row.reviveTime}</TableCell>
-                                <TableCell classes={{root: classes.lastTableItem}} align="right">{row.totalDamageandBarrierTaken.displayVal}</TableCell>
+                                <TableCell classes={{root: classes.lastTableItem}} align="right">{row.totalDamageTaken.displayVal}</TableCell>
                             </TableRow>
                         ))}
                 </TableBody>

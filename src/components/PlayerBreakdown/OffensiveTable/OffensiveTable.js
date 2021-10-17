@@ -26,10 +26,11 @@ const useStyles = makeStyles(() => ({
         '&:nth-of-type(odd)': {
             backgroundColor: 'white',
         },
+        '&:hover': {
+            backgroundColor: '#d5d5d5',
+            cursor: 'pointer'
+        }
     },
-    rowHovered: {
-        backgroundColor: 'green'
-    }
 }));
 
 const OffensiveTable = ({ tableData, setSelectedPlayer }) => {

@@ -46,7 +46,7 @@ const PlayerBreakdownTableHead = ({ order, orderBy, onRequestSort }) => {
         { id: 'firstDeaths', numeric: true, disablePadding: false, label: 'First Deaths' },
         { id: 'revives', numeric: true, disablePadding: false, label: 'Revives' },
         { id: 'reviveTime', numeric: true, disablePadding: false, label: 'Revive Time' },
-        { id: 'totalDamageandBarrierTaken', numeric: true, disablePadding: false, label: 'Dmg + Barrier Taken', type: 'lastCell'}
+        { id: 'totalDamageTaken', numeric: true, disablePadding: false, label: 'Dmg + Barrier Taken', type: 'lastCell'}
     ];
   
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 import { equals, uniq } from 'ramda';
@@ -10,14 +10,17 @@ import Button from '@material-ui/core/Button';
 
 import styles from './styles';
 import {
-    APPLY_PROFESSION_FILTER,
     APPLY_ROLE_FILTER,
     FETCH_ENCOUNTERS_FOR_PLAYER_IN_COLLECTOR,
     RESET_PROFESSION_AND_ROLE_FILTERS
 } from '../../redux/actions';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Chip } from '@material-ui/core';
 import ProfessionIconGroup from '../ProfessionIconGroup/ProfessionIconGroup';
-import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
+import PlayerDetailsStatTile from './PlayerDetailsStatTile';
+import { formatDPS } from '../../utils';
+import ProfessionChip from '../ProfessionChip/ProfessionChip';
+import RoleIcon from '../RoleIcon/RoleIcon';
 
 const useStyles = makeStyles((theme) => ({
     number: {
@@ -50,9 +53,35 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#ef5350'
     },
     accordionContent: {
-          alignItems: 'center'
+        alignItems: 'center'
+    },
+    gridContainer: {
+        padding: '16px'
+    },
+    chipRootTest: {
+        background: 'green',
+        '&:hover, &:focus': {
+            background: 'red'
+        },
+    },
+    chipOutlinedTest: {
+        '&:active': {
+            background: 'blue'
+        }
     }
-  }));
+}));
+
+const detailsCardTheme = createTheme({
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 700,
+            md: 1000,
+            lg: 1500,
+            xl: 1700,
+        }
+    }
+}) 
 
 const computeStatsForFilteredList = (filteredEncounters, accountName) => {
 
@@ -155,54 +184,82 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
         })
         .sort((a, b) => b.count - a.count)
         .map((profession) => profession.profession);
+    
+    const statRows = [
+            { primaryTitle: 'Avg Boss DPS', primaryData: formatDPS((filteredStats.totalBossDps / filteredStats.encounterCount).toFixed(0)) },
+            { primaryTitle: 'Avg Cleave DPS', primaryData: formatDPS((filteredStats.totalCleaveDps / filteredStats.encounterCount).toFixed(0)) },
+            { primaryTitle: 'Total Breakbar Damage', primaryData: formatDPS(filteredStats.totalBreakbarDamage), secondaryTitle: 'Average Per Encounter', secondaryData: formatDPS((filteredStats.totalBreakbarDamage / filteredStats.encounterCount).toFixed(0)) },
+            { primaryTitle: 'Downs', primaryData: filteredStats.downDeathStats.downs, secondaryTitle: 'First Downs', secondaryData: filteredStats.downDeathStats.firstDownCount },
+            { primaryTitle: 'Deaths', primaryData: filteredStats.downDeathStats.deaths, secondaryTitle: 'First Deaths', secondaryData: filteredStats.downDeathStats.firstDeathCount },
+            { primaryTitle: 'Revives', primaryData: filteredStats.revives, secondaryTitle: 'Revive Time', secondaryData: `${filteredStats.reviveTime.toFixed(1)}s` },
+            { primaryTitle: 'Dmg + Barrier Taken', primaryData: formatDPS(filteredStats.totalDamageTaken), secondaryTitle: 'True Damage Taken', secondaryData: formatDPS(filteredStats.totalDamageTaken - filteredStats.totalBarrierTaken) },
+            { primaryTitle: 'Encounters', primaryData: filteredStats.encounterCount },
+            //{ primaryTitle: 'Scholar Uptime', primaryData: filteredStats.encounterCount },
+            //{ primaryTitle: 'Flanking Uptime', primaryData: filteredStats.encounterCount }
+    ];
 
     return (
         <div className={css(styles.playerDetailsContainer)}>
             <Paper elevation={18}>
-                <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                        <div className={css(styles.detailsTitle)}>{player.accountName}</div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <ProfessionIconGroup nameArray={sortedProfessions || []} size={30}/>
-                    </Grid>
+                <Grid container spacing={3} classes={{ container: classes.gridContainer }}>
                     <Grid item xs={12}>
-                        <Button onClick={()=> dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS })} variant="contained">Reset Filters</Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                        {Object.keys(player.professionAggrigates).map((profession) => (
-                            <Chip
-                                icon={<div className={css({ paddingLeft: '2px', display: 'flex', alignItems: 'center', justifyContent: 'center' })}><ProfessionIcon professionName={profession} size={25}/></div>}
-                                label={profession}
-                                onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
-                                disabled={!presentProfessions.includes(profession)}
-                                variant={activeFilters.profession === profession ? 'outlined' : 'default'}
-                            />
-                        ))}
-                    </Grid>
-                    <Grid item xs={12}>
-                        {Object.keys(player.roleMap).map((role) => (
-                            <Chip
-                                label={role.split('-').join(' ')}
-                                onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
-                                disabled={!presentRoles.includes(role.split('-').join(' '))}
-                                variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
-                            />
-                        ))}
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <div className={css(styles.detailsTitle)}>{player.accountName}</div>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button onClick={()=> dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS })} variant="contained">Reset Filters</Button>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {Object.keys(player.professionAggrigates).map((profession) => (
+                                            <div className={css({ display: 'inline-block', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '1px', paddingRight: '1px' })}>
+                                                <ProfessionChip 
+                                                    profession={profession} 
+                                                    disabled={!presentProfessions.includes(profession)} 
+                                                    variant={activeFilters.profession === profession ? 'outlined' : 'default'}
+                                                />
+                                            </div>
+                                        ))}
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {Object.keys(player.roleMap).map((role) => (
+                                            <div className={css({ display: 'inline-block', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '1px', paddingRight: '1px' })}>
+                                                <Chip
+                                                    icon={<div className={css({ paddingLeft: '2px', display: 'flex', alignItems: 'center', justifyContent: 'center' })}><RoleIcon boon={role} size={25}/></div>}
+                                                    label={role.split('-').join(' ')}
+                                                    onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
+                                                    disabled={!presentRoles.includes(role.split('-').join(' '))}
+                                                    variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
+                                                />
+                                            </div>
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div className={css({ display: 'flex', justifyContent: 'right' })}>
+                                    <ProfessionIconGroup nameArray={sortedProfessions || []} size={80}/>
+                                </div>
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item xs={12}>
                         <div>
-                            <div>{`Average Boss DPS: ${filteredStats.totalBossDps / filteredStats.encounterCount}`}</div>
-                            <div>{`Average Cleave DPS: ${filteredStats.totalCleaveDps / filteredStats.encounterCount}`}</div>
-                            <div>{`Total Breakbar Damage: ${filteredStats.totalBreakbarDamage}`}</div>
-                            <div>{`Downs: ${filteredStats.downDeathStats.downs}`}</div>
-                            <div>{`Deaths: ${filteredStats.downDeathStats.deaths}`}</div>
-                            <div>{`First Downs: ${filteredStats.downDeathStats.firstDownCount}`}</div>
-                            <div>{`First Deaths: ${filteredStats.downDeathStats.firstDeathCount}`}</div>
-                            <div>{`Revives: ${filteredStats.revives}`}</div>
-                            <div>{`Revive Time: ${filteredStats.reviveTime}`}</div>
-                            <div>{`Damage + Barrier Taken: ${filteredStats.totalBarrierTaken + filteredStats.totalDamageTaken}`}</div>
-                            <div>{`Encounters: ${filteredStats.encounterCount}`}</div>
+                            <ThemeProvider theme={detailsCardTheme}>
+                                <Grid container spacing={2}>
+                                    {statRows.map((row) => (
+                                        <Grid item xl={3} lg={4} md={6} xs={12}>
+                                            <PlayerDetailsStatTile
+                                                primaryTitle={row.primaryTitle}
+                                                primaryData={row.primaryData}
+                                                secondaryTitle={row.secondaryTitle}
+                                                secondaryData={row.secondaryData}/>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </ThemeProvider>
                         </div>
                     </Grid>
                     <Grid item xs={12}>

@@ -39,7 +39,7 @@ const ProfessionIconGroup = ({ nameArray, size = 20, displayMax = 5 }) => {
                 
                 const className = professionNamesFormatted.indexOf(name) === 0 ?
                     { zIndex: 50, position: 'relative' } :
-                    { marginLeft: '-10px', zIndex, position: 'relative', opacity: opacity / 100}
+                    { marginLeft: `-${(size / 3).toFixed(0)}px`, zIndex, position: 'relative', opacity: opacity / 100}
 
                 zIndex--;
                 opacity = opacity - opacityIncrement > 0 ? opacity = opacity - opacityIncrement : 0;

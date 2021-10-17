@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 
@@ -70,18 +70,17 @@ const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => 
             displayVal: formatDPS(account.totalBreakbarDamage),
             sortVal: parseInt(account.totalBreakbarDamage)
         },
-        totalDamageandBarrierTaken: {
-            displayVal: formatDPS(account.totalDamageTaken + account.totalBarrierTaken),
-            sortVal: parseInt(account.totalDamageTaken + account.totalBarrierTaken)
+        totalDamageTaken: {
+            displayVal: formatDPS(account.totalDamageTaken),
+            sortVal: parseInt(account.totalDamageTaken)
         },
         scholarUptime: account.totalScholarRuneUptime ? parseFloat((account.totalScholarRuneUptime / account.encounterCount).toFixed(1)) : 'Unknown',
         flankingUptime: account.totalThiefRuneUptime ? parseFloat((account.totalThiefRuneUptime / account.encounterCount).toFixed(1)) : 'Unknown'
     }
 });
 
-const PlayerBreakdown = ({ collectorId }) => {
+const PlayerBreakdown = forwardRef(({ collectorId, setSelectedPlayer, selectedPlayer }, ref) => {
     const classes = useStyles();
-    const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [currentTab, setCurrentTab] = React.useState(0);
 
     const accounts = useSelector((state) => state?.collectorStats?.stats?.stats?.accounts);
@@ -111,7 +110,7 @@ const PlayerBreakdown = ({ collectorId }) => {
                 <SupportTable tableData={tableData} setSelectedPlayer={setSelectedPlayer}/>
             )}
             {selectedPlayer ? (
-                <div className={css(styles.playerDetailsOuterContainer)}>
+                <div ref={ref} className={css(styles.playerDetailsOuterContainer)}>
                     <PlayerDetailsCard player={selectedPlayer} collectorId={collectorId} resetOnClick={() => setSelectedPlayer(null)}/>
                 </div>
             ) : (
@@ -121,6 +120,6 @@ const PlayerBreakdown = ({ collectorId }) => {
             )}
         </Paper>
   );
-}
+});
 
 export default PlayerBreakdown;
