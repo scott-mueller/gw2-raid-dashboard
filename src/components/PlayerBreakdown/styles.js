@@ -1,4 +1,5 @@
 const styles = {
+    //PlayerBreakdown
     paper: {
         padding: '12px',
         display: 'flex',
@@ -12,10 +13,9 @@ const styles = {
         textDecoration: 'underline',
         paddingLeft: '10px'
     },
-    tableContainer: {
-        paddingLeft: '10px',
-        paddingRight: '10px',
-        paddingBottom: '10px'
+    tabContainer: {
+        display: 'flex',
+        justifyContent: 'center'
     },
     playerDetailsOuterContainer: {
         display: 'flex',
@@ -25,8 +25,19 @@ const styles = {
         paddingBottom: '30px',
         scrollMarginTop: '60px'
     },
-    playerDetailsContainer: {
-        width: '85%',
+    detailsNoneSelected: {
+        fontFamily: 'Oxanium',
+        fontWeight: 700,
+        fontSize: '1.2em',
+        paddingLeft: '10px',
+        scrollMarginTop: '-300px'
+    },
+
+    //OffensiveTable SupportTable
+    tableContainer: {
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        paddingBottom: '10px'
     },
     offensiveTable: {
         minWidth: 920,
@@ -64,6 +75,11 @@ const styles = {
         paddingTop: '0px',
         paddingBottom: '0px'
     },
+    professioniconContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        width: '125px'
+    },
     visuallyHidden: {
         border: 0,
         clip: 'rect(0 0 0 0)',
@@ -75,21 +91,75 @@ const styles = {
         top: 20,
         width: 1,
     },
+
+    //PlayerDetailsCard
+    playerDetailsContainer: {
+        width: '85%',
+    },
     detailsTitle: {
         fontFamily: 'Oxanium',
         color: '#F57600',
         fontSize: '2em',
         textDecoration: 'underline',
     },
-    detailsNoneSelected: {
+    professionIconGroupLarge: {
+        display: 'flex',
+        justifyContent: 'right',
+        overflow: 'wrap'
+    },
+    filterContainer: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    filterPaper: {
+        width: '80%',
+        background: '#E6EEF0'
+    },
+    filterTitleGrid: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    filterTitle: {
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        textAlign: 'center',
         fontFamily: 'Oxanium',
-        fontWeight: 700,
-        fontSize: '1.2em',
-        paddingLeft: '10px',
-        scrollMarginTop: '-300px'
+        fontWeight: '400',
+        fontSize: '1.3em',
+        textDecoration: 'underline'
+    },
+    chipGroup: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+    },
+    chipContainer: {
+        display: 'inline-block',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        paddingLeft: '1px',
+        paddingRight: '1px' 
+    },
+    roleChipIcon: {
+        paddingLeft: '2px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    resetCloseButtonGroup: {
+        textAlign: 'right'
+    },
+    resetButton: {
+        display: 'inline-block',
+        paddingRight: '5px'
     },
 
     //PlayerDetailsStatTile
+    tileContainer: {
+        height: '120px',
+        padding: '10px',
+        background: '#E6EEF0'
+    },
     primaryTitle: {
         fontFamily: 'Oxanium',
         fontWeight: '400',

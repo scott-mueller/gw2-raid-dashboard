@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
             backgroundColor: 'white',
         },
         '&:hover': {
-            backgroundColor: '#d5d5d5',
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
             cursor: 'pointer'
         }
     },
@@ -72,7 +72,7 @@ const SupportTable = ({ tableData, setSelectedPlayer }) => {
                                     {row.name}
                                 </TableCell>
                                 <TableCell classes={{root: classes.professionIcons}} align="left">
-                                    <div className={css({display: 'flex', alignItems: 'center', width: '125px'})}>
+                                    <div className={css(styles.professioniconContainer)}>
                                         <ProfessionIconGroup nameArray={row.professions.displayVal || []} size={30}/>
                                     </div>
                                 </TableCell>

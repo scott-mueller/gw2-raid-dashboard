@@ -12,7 +12,7 @@ const PlayerDetailsStatTile = ({ primaryTitle, primaryData, secondaryTitle, seco
 
     return(
         <Paper elevation={4}>
-            <div className={css({ height: '120px', padding: '10px', background: '#E6EEF0' })}>
+            <div className={css(styles.tileContainer)}>
                 <div className={css(styles.primaryTitle)}>{primaryTitle}</div>
                 <div className={css(styles.primaryData)}>{primaryData}</div>
                 {secondaryTitle !== undefined && secondaryData !== undefined && (

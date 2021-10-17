@@ -34,7 +34,7 @@ const ProfessionIconGroup = ({ nameArray, size = 20, displayMax = 5 }) => {
     let zIndex = 50;
 
     return(
-        <div className={css({ display: 'contents' })}>
+        <div className={css(styles.container)}>
             {professionNamesFormatted.slice(0, validatedDisplayMax).map((name) => {
                 
                 const className = professionNamesFormatted.indexOf(name) === 0 ?

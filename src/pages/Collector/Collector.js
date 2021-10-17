@@ -16,6 +16,9 @@ import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+
 import Collapse from '@material-ui/core/Collapse';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -32,6 +35,8 @@ import { FETCH_COLLECTOR_DATA } from '../../redux/actions';
 import styles from './styles';
 import PlayerBreakdown from '../../components/PlayerBreakdown/PlayerBreakdown';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { sortProfessionAggrigatesByFrequency } from '../../utils';
+import ProfessionIcon from '../../components/ProfessionIcon/ProfessionIcon';
 
 const useStyles = makeStyles((theme) => ({
     colorPrimary: {
@@ -91,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 360,
       },
     nested: {
-        paddingLeft: '15px'
+        paddingLeft: '10px'
     },
     scrollMargin: {
         scrollMarginTop: '75px'
@@ -150,7 +155,7 @@ const Collector = ({window}) => {
         setSelectedPlayer(account);
         setTimeout(() => {
             playerDetailsCardRef.current.scrollIntoView({ behavior: 'smooth' });
-        }, 1000)
+        }, 200)
 
     };
 
@@ -187,11 +192,17 @@ const Collector = ({window}) => {
                     </ListItem>
                     <Collapse in={true} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            {Object.keys(collector?.stats?.accounts || {}).map((account) => (
-                                <ListItem button onClick={() => sidebarAccountClick(account)} className={classes.nested}>
-                                    <ListItemText primary={collector.stats.accounts[account].accountName} classes={{ primary: classes.listText }}/>
-                                </ListItem>
-                            ))}
+                            {Object.keys(collector?.stats?.accounts || {}).sort((a, b) => a.localeCompare(b)).map((account) => {
+                                const player = collector?.stats?.accounts[account];
+                                const sortedProfessions = sortProfessionAggrigatesByFrequency(player.professionAggrigates || {});
+
+                                return (
+                                    <ListItem button onClick={() => sidebarAccountClick(account)} className={classes.nested}>
+                                        <ListItemIcon>{<ProfessionIcon professionName={sortedProfessions[0]} size={25}/>}</ListItemIcon>
+                                        <ListItemText primary={collector.stats.accounts[account].accountName} classes={{ primary: classes.listText }}/>
+                                    </ListItem>
+                                )
+                            })}
                         </List>
                     </Collapse>
                 </List>
@@ -203,9 +214,7 @@ const Collector = ({window}) => {
         if (width < 600) {
             return setMobileDrawerStatus(true);
         }
-
         return setDrawerStatus(!drawerStatus);
-
     }
 
     return (

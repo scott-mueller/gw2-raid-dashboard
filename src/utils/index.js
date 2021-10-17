@@ -44,3 +44,17 @@ export const formatDPS = (val) => {
 
     //return val.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 };
+
+export const sortProfessionAggrigatesByFrequency = (aggregates) => Object
+  .keys(aggregates)
+  .map((profession) => {
+      let count = 0;
+      aggregates[profession].forEach((roleAgg) => count += roleAgg.count);
+
+      return {
+          profession,
+          count
+      };
+  })
+  .sort((a, b) => b.count - a.count)
+  .map((profession) => profession.profession);

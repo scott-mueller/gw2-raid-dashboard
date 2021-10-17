@@ -3,6 +3,9 @@ const styles = {
         fontFamily: 'Oxanium',
         fontWeight: 400,
         fontSize: '1.6em',
+    },
+    container: {
+        display: 'contents'
     }
 };
 

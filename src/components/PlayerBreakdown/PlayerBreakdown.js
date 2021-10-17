@@ -11,7 +11,7 @@ import Tab from '@material-ui/core/Tab';
 import OffensiveTable from './OffensiveTable/OffensiveTable';
 import SupportTable from './SupportTable/SupportTable';
 import PlayerDetailsCard from './PlayerDetailsCard';
-import { formatDPS } from '../../utils';
+import { formatDPS, sortProfessionAggrigatesByFrequency } from '../../utils';
 import styles from './styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,19 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => {
     const account = accounts[accountName];
 
-    const sortedProfessions = Object
-        .keys(account.professionAggrigates)
-        .map((profession) => {
-            let count = 0;
-            account.professionAggrigates[profession].forEach((roleAgg) => count += roleAgg.count);
-
-            return {
-                profession,
-                count
-            };
-        })
-        .sort((a, b) => b.count - a.count)
-        .map((profession) => profession.profession);
+    const sortedProfessions = sortProfessionAggrigatesByFrequency(account.professionAggrigates);
 
     return {
         fullAccount: account,
@@ -97,7 +85,7 @@ const PlayerBreakdown = forwardRef(({ collectorId, setSelectedPlayer, selectedPl
     return (
         <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
             <div className={css(styles.text)}>Player Breakdown Table</div>
-            <div className={css({ display: 'flex', justifyContent: 'center' })}>
+            <div className={css(styles.tabContainer)}>
                 <Tabs value={currentTab} onChange={(e, newVal) => setCurrentTab(newVal)}>
                     <Tab classes={{root: classes.tabRoot}} label="Damage Stats"/>
                     <Tab classes={{root: classes.tabRoot}} label="Support Stats"/>

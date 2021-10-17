@@ -8,6 +8,7 @@ import { Chip } from '@material-ui/core';
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
 import { APPLY_PROFESSION_FILTER } from '../../redux/actions/index';
+import styles from './styles';
 
 
 const chipColor = (profession) => {
@@ -91,7 +92,7 @@ const ProfessionChip = ({ profession, variant, disabled }) => {
     return (
         <ThemeProvider theme={chipTheme}>
             <Chip
-                icon={<div className={css({ paddingLeft: '2px', display: 'flex', alignItems: 'center', justifyContent: 'center' })}><ProfessionIcon professionName={profession} size={25}/></div>}
+                icon={<div className={css(styles.iconStyle)}><ProfessionIcon professionName={profession} size={25}/></div>}
                 label={profession}
                 color={'primary'}
                 onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
