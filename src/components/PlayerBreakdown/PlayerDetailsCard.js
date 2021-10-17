@@ -81,7 +81,15 @@ const detailsCardTheme = createTheme({
             xl: 1700,
         }
     }
-}) 
+});
+
+const roleChipTheme = createTheme({
+    palette: {
+        primary: {
+            main: '#303F4B'
+        }
+    }
+});
 
 const computeStatsForFilteredList = (filteredEncounters, accountName) => {
 
@@ -255,17 +263,20 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                                                 ))}
                                             </div>
                                         <div className={css(styles.chipGroup, { paddingTop: '5px', paddingBottom: '5px' })}>
-                                            {Object.keys(player.roleMap).map((role) => (
-                                                <div className={css(styles.chipContainer)}>
-                                                    <Chip
-                                                        icon={<div className={css(styles.roleChipIcon)}><RoleIcon boon={role} size={25}/></div>}
-                                                        label={role.split('-').join(' ')}
-                                                        onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
-                                                        disabled={!presentRoles.includes(role.split('-').join(' '))}
-                                                        variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
-                                                    />
-                                                </div>
-                                            ))}
+                                            <ThemeProvider theme={roleChipTheme}>
+                                                {Object.keys(player.roleMap).map((role) => (
+                                                    <div className={css(styles.chipContainer)}>
+                                                        <Chip
+                                                            icon={<div className={css(styles.roleChipIcon)}><RoleIcon boon={role} size={22}/></div>}
+                                                            label={role.split('-').join(' ')}
+                                                            color={'primary'}
+                                                            onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
+                                                            disabled={!presentRoles.includes(role.split('-').join(' '))}
+                                                            variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </ThemeProvider>
                                         </div>
                                     </Paper>
                                 </div>
