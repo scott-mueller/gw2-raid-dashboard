@@ -1,55 +1,25 @@
 const styles = {
-    root: {
-        display: 'flex',
+    drawerHeading: {
+        textDecoration: 'underline',
+        paddingTop: '15px'
     },
-    menuButton: {
-        marginRight: 36,
+    gutters: {
+        paddingLeft: '0px',
+        paddingRight: '0px',
     },
-    menuButtonHidden: {
-        display: 'none',
-    },
-    title: {
-        flexGrow: 1,
-    },
-    titleText: {
+    listText: {
         fontFamily: 'Oxanium',
-        fontWeight: 400,
-        color: '#F57600',
-        padding: '10px',
-        fontSize: '2.1em',
+        fontWeight: '700',
     },
-    appBar: {
-        backgroundColor: 'black'
+    root: {
+        width: '100%',
+        maxWidth: 360,
     },
-    appBarSpacer: {
-        height: 80
+    nested: {
+        paddingLeft: '10px'
     },
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-        background: '#303F4B',
-        marginLeft: '250px',
-    },
-    contentDrawerClosed: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-        background: '#303F4B',
-    },
-    container: {
-        paddingTop: '10px',
-        paddingBottom: '10px',
-    },
-
-    paper: {
-        padding: '12px',
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-    },
-    fixedHeight: {
-        height: 240,
+    scrollMargin: {
+        scrollMarginTop: '75px'
     },
 };
 

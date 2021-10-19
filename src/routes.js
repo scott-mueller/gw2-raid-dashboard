@@ -3,29 +3,32 @@ import {
   HashRouter as Router,
   Route,
 } from "react-router-dom";
-import App from "./pages/App/App";
 import Collector from "./pages/Collector/Collector";
 import Dashboard from './pages/Dashboard/Dashboard';
+import Home from "./pages/Home/Home";
+import Encounters from './pages/Encounters/Encounters';
+import CollectorList from "./pages/CollectorList/CollectorList";
 
 export default function Routes() {
 
   return (
     <Router basename="/">
-            <Route exact path="/" component={Home}>
-            </Route>
-            <Route path="/about" component={About} />
-            <Route path="/collector">
-                <Collector />
-            </Route>
-            <Route path="/app">
-                <App />
-            </Route>
-            <Route path="/dashboard-demo">
-              <Dashboard />
-            </Route>
+            <Route exact path="/" component={Home} />
+			<Route path="/encounters" component={Encounters} />
+            <Route path="/collector" component={Collector} />
+			<Route path="/collector-list" component={CollectorList} />
+
+			{/* Reference only */}
+            <Route path="/dashboard-demo" component={Dashboard} />
     </Router>
   );
 }
 
-const Home = () => <div><h2>Home</h2></div>
-const About = () => <div><h2>About</h2></div>
+/**
+ * 
+ * Sessions
+ * 
+ * Home - personal dashboard - login modal
+ * Encounter - 
+ * 
+ */
