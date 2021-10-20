@@ -23,12 +23,3 @@ export default function Routes() {
     </Router>
   );
 }
-
-/**
- * 
- * Sessions
- * 
- * Home - personal dashboard - login modal
- * Encounter - 
- * 
- */

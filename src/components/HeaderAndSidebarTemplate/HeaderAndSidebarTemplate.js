@@ -1,7 +1,8 @@
 // node_modules
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { css } from '@emotion/css';
+import { useCookies } from 'react-cookie';
 
 // material-ui
 import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -59,20 +60,28 @@ const collectorTheme = createTheme({
             xl: 1920,
         }
     },
-    palette: {
-        test: {
-            main: '#F57600',
-            contrastText: '#fff',
-        },
-    }
 });
+
+/**
+ * Check the cookie 
+ *  - if its present display the full list of stuff in the sidebar, player info in the top bar,
+ *  - No cookie? - Display just the home link, a login/signup button in place of the player info
+ */
 
 const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, children }) => {
     const classes = useStyles();
     const { width } = useWindowDimensions();
     const history = useHistory();
+    const [ cookies, setCookie, removeCookie ] = useCookies([]);
     const [drawerStatus, setDrawerStatus] = useState(true);
     const [mobileDrawerStatus, setMobileDrawerStatus] = useState(false);
+
+    useEffect(() => {
+
+        if (cookies.test) {
+            // dispatch to get the session
+        }
+    }, [])
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -105,6 +114,14 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                     <ListItem button onClick={() => history.push('/')} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Home" classes={{ primary: classes.listText }}/>
                     </ListItem>
+
+                    <ListItem button onClick={() => setCookie('test', '12345')} classes={{ gutters: classes.gutters }}>
+                        <ListItemText primary="Cookie test add" classes={{ primary: classes.listText }}/>
+                    </ListItem>
+                    <ListItem button onClick={() => removeCookie('test')} classes={{ gutters: classes.gutters }}>
+                        <ListItemText primary="Cookie test remove" classes={{ primary: classes.listText }}/>
+                    </ListItem>
+                    
                     <ListItem button onClick={() => history.push('/encounters')} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Encounters" classes={{ primary: classes.listText }}/>
                     </ListItem>
@@ -126,6 +143,7 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                         <MenuIcon classes={{root: classes.menuIcon}} fontSize="large"/>
                     </IconButton>
                     <div className={css(styles.titleText)}>{pageTitleText}</div>
+                    <div>Login</div>
                 </Toolbar>
             </AppBar>
             <Hidden smUp implementation="css">

@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { CookiesProvider } from 'react-cookie';
+import { Provider } from 'react-redux';
 
 import configureStore from './redux/store';
-import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import Routes from './routes';
 
@@ -10,9 +11,11 @@ const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Routes />
-    </Provider>
+    <CookiesProvider>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

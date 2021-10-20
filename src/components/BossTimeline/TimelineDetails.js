@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment-timezone';
