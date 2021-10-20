@@ -1,5 +1,5 @@
 // node_modules
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { css } from '@emotion/css';
 import { useCookies } from 'react-cookie';
@@ -76,19 +76,13 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
     const [drawerStatus, setDrawerStatus] = useState(true);
     const [mobileDrawerStatus, setMobileDrawerStatus] = useState(false);
 
-    useEffect(() => {
-
-        if (cookies.test) {
-            // dispatch to get the session
-        }
-    }, [])
-
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const handleMenuClick = () => {
         if (width < 600) {
             return setMobileDrawerStatus(true);
         }
+        console.log(cookies);
         return setDrawerStatus(!drawerStatus);
     }
 
