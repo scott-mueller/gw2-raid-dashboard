@@ -3,15 +3,15 @@ import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Reducers
-import counterReducer from './reducers/counter/counterSlice';
 import collectorStatsReducer from './reducers/collector';
 
 // Sagas
 import collectorStatsSaga from './sagas/collectorSaga';
+import sessionReducer from './reducers/session';
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
-  collectorStats: collectorStatsReducer
+  collectorStats: collectorStatsReducer,
+  session: sessionReducer
 });
 
 export default function configureStore(initialState) {

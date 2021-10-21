@@ -1,5 +1,6 @@
 // node_modules
-import React, { useState } from 'react';
+import React, { useEffect, useState, } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { css } from '@emotion/css';
 import { useCookies } from 'react-cookie';
@@ -16,7 +17,9 @@ import {
     List,
     ListItem,
     ListItemText,
-    Container
+    Container,
+    Modal,
+    Button,
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -24,6 +27,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 // internal tools
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import styles from './styles';
+import { FETCH_USER_DATA } from '../../redux/actions';
+import LoginSignup from '../LoginSignup/LoginSignup';
 
 const useStyles = makeStyles((theme) => ({
     ...styles,
@@ -72,9 +77,20 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
     const classes = useStyles();
     const { width } = useWindowDimensions();
     const history = useHistory();
+    const dispatch = useDispatch();
     const [ cookies, setCookie, removeCookie ] = useCookies([]);
     const [drawerStatus, setDrawerStatus] = useState(true);
     const [mobileDrawerStatus, setMobileDrawerStatus] = useState(false);
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+    const userSession = useSelector((state) => state?.session);
+
+    useEffect(() => {
+        // Get session data if there is already a session
+        if (cookies.session && !userSession.user ) {
+            dispatch({type: FETCH_USER_DATA, payload: cookies.session.value})
+        }
+    }, [cookies.session, dispatch, userSession.user]);
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -82,7 +98,6 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
         if (width < 600) {
             return setMobileDrawerStatus(true);
         }
-        console.log(cookies);
         return setDrawerStatus(!drawerStatus);
     }
 
@@ -115,7 +130,7 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                     <ListItem button onClick={() => removeCookie('test')} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Cookie test remove" classes={{ primary: classes.listText }}/>
                     </ListItem>
-                    
+
                     <ListItem button onClick={() => history.push('/encounters')} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Encounters" classes={{ primary: classes.listText }}/>
                     </ListItem>
@@ -129,6 +144,22 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
         </div>
     );
 
+    /**
+     * 
+     * Login/Signup click
+     *  -   Open modal
+     *  -   Login tab
+     *      -   Username
+     *      -   Password
+     *      -   Fetches user associated with that username
+     *      -   sees if password hash's match
+     *      -   returns true or false
+     *      -   If false, display an error
+     *      -   If true, create a session token, save it to the 
+     *  -   Sign up Tab
+     * 
+     */
+
     return (
         <div>
             <AppBar classes={{colorPrimary: classes.colorPrimary}}>
@@ -137,9 +168,21 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                         <MenuIcon classes={{root: classes.menuIcon}} fontSize="large"/>
                     </IconButton>
                     <div className={css(styles.titleText)}>{pageTitleText}</div>
-                    <div>Login</div>
+                    {userSession.user ? (
+                        <div>Some user data</div>
+                    ) : (
+                        <Button onClick={() => setLoginModalOpen(true)}>Login</Button>
+                    )}
                 </Toolbar>
             </AppBar>
+            <Modal
+                open={loginModalOpen}
+                onClose={() => setLoginModalOpen(false)}
+            >
+                <div className={css({ position: 'absolute', top: '30%', left: '50%', background: 'white', marginTop: '-150px', marginLeft: '-300px', height: '300px', width: '600px' })}>
+                    <LoginSignup />
+                </div>
+            </Modal>
             <Hidden smUp implementation="css">
                 <Drawer
                     container={container}
