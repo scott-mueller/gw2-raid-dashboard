@@ -10,7 +10,6 @@ import { FETCH_ENCOUNTERS_FOR_TIMELINE_DETAILS } from '../../redux/actions';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -19,6 +18,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 
 import TimelineEncounterSimpleTable from './TimelineEncounterSimpleTable';
+import CustomButton from '../CustomButton/CustomButton';
 
 // eslint-disable-next-line no-extend-native
 Number.prototype.formatMsToString = function () {
@@ -148,9 +148,9 @@ const TimelineDetails = ({ boss, resetOnClick }) => {
                                         <div>
                                             <Grid container spacing={1}>
                                                 <Grid item xs={12}>
-                                                    <Button variant={'contained'}>
+                                                    <CustomButton>
                                                         <Link href={encounter.dpsReportUrl} target={'_blank'} rel={'noopener noreferrer'}>View Full Report</Link>
-                                                    </Button>
+                                                    </CustomButton>
                                                 </Grid>
                                                 <Grid item xs={12}>
                                                     <TimelineEncounterSimpleTable players={encounter.players}/>
@@ -166,7 +166,7 @@ const TimelineDetails = ({ boss, resetOnClick }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <div className={css({textAlign: 'right', paddingRight: '10px'})}>
-                            <Button onClick={resetOnClick} variant="contained">Close</Button>
+                            <CustomButton onClick={resetOnClick}>Close</CustomButton>
                         </div>
                     </Grid>
                 </Grid>

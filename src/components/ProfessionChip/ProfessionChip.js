@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { css } from '@emotion/css';
 
+import { makeStyles } from '@material-ui/core/styles';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Chip } from '@material-ui/core';
 
@@ -9,6 +10,7 @@ import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
 import { APPLY_PROFESSION_FILTER } from '../../redux/actions/index';
 import styles from './styles';
+
 
 
 const chipColor = (profession) => {
@@ -76,9 +78,16 @@ const chipColor = (profession) => {
             return '#f542ec';
         }
     }
-}
+};
+
+const useStyles = makeStyles((theme) => ({
+    chipRoot: {
+        fontFamily: 'Oxanium',
+    }
+}));
 
 const ProfessionChip = ({ profession, variant, disabled }) => {
+    const classes = useStyles();
     const dispatch = useDispatch();
 
     const chipTheme = createTheme({
@@ -92,6 +101,7 @@ const ProfessionChip = ({ profession, variant, disabled }) => {
     return (
         <ThemeProvider theme={chipTheme}>
             <Chip
+                classes={{root: classes.chipRoot}}
                 icon={<div className={css(styles.iconStyle)}><ProfessionIcon professionName={profession} size={25}/></div>}
                 label={profession}
                 color={'primary'}

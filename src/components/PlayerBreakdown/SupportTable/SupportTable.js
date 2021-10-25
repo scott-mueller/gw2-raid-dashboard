@@ -31,9 +31,6 @@ const useStyles = makeStyles(() => ({
             cursor: 'pointer'
         }
     },
-    rowHovered: {
-        backgroundColor: 'green'
-    }
 }));
 
 const SupportTable = ({ tableData, setSelectedPlayer }) => {

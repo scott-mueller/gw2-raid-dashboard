@@ -19,7 +19,6 @@ import {
     ListItemText,
     Container,
     Modal,
-    Button,
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -27,13 +26,17 @@ import MenuIcon from '@material-ui/icons/Menu';
 // internal tools
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import styles from './styles';
-import { FETCH_USER_DATA } from '../../redux/actions';
 import LoginSignup from '../LoginSignup/LoginSignup';
+import { FETCH_USER_BY_SESSION_TOKEN, SIGN_OUT } from '../../redux/actions';
+import CustomButton from '../CustomButton/CustomButton';
+import Footer from './Footer';
 
 const useStyles = makeStyles((theme) => ({
     ...styles,
     content: {
         flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
         height: '100vh',
         overflow: 'auto',
         background: '#303F4B',
@@ -45,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
     },
     contentDrawerClosed: {
         flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
         height: '100vh',
         overflow: 'auto',
         background: '#303F4B',
@@ -52,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-    }
+    },
 }));
 
 const collectorTheme = createTheme({
@@ -67,12 +72,6 @@ const collectorTheme = createTheme({
     },
 });
 
-/**
- * Check the cookie 
- *  - if its present display the full list of stuff in the sidebar, player info in the top bar,
- *  - No cookie? - Display just the home link, a login/signup button in place of the player info
- */
-
 const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, children }) => {
     const classes = useStyles();
     const { width } = useWindowDimensions();
@@ -82,15 +81,31 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
     const [drawerStatus, setDrawerStatus] = useState(true);
     const [mobileDrawerStatus, setMobileDrawerStatus] = useState(false);
     const [loginModalOpen, setLoginModalOpen] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
 
     const userSession = useSelector((state) => state?.session);
 
     useEffect(() => {
-        // Get session data if there is already a session
-        if (cookies.session && !userSession.user ) {
-            dispatch({type: FETCH_USER_DATA, payload: cookies.session.value})
+        // Close the modal on signup or sign in success
+        if (userSession.signupSuccess || userSession.signInSuccess) {
+            setLoggedIn(true);
+            setLoginModalOpen(false);
         }
-    }, [cookies.session, dispatch, userSession.user]);
+    }, [userSession.signInSuccess, userSession.signupSuccess])
+
+    useEffect(() => {
+        // if there is a session token and no cookie, set the cookie
+        if (userSession.user.sessionToken && !cookies.session) {
+            setLoggedIn(true);
+            setCookie('session', userSession.user.sessionToken);
+        }
+
+        // if there is a cookie but no session, look up the user using the session
+        if (cookies.session && !userSession.user?.username && loggedIn) {
+            // dispatch to fetch a user by token
+            dispatch({type: FETCH_USER_BY_SESSION_TOKEN, payload: cookies.session});
+        }
+    }, [cookies.session, dispatch, loggedIn, setCookie, userSession.user]);
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -100,6 +115,18 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
         }
         return setDrawerStatus(!drawerStatus);
     }
+
+    const handleLogout = () => {
+        setLoggedIn(false);
+        removeCookie('session');
+        dispatch({
+            type: SIGN_OUT, 
+            payload: {
+                userId: userSession.user._id,
+                sessionToken: userSession.user.sessionToken
+            }
+        });
+    };
 
     const drawerContent = (
         <div>
@@ -144,22 +171,6 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
         </div>
     );
 
-    /**
-     * 
-     * Login/Signup click
-     *  -   Open modal
-     *  -   Login tab
-     *      -   Username
-     *      -   Password
-     *      -   Fetches user associated with that username
-     *      -   sees if password hash's match
-     *      -   returns true or false
-     *      -   If false, display an error
-     *      -   If true, create a session token, save it to the 
-     *  -   Sign up Tab
-     * 
-     */
-
     return (
         <div>
             <AppBar classes={{colorPrimary: classes.colorPrimary}}>
@@ -168,10 +179,19 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                         <MenuIcon classes={{root: classes.menuIcon}} fontSize="large"/>
                     </IconButton>
                     <div className={css(styles.titleText)}>{pageTitleText}</div>
-                    {userSession.user ? (
-                        <div>Some user data</div>
+                    {userSession.user?.username ? (
+                        <div>
+                            <div>{userSession.user.username}</div>
+                            <CustomButton onClick={() => handleLogout()}>Log Out</CustomButton>
+                        </div>
                     ) : (
-                        <Button onClick={() => setLoginModalOpen(true)}>Login</Button>
+                        <div>
+                            <CustomButton onClick={() => {
+                                setLoginModalOpen(true);
+                                setLoggedIn(false);
+                            }}>Login / Sign up</CustomButton>
+                        </div>
+
                     )}
                 </Toolbar>
             </AppBar>
@@ -179,7 +199,7 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                 open={loginModalOpen}
                 onClose={() => setLoginModalOpen(false)}
             >
-                <div className={css({ position: 'absolute', top: '30%', left: '50%', background: 'white', marginTop: '-150px', marginLeft: '-300px', height: '300px', width: '600px' })}>
+                <div className={css({ position: 'absolute', top: '20%', left: '50%', background: 'white', marginLeft: '-265px' })}>
                     <LoginSignup />
                 </div>
             </Modal>
@@ -212,12 +232,17 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                         : drawerStatus ? classes.content : classes.contentDrawerClosed
                 }
             >
-            <div className={css(styles.appBarSpacer)} />
-            <ThemeProvider theme={collectorTheme}>
-                    <Container maxWidth="lg" classes = {{ maxWidthLg: classes.containerLg }} className={css(styles.container)}>
-                        {children}
-                    </Container>
-            </ThemeProvider>
+                <div id={'content'} className={css({ flex: '1 0 auto', paddingBottom: '10px' })}>
+                    <div className={css(styles.appBarSpacer)} />
+                    <ThemeProvider theme={collectorTheme}>
+                            <Container maxWidth="lg" classes={{ maxWidthLg: classes.containerLg }} className={css(styles.container)}>
+                                {children}
+                            </Container>
+                    </ThemeProvider>
+                </div>
+                <div id={'footer'} className={css({ flexShrink: 0 })}>
+                    <Footer />
+                </div>
             </main>
         </div>
     )

@@ -6,7 +6,6 @@ import { equals, uniq } from 'ramda';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 
 import styles from './styles';
 import {
@@ -21,6 +20,7 @@ import PlayerDetailsStatTile from './PlayerDetailsStatTile';
 import { formatDPS, sortProfessionAggrigatesByFrequency } from '../../utils';
 import ProfessionChip from '../ProfessionChip/ProfessionChip';
 import RoleIcon from '../RoleIcon/RoleIcon';
+import CustomButton from '../CustomButton/CustomButton';
 
 const useStyles = makeStyles((theme) => ({
     number: {
@@ -68,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
         '&:active': {
             background: 'blue'
         }
+    },
+    chipRoot: {
+        fontFamily: 'Oxanium',
     }
 }));
 
@@ -267,6 +270,7 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                                                 {Object.keys(player.roleMap).map((role) => (
                                                     <div className={css(styles.chipContainer)}>
                                                         <Chip
+                                                            classes={{root: classes.chipRoot}}
                                                             icon={<div className={css(styles.roleChipIcon)}><RoleIcon boon={role} size={22}/></div>}
                                                             label={role.split('-').join(' ')}
                                                             color={'primary'}
@@ -303,9 +307,9 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                     <Grid item xs={12}>
                         <div className={css(styles.resetCloseButtonGroup)}>
                             <div className={css(styles.resetButton)}>
-                                <Button onClick={()=> dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS })} variant="contained">Reset Filters</Button>
+                                <CustomButton onClick={()=> dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS })}>Reset Filters</CustomButton>
                             </div>
-                            <Button onClick={resetOnClick} variant="contained">Close</Button>
+                            <CustomButton onClick={resetOnClick}>Close</CustomButton>
                         </div>
                     </Grid>
                 </Grid>

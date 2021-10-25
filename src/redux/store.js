@@ -4,10 +4,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Reducers
 import collectorStatsReducer from './reducers/collector';
+import sessionReducer from './reducers/session';
 
 // Sagas
 import collectorStatsSaga from './sagas/collectorSaga';
-import sessionReducer from './reducers/session';
+import sessionSaga from './sagas/sessionSaga';
 
 const rootReducer = combineReducers({
   collectorStats: collectorStatsReducer,
@@ -25,5 +26,6 @@ export default function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, composedEnhancers);
 
   sagaMiddleware.run(collectorStatsSaga);
+  sagaMiddleware.run(sessionSaga);
   return store;
 }
