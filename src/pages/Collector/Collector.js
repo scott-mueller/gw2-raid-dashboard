@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
 import {
     CssBaseline,
     Grid,
@@ -31,6 +31,18 @@ import styles from './styles';
 import { sortProfessionAggrigatesByFrequency } from '../../utils';
 
 const useStyles = makeStyles(() => ({ ...styles }));
+
+const collectorTheme = createTheme({
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 960,
+            lg: 1520,
+            xl: 1920,
+        }
+    },
+});
 
 const Collector = () => {
     const classes = useStyles();
@@ -89,7 +101,9 @@ const Collector = () => {
 
                             return (
                                 <ListItem button onClick={() => sidebarAccountClick(account)} className={classes.nested}>
-                                    <ListItemIcon>{<ProfessionIcon professionName={sortedProfessions[0]} size={25}/>}</ListItemIcon>
+                                    <ListItemIcon>
+                                        <ProfessionIcon professionName={sortedProfessions[0]} size={25}/>
+                                    </ListItemIcon>
                                     <ListItemText primary={collector.stats.accounts[account].accountName} classes={{ primary: classes.listText }}/>
                                 </ListItem>
                             )
@@ -103,32 +117,34 @@ const Collector = () => {
     return (
         <div>
             <CssBaseline />
-            <HeaderAndSidebarTemplate pageTitleText={`Collector: ${collector?._id}`} pageDrawerContent={drawerContent}>
-                <Grid container spacing={3}>
-                    <Grid ref={overviewRef} classes={{ root: classes.scrollMargin }} item xs={12} md={6} lg={3}>
-                        <OverviewStatsCard variant="successRate"/>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <OverviewStatsCard variant="avgBossDps"/>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <OverviewStatsCard variant="avgCleaveDps"/>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                        <OverviewStatsCard variant="encounterTime"/>
-                    </Grid>
-                    <Grid ref={timelineRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                        <BossTimeline />
-                    </Grid>
-                    <Grid ref={bossTableRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                        <BossTable />
-                    </Grid>
+            <ThemeProvider theme={collectorTheme}>
+                <HeaderAndSidebarTemplate pageTitleText={`Collector: ${collector?._id}`} pageDrawerContent={drawerContent}>
+                    <Grid container spacing={3}>
+                        <Grid ref={overviewRef} classes={{ root: classes.scrollMargin }} item xs={12} md={6} lg={3}>
+                            <OverviewStatsCard variant="successRate"/>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={3}>
+                            <OverviewStatsCard variant="avgBossDps"/>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={3}>
+                            <OverviewStatsCard variant="avgCleaveDps"/>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={3}>
+                            <OverviewStatsCard variant="encounterTime"/>
+                        </Grid>
+                        <Grid ref={timelineRef} classes={{ root: classes.scrollMargin }} item xs={12}>
+                            <BossTimeline />
+                        </Grid>
+                        <Grid ref={bossTableRef} classes={{ root: classes.scrollMargin }} item xs={12}>
+                            <BossTable />
+                        </Grid>
 
-                    <Grid ref={playerBreakddownRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                        <PlayerBreakdown ref={playerDetailsCardRef} collectorId={collector?._id} setSelectedPlayer={setSelectedPlayer} selectedPlayer={selectedPlayer}/>
+                        <Grid ref={playerBreakddownRef} classes={{ root: classes.scrollMargin }} item xs={12}>
+                            <PlayerBreakdown ref={playerDetailsCardRef} collectorId={collector?._id} setSelectedPlayer={setSelectedPlayer} selectedPlayer={selectedPlayer}/>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </HeaderAndSidebarTemplate>
+                </HeaderAndSidebarTemplate>
+            </ThemeProvider>
         </div>
     )
 };

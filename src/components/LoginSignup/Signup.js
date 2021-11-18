@@ -11,50 +11,63 @@ import {
 } from '@material-ui/core';
 
 import { SIGN_UP, VERIFY_API_KEY } from '../../redux/actions';
-import styles from './styles';
 import CustomButton from '../CustomButton/CustomButton';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
+import styles from './styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     ...styles,
-    root: {
-
-    },
-    label: {
-        fontFamily: 'Oxanium',
-        fontWeight: '700'
-      },
 }));
 
-
+const usernameRegex = new RegExp(/^[a-zA-Z0-9_\-.]{0,30}$/);
 const accountNameRegex = new RegExp(/^[a-zA-Z ]{3,27}.[0-9]{4}$/);
 const apiKeyRegex = new RegExp(/^[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{20}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}$/);
 
-const Signup = () => {
+const Signup = ({ internalOnClose }) => {
     const classes = useStyles();
+    const { width } = useWindowDimensions();
     const dispatch = useDispatch();
 
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [retypePassword, setRetypePassword] = useState('');
-    const [apiKey, setApiKey] = useState('');
-    const [accountName, setAccountName] = useState('')
-
     const [usernameError, setUsernameError] = useState(false);
     const [usernameHelperText, setUsernameHelperText] = useState('');
 
+    const [password, setPassword] = useState('');
+    const [retypePassword, setRetypePassword] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const [passwordHelperText, setPasswordHelperText] = useState('');
 
-    const [accountNameError, setAccountNameError] = useState(false);
-    const [accountNameHelperText, setAccountNameHelperText] = useState('');
-
+    const [apiKey, setApiKey] = useState('');
     const [apiKeyError, setApiKeyError] = useState(false);
     const [apiKeyHelperText, setApiKeyHelperText] = useState('');
+
+    const [accountName, setAccountName] = useState('')
+    const [accountNameError, setAccountNameError] = useState(false);
+    const [accountNameHelperText, setAccountNameHelperText] = useState('');
 
     const [verifiedApiKey, setVerifiedApiKey] = useState(false);
 
     const session = useSelector((state) => state?.session);
     const fetching = useSelector((state) => state.session.fetching);
+
+    const maybeSubmitForm = ({keyCode}) => {
+        if (keyCode === 13)
+            if (verifiedApiKey) {
+                handleSignup();
+            }
+            else {
+                verifyApiKey();
+            }
+    }
+
+    useEffect(() => {
+        window.addEventListener("keydown", maybeSubmitForm);
+        // Remove event listeners on cleanup
+        return () => {
+          window.removeEventListener("keydown", maybeSubmitForm);
+        };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [username, password, retypePassword, accountName, apiKey, verifiedApiKey]);
 
     useEffect(() => {
 
@@ -147,7 +160,6 @@ const Signup = () => {
     const handleFieldOnChange = (field, value) => {
         switch(field) {
             case 'username': {
-                const usernameRegex = new RegExp(/^[a-zA-Z0-9_\-.]{0,30}$/);
                 if (usernameRegex.test(value)) {
                     setUsernameError(false);
                     setUsernameHelperText('');
@@ -184,7 +196,7 @@ const Signup = () => {
     );
 
     return (
-        <div className={css({ padding: '10px', paddingTop: '16px' })}>
+        <div id={'signup'} className={css({ padding: '16px' })}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <div className={css({display: 'flex', justifyContent: 'center', height: '65px'})}>
@@ -192,8 +204,10 @@ const Signup = () => {
                             classes={{root: classes.largeTextField}}
                             disabled={fetching}
                             error={usernameError}
+                            autoFocus
                             variant={'outlined'}
                             label={'Username'}
+                            color={'secondary'}
                             helperText={usernameHelperText}
                             onFocus={() => { setUsernameError(false); setUsernameHelperText(''); }}
                             value={username}
@@ -211,6 +225,7 @@ const Signup = () => {
                             variant={'outlined'}
                             label={'Password'}
                             value={password}
+                            color={'secondary'}
                             helperText={passwordHelperText}
                             onFocus={() => { setPasswordError(false); setPasswordHelperText(''); }}
                             onChange={(e) => handleFieldOnChange('password', e.target.value)}
@@ -227,6 +242,7 @@ const Signup = () => {
                             variant={'outlined'}
                             label={'Confirm Password'}
                             value={retypePassword}
+                            color={'secondary'}
                             helperText={passwordHelperText}
                             onFocus={() => { setPasswordError(false); setPasswordHelperText(''); }}
                             onChange={(e) => handleFieldOnChange('retypePassword', e.target.value)}
@@ -235,7 +251,7 @@ const Signup = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <div className={css({display: 'flex', justifyContent: 'center', width: '100%'})}>
-                        <Paper elevation={5} className={css({ padding: '10px', width: '100%' })}>
+                        <Paper elevation={5} className={css({ padding: '10px', width: '96%' })}>
                             <div className={css(styles.accountVerifyHeader)}>
                                 {verifiedApiKey ? 'Guild Wars 2 Account Verified' : 'Please Verify Your Guild Wars 2 Account'}
                             </div>
@@ -247,6 +263,7 @@ const Signup = () => {
                                     disabled={verifiedApiKey || fetching}
                                     label={'Guild Wars 2 Account Name'}
                                     value={accountName}
+                                    color={'secondary'}
                                     helperText={accountNameHelperText}
                                     onFocus={() => { setAccountNameError(false); setAccountNameHelperText(''); }}
                                     onChange={(e) => handleFieldOnChange('accountName', e.target.value)}
@@ -259,19 +276,21 @@ const Signup = () => {
                                         disabled={verifiedApiKey || fetching}
                                         label={'Guild Wars 2 Api Key'}
                                         value={apiKey}
+                                        size={'small'}
+                                        color={'secondary'}
                                         helperText={apiKeyHelperText}
                                         onFocus={() => { setApiKeyError(false); setApiKeyHelperText(''); }}
                                         onChange={(e) => handleFieldOnChange('apiKey', e.target.value)}
                                     />
                             </div>
                             <div className={css({display: 'flex', justifyContent: 'right', paddingTop: '5px', paddingBottom: '5px'})}>
-                                <CustomButton disabled={verifiedApiKey} onClick={() => verifyApiKey()}>Verify Api Key</CustomButton>
+                                <CustomButton disabled={verifiedApiKey || fetching} onClick={() => verifyApiKey()}>Verify Api Key</CustomButton>
                             </div>
                         </Paper>
                     </div>
                 </Grid>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center'})}>
+                    <div className={css({display: 'flex', justifyContent: 'center', paddingTop: '20px'})}>
                         {!verifiedApiKey ? (
                             <Tooltip title={signupTooltipText()} placement={'top'} arrow>
                                 <span>
@@ -284,6 +303,13 @@ const Signup = () => {
 
                     </div>
                 </Grid>
+                {width < 700 && (
+                    <Grid item xs={12}>
+                        <div className={css({display: 'flex', justifyContent: 'center'})}>
+                            <CustomButton onClick={internalOnClose}>Cancel</CustomButton>
+                        </div>
+                    </Grid>
+                )}
             </Grid>
         </div>
     )
