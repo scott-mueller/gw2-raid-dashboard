@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import makeStyles from '@mui/styles/makeStyles';
+import Paper from '@mui/material/Paper';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import TimelineCard from './TimelineCard';
 import TimelineDetails from './TimelineDetails';
 
 import styles from './styles';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
     ol:{ 

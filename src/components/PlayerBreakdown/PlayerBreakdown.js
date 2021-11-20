@@ -2,11 +2,11 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import makeStyles from '@mui/styles/makeStyles';
+import Paper from '@mui/material/Paper';
 
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 import OffensiveTable from './OffensiveTable/OffensiveTable';
 import SupportTable from './SupportTable/SupportTable';

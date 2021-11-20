@@ -6,7 +6,8 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
-import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
     CssBaseline,
     Grid,
@@ -15,7 +16,7 @@ import {
     ListItemText,
     ListItemIcon,
     Collapse
-} from '@material-ui/core';
+} from '@mui/material';
 
 // internal components
 import ProfessionIcon from '../../components/ProfessionIcon/ProfessionIcon';
@@ -32,7 +33,7 @@ import { sortProfessionAggrigatesByFrequency } from '../../utils';
 
 const useStyles = makeStyles(() => ({ ...styles }));
 
-const collectorTheme = createTheme({
+const collectorTheme = createTheme(adaptV4Theme({
     breakpoints: {
         values: {
             xs: 0,
@@ -42,7 +43,7 @@ const collectorTheme = createTheme({
             xl: 1920,
         }
     },
-});
+}));
 
 const Collector = () => {
     const classes = useStyles();
@@ -117,36 +118,38 @@ const Collector = () => {
     return (
         <div>
             <CssBaseline />
-            <ThemeProvider theme={collectorTheme}>
-                <HeaderAndSidebarTemplate pageTitleText={`Collector: ${collector?._id}`} pageDrawerContent={drawerContent}>
-                    <Grid container spacing={3}>
-                        <Grid ref={overviewRef} classes={{ root: classes.scrollMargin }} item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="successRate"/>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="avgBossDps"/>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="avgCleaveDps"/>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="encounterTime"/>
-                        </Grid>
-                        <Grid ref={timelineRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                            <BossTimeline />
-                        </Grid>
-                        <Grid ref={bossTableRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                            <BossTable />
-                        </Grid>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={collectorTheme}>
+                    <HeaderAndSidebarTemplate pageTitleText={`Collector: ${collector?._id}`} pageDrawerContent={drawerContent}>
+                        <Grid container spacing={3}>
+                            <Grid ref={overviewRef} classes={{ root: classes.scrollMargin }} item xs={12} md={6} lg={3}>
+                                <OverviewStatsCard variant="successRate"/>
+                            </Grid>
+                            <Grid item xs={12} md={6} lg={3}>
+                                <OverviewStatsCard variant="avgBossDps"/>
+                            </Grid>
+                            <Grid item xs={12} md={6} lg={3}>
+                                <OverviewStatsCard variant="avgCleaveDps"/>
+                            </Grid>
+                            <Grid item xs={12} md={6} lg={3}>
+                                <OverviewStatsCard variant="encounterTime"/>
+                            </Grid>
+                            <Grid ref={timelineRef} classes={{ root: classes.scrollMargin }} item xs={12}>
+                                <BossTimeline />
+                            </Grid>
+                            <Grid ref={bossTableRef} classes={{ root: classes.scrollMargin }} item xs={12}>
+                                <BossTable />
+                            </Grid>
 
-                        <Grid ref={playerBreakddownRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                            <PlayerBreakdown ref={playerDetailsCardRef} collectorId={collector?._id} setSelectedPlayer={setSelectedPlayer} selectedPlayer={selectedPlayer}/>
+                            <Grid ref={playerBreakddownRef} classes={{ root: classes.scrollMargin }} item xs={12}>
+                                <PlayerBreakdown ref={playerDetailsCardRef} collectorId={collector?._id} setSelectedPlayer={setSelectedPlayer} selectedPlayer={selectedPlayer}/>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </HeaderAndSidebarTemplate>
-            </ThemeProvider>
+                    </HeaderAndSidebarTemplate>
+                </ThemeProvider>
+            </StyledEngineProvider>
         </div>
-    )
+    );
 };
 
 export default Collector;

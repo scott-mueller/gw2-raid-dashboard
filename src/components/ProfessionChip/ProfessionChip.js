@@ -2,9 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Chip } from '@material-ui/core';
+import { adaptV4Theme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { Chip } from '@mui/material';
 
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
@@ -90,27 +91,29 @@ const ProfessionChip = ({ profession, variant, disabled }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const chipTheme = createTheme({
+    const chipTheme = createTheme(adaptV4Theme({
         palette: {
             primary: {
                 main: chipColor(profession)
             }
         }
-    });
+    }));
 
     return (
-        <ThemeProvider theme={chipTheme}>
-            <Chip
-                classes={{root: classes.chipRoot}}
-                icon={<div className={css(styles.iconStyle)}><ProfessionIcon professionName={profession} size={25}/></div>}
-                label={profession}
-                color={'primary'}
-                onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
-                disabled={disabled}
-                variant={variant}
-            />
-        </ThemeProvider>
-    )
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={chipTheme}>
+                <Chip
+                    classes={{root: classes.chipRoot}}
+                    icon={<div className={css(styles.iconStyle)}><ProfessionIcon professionName={profession} size={25}/></div>}
+                    label={profession}
+                    color={'primary'}
+                    onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
+                    disabled={disabled}
+                    variant={variant}
+                />
+            </ThemeProvider>
+        </StyledEngineProvider>
+    );
 };
 
 export default ProfessionChip

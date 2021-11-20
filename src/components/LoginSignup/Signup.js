@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
     TextField,
     Grid,
     Paper,
     Tooltip,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { SIGN_UP, VERIFY_API_KEY } from '../../redux/actions';
 import CustomButton from '../CustomButton/CustomButton';

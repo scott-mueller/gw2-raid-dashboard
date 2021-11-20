@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from '@emotion/css';
 
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 
 import styles from './styles';
 

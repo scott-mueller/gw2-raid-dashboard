@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 import { equals, uniq } from 'ramda';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import { adaptV4Theme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 import styles from './styles';
 import {
@@ -13,8 +14,8 @@ import {
     FETCH_ENCOUNTERS_FOR_PLAYER_IN_COLLECTOR,
     RESET_PROFESSION_AND_ROLE_FILTERS
 } from '../../redux/actions';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Chip } from '@material-ui/core';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { Chip } from '@mui/material';
 import ProfessionIconGroup from '../ProfessionIconGroup/ProfessionIconGroup';
 import PlayerDetailsStatTile from './PlayerDetailsStatTile';
 import { formatDPS, sortProfessionAggrigatesByFrequency } from '../../utils';
@@ -74,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const detailsCardTheme = createTheme({
+const detailsCardTheme = createTheme(adaptV4Theme({
     breakpoints: {
         values: {
             xs: 0,
@@ -84,15 +85,15 @@ const detailsCardTheme = createTheme({
             xl: 1700,
         }
     }
-});
+}));
 
-const roleChipTheme = createTheme({
+const roleChipTheme = createTheme(adaptV4Theme({
     palette: {
         primary: {
             main: '#303F4B'
         }
     }
-});
+}));
 
 const computeStatsForFilteredList = (filteredEncounters, accountName) => {
 
@@ -266,21 +267,23 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                                                 ))}
                                             </div>
                                         <div className={css(styles.chipGroup, { paddingTop: '5px', paddingBottom: '5px' })}>
-                                            <ThemeProvider theme={roleChipTheme}>
-                                                {Object.keys(player.roleMap).map((role) => (
-                                                    <div className={css(styles.chipContainer)}>
-                                                        <Chip
-                                                            classes={{root: classes.chipRoot}}
-                                                            icon={<div className={css(styles.roleChipIcon)}><RoleIcon boon={role} size={22}/></div>}
-                                                            label={role.split('-').join(' ')}
-                                                            color={'primary'}
-                                                            onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
-                                                            disabled={!presentRoles.includes(role.split('-').join(' '))}
-                                                            variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </ThemeProvider>
+                                            <StyledEngineProvider injectFirst>
+                                                <ThemeProvider theme={roleChipTheme}>
+                                                    {Object.keys(player.roleMap).map((role) => (
+                                                        <div className={css(styles.chipContainer)}>
+                                                            <Chip
+                                                                classes={{root: classes.chipRoot}}
+                                                                icon={<div className={css(styles.roleChipIcon)}><RoleIcon boon={role} size={22}/></div>}
+                                                                label={role.split('-').join(' ')}
+                                                                color={'primary'}
+                                                                onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
+                                                                disabled={!presentRoles.includes(role.split('-').join(' '))}
+                                                                variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </ThemeProvider>
+                                            </StyledEngineProvider>
                                         </div>
                                     </Paper>
                                 </div>
@@ -289,19 +292,21 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <div>
-                            <ThemeProvider theme={detailsCardTheme}>
-                                <Grid container spacing={2}>
-                                    {statRows.map((row) => (
-                                        <Grid item xl={3} lg={4} md={6} xs={12}>
-                                            <PlayerDetailsStatTile
-                                                primaryTitle={row.primaryTitle}
-                                                primaryData={row.primaryData}
-                                                secondaryTitle={row.secondaryTitle}
-                                                secondaryData={row.secondaryData}/>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </ThemeProvider>
+                            <StyledEngineProvider injectFirst>
+                                <ThemeProvider theme={detailsCardTheme}>
+                                    <Grid container spacing={2}>
+                                        {statRows.map((row) => (
+                                            <Grid item xl={3} lg={4} md={6} xs={12}>
+                                                <PlayerDetailsStatTile
+                                                    primaryTitle={row.primaryTitle}
+                                                    primaryData={row.primaryData}
+                                                    secondaryTitle={row.secondaryTitle}
+                                                    secondaryData={row.secondaryData}/>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </ThemeProvider>
+                            </StyledEngineProvider>
                         </div>
                     </Grid>
                     <Grid item xs={12}>
@@ -315,7 +320,7 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                 </Grid>
             </Paper>
         </div>
-    )
+    );
 };
 
 export default PlayerDetailsCard;

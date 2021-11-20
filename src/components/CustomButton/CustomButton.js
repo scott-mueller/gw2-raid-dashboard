@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Button } from '@mui/material';
 
 const CustomButton = ({ onClick, disabled = false, children, width = 200 }) => {
 

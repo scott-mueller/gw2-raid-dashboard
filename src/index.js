@@ -7,13 +7,21 @@ import configureStore from './redux/store';
 import * as serviceWorker from './serviceWorker';
 import Routes from './routes';
 
+import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme();
+
 const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Provider store={store}>
-        <Routes />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <Routes />
+          </ThemeProvider>
+        </StyledEngineProvider>
       </Provider>
     </CookiesProvider>
   </React.StrictMode>,

@@ -3,19 +3,19 @@ import { css } from '@emotion/css';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment-timezone';
 
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import styles from './styles';
 
 import { FETCH_ENCOUNTERS_FOR_TIMELINE_DETAILS } from '../../redux/actions';
 
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Chip from '@material-ui/core/Chip';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Chip from '@mui/material/Chip';
 
 import TimelineEncounterSimpleTable from './TimelineEncounterSimpleTable';
 import CustomButton from '../CustomButton/CustomButton';

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     CssBaseline,
     Grid
-} from '@material-ui/core';
+} from '@mui/material';
 
 import HeaderAndSidebarTemplate from '../../components/HeaderAndSidebarTemplate/HeaderAndSidebarTemplate';
 import EncountersTable from '../../components/EncountersTable/EncountersTable';

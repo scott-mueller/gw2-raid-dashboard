@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/css';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@mui/material/Tooltip';
 
 import professionIconMap from '../../utils/professionIconMap';
 import styles from './styles';

@@ -6,7 +6,8 @@ import { css } from '@emotion/css';
 import { useCookies } from 'react-cookie';
 
 // material-ui
-import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
     AppBar,
     Divider,
@@ -21,10 +22,10 @@ import {
     Modal,
     Menu,
     MenuItem
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // internal tools
 import useWindowDimensions from '../../hooks/useWindowDimensions';
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const sidebarTheme = createTheme({
+const sidebarTheme = createTheme(adaptV4Theme({
     breakpoints: {
         values: {
             xs: 0,
@@ -79,7 +80,7 @@ const sidebarTheme = createTheme({
             main: '#F57600'
         }
     }
-});
+}));
 
 const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, children }) => {
     const classes = useStyles();
@@ -146,7 +147,12 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                 <Toolbar />
             ) : (
                 <div className={css({ display: 'flex', justifyContent: 'right', paddingRight: '10px', paddingtop: '10px' })}>
-                    <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setMobileDrawerStatus(false)}>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={() => setMobileDrawerStatus(false)}
+                        size="large">
                         <CloseIcon classes={{root: classes.menuIcon}} fontSize="large"/>
                     </IconButton>
                 </div>
@@ -188,79 +194,86 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
 
     return (
         <div>
-            <ThemeProvider theme={sidebarTheme}>
-                <AppBar classes={{colorPrimary: classes.colorPrimary}}>
-                    <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => handleMenuClick()}>
-                            <MenuIcon classes={{root: classes.menuIcon}} fontSize="large"/>
-                        </IconButton>
-                        <div className={css(width < 700 ? styles.titleTextSmall : styles.titleText)}>{pageTitleText}</div>
-                        {userSession.user?.username ? (
-                            <div className={css({ display: 'flex', alignItems: 'center' })}>
-                                {width > 700 && (
-                                    <div className={css(styles.titleTextSmall)}>{userSession.user.username}</div>
-                                )}
-                                <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
-                                    <AccountCircleIcon classes={{root: classes.menuIcon}} fontSize="large"/>
-                                </IconButton>
-                                <Menu
-                                    open={userMenuOpen}
-                                    anchorEl={anchorEl}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    onClose={() => setAnchorEl(null)}
-                                >
-                                    <MenuItem className={css(styles.listText)} onClick={() => { setAnchorEl(null); handleLogout() }}>Logout</MenuItem>
-                                </Menu>
-                            </div>
-                        ) : (
-                            <>
-                                {width > 700 && (
-                                    <CustomButton onClick={() => setLoginModalOpen(true)}>
-                                        Login / Sign up
-                                    </CustomButton>
-                                )}
-                            </>
-                        )}
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={sidebarTheme}>
+                    <AppBar classes={{colorPrimary: classes.colorPrimary}}>
+                        <Toolbar>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                aria-label="menu"
+                                onClick={() => handleMenuClick()}
+                                size="large">
+                                <MenuIcon classes={{root: classes.menuIcon}} fontSize="large"/>
+                            </IconButton>
+                            <div className={css(width < 700 ? styles.titleTextSmall : styles.titleText)}>{pageTitleText}</div>
+                            {userSession.user?.username ? (
+                                <div className={css({ display: 'flex', alignItems: 'center' })}>
+                                    {width > 700 && (
+                                        <div className={css(styles.titleTextSmall)}>{userSession.user.username}</div>
+                                    )}
+                                    <IconButton onClick={(event) => setAnchorEl(event.currentTarget)} size="large">
+                                        <AccountCircleIcon classes={{root: classes.menuIcon}} fontSize="large"/>
+                                    </IconButton>
+                                    <Menu
+                                        open={userMenuOpen}
+                                        anchorEl={anchorEl}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        onClose={() => setAnchorEl(null)}
+                                    >
+                                        <MenuItem className={css(styles.listText)} onClick={() => { setAnchorEl(null); handleLogout() }}>Logout</MenuItem>
+                                    </Menu>
+                                </div>
+                            ) : (
+                                <>
+                                    {width > 700 && (
+                                        <CustomButton onClick={() => setLoginModalOpen(true)}>
+                                            Login / Sign up
+                                        </CustomButton>
+                                    )}
+                                </>
+                            )}
 
-                    </Toolbar>
-                </AppBar>
-                <Modal
-                    open={loginModalOpen}
-                    className={css({ overflow: 'auto', height: '100%' })}
-                    onClose={() => setLoginModalOpen(false)}
-                >
-                    <LoginSignup internalOnClose={() => setLoginModalOpen(false)}/>
-                </Modal>
-                <Hidden smUp implementation="css">
-                    <Drawer
-                        container={container}
-                        variant="temporary"
-                        anchor={'left'}
-                        open={mobileDrawerStatus}
-                        classes={{ paper: classes.drawerPaper }}
-                        ModalProps={{ keepMounted: true }}
+                        </Toolbar>
+                    </AppBar>
+                    <Modal
+                        open={loginModalOpen}
+                        className={css({ overflow: 'auto', height: '100%' })}
+                        onClose={() => setLoginModalOpen(false)}
                     >
-                        {drawerContent}
-                    </Drawer>
-                </Hidden>
-                <Hidden xsDown implementation="css">
-                    <Drawer
-                        classes={{ paper: classes.drawerPaper }}
-                        variant="persistent"
-                        open={drawerStatus}
-                    >
-                        {drawerContent}
-                    </Drawer>
-                </Hidden>
-            </ThemeProvider>
+                        <LoginSignup internalOnClose={() => setLoginModalOpen(false)}/>
+                    </Modal>
+                    <Hidden smUp implementation="css">
+                        <Drawer
+                            container={container}
+                            variant="temporary"
+                            anchor={'left'}
+                            open={mobileDrawerStatus}
+                            classes={{ paper: classes.drawerPaper }}
+                            ModalProps={{ keepMounted: true }}
+                        >
+                            {drawerContent}
+                        </Drawer>
+                    </Hidden>
+                    <Hidden smDown implementation="css">
+                        <Drawer
+                            classes={{ paper: classes.drawerPaper }}
+                            variant="persistent"
+                            open={drawerStatus}
+                        >
+                            {drawerContent}
+                        </Drawer>
+                    </Hidden>
+                </ThemeProvider>
+            </StyledEngineProvider>
             <main
                 id={'mainContainer'} 
                 className={
@@ -280,7 +293,7 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                 </div>
             </main>
         </div>
-    )
+    );
 };
 
 export default GlobalHeaderAndSidebar;
