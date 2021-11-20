@@ -165,7 +165,7 @@ const TimelineDetails = ({ boss, resetOnClick }) => {
 
                     </Grid>
                     <Grid item xs={12}>
-                        <div className={css({textAlign: 'right', paddingRight: '10px'})}>
+                        <div className={css({textAlign: 'right', paddingRight: '10px', paddingBottom: '12px'})}>
                             <CustomButton onClick={resetOnClick}>Close</CustomButton>
                         </div>
                     </Grid>

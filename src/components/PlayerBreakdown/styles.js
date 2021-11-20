@@ -13,10 +13,6 @@ const styles = {
         textDecoration: 'underline',
         paddingLeft: '10px'
     },
-    tabContainer: {
-        display: 'flex',
-        justifyContent: 'center'
-    },
     playerDetailsOuterContainer: {
         display: 'flex',
         justifyContent: 'center',

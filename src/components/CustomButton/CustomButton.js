@@ -14,15 +14,12 @@ const CustomButton = ({ onClick, disabled = false, children, width = 200 }) => {
             },
             '&:hover': {
                 background: '#E06C00'
-            }
-        },
-        label: {
+            },
             fontFamily: 'Oxanium',
             fontWeight: '700',
             fontSize: '1.2em',
-            display: 'flex',
-            alignItems: 'center'
-          },
+            color: 'black'
+        },
         disabled: {},
     }));
 
@@ -31,8 +28,7 @@ const CustomButton = ({ onClick, disabled = false, children, width = 200 }) => {
     return (
         <Button
             classes={{
-                root: classes.root, 
-                label: classes.label,
+                root: classes.root,
                 disabled: classes.disabled,
             }}
             onClick={onClick}

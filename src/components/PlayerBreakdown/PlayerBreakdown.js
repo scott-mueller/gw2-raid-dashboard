@@ -2,6 +2,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 
+import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import Paper from '@mui/material/Paper';
 
@@ -11,6 +12,7 @@ import Tab from '@mui/material/Tab';
 import OffensiveTable from './OffensiveTable/OffensiveTable';
 import SupportTable from './SupportTable/SupportTable';
 import PlayerDetailsCard from './PlayerDetailsCard';
+import RoleIcon from '../RoleIcon/RoleIcon';
 import { formatDPS, sortProfessionAggrigatesByFrequency } from '../../utils';
 import styles from './styles';
 
@@ -22,8 +24,15 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Oxanium',
         fontSize: '1em',
         fontWeight: '700',
-        color: '#F57600',
-        background: 'black'
+        minHeight: '40px'
+    }
+}));
+
+const tabsTheme = createTheme(adaptV4Theme({
+    palette: {
+        secondary: {
+            main: '#F57600'
+        }
     }
 }));
 
@@ -85,12 +94,20 @@ const PlayerBreakdown = forwardRef(({ collectorId, setSelectedPlayer, selectedPl
     return (
         <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
             <div className={css(styles.text)}>Player Breakdown Table</div>
-            <div className={css(styles.tabContainer)}>
-                <Tabs value={currentTab} onChange={(e, newVal) => setCurrentTab(newVal)}>
-                    <Tab classes={{root: classes.tabRoot}} label="Damage Stats"/>
-                    <Tab classes={{root: classes.tabRoot}} label="Support Stats"/>
-                </Tabs>
-            </div>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={tabsTheme}>
+                    <Tabs
+                        centered
+                        value={currentTab}
+                        onChange={(e, newVal) => setCurrentTab(newVal)}
+                        textColor="secondary"
+                        indicatorColor="secondary"
+                    >
+                        <Tab icon={<div className={css({ paddingRight: '5px' })}><RoleIcon boon={'power-dps'} size={20}/></div>} iconPosition="start" classes={{root: classes.tabRoot}} label="Damage Stats"/>
+                        <Tab icon={<div className={css({ paddingRight: '5px' })}><RoleIcon boon={'healer'} size={20}/></div>} iconPosition="start" classes={{root: classes.tabRoot}} label="Support Stats"/>
+                    </Tabs>
+                </ThemeProvider>
+            </StyledEngineProvider>
             {currentTab === 0 && (
                 <OffensiveTable tableData={tableData} setSelectedPlayer={setSelectedPlayer}/>
             )}

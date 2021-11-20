@@ -64,6 +64,7 @@ const styles = {
     tabRoot: {
         fontFamily: 'Oxanium',
         fontWeight: '700',
+        width: '160px'
     }
 };
 

@@ -39,6 +39,9 @@ const LoginSignup = ({ internalOnClose }) => {
                 value={tabValue}
                 onChange={(e, newValue) => handleTabChange(newValue)}
                 centered
+                variant={width < 700 ? 'fullWidth' : ''}
+                textColor="secondary"
+                indicatorColor="secondary"
             >
                 <Tab classes={{root: classes.tabRoot}} label={'Login'} />
                 <Tab classes={{root: classes.tabRoot}} label={'Sign Up'} />
