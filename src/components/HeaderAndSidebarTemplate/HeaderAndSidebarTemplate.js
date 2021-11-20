@@ -130,6 +130,7 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
 
     const handleLogout = () => {
         removeCookie('session');
+        history.push('/');
         dispatch({
             type: SIGN_OUT, 
             payload: {
@@ -168,20 +169,16 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                     <ListItem button onClick={() => history.push('/')} classes={{ gutters: classes.gutters }}>
                         <ListItemText primary="Home" classes={{ primary: classes.listText }}/>
                     </ListItem>
-
-                    <ListItem button onClick={() => setCookie('test', '12345')} classes={{ gutters: classes.gutters }}>
-                        <ListItemText primary="Cookie test add" classes={{ primary: classes.listText }}/>
-                    </ListItem>
-                    <ListItem button onClick={() => removeCookie('test')} classes={{ gutters: classes.gutters }}>
-                        <ListItemText primary="Cookie test remove" classes={{ primary: classes.listText }}/>
-                    </ListItem>
-
-                    <ListItem button onClick={() => history.push('/encounters')} classes={{ gutters: classes.gutters }}>
-                        <ListItemText primary="Encounters" classes={{ primary: classes.listText }}/>
-                    </ListItem>
-                    <ListItem button onClick={() => history.push('/collector-list')} classes={{ gutters: classes.gutters }}>
-                        <ListItemText primary="Collector List" classes={{ primary: classes.listText }}/>
-                    </ListItem>
+                    {userSession.user?._id && (
+                        <div>
+                            <ListItem button onClick={() => history.push('/encounters')} classes={{ gutters: classes.gutters }}>
+                                <ListItemText primary="Encounters" classes={{ primary: classes.listText }}/>
+                            </ListItem>
+                            <ListItem button onClick={() => history.push('/collector-list')} classes={{ gutters: classes.gutters }}>
+                                <ListItemText primary="Collector List" classes={{ primary: classes.listText }}/>
+                            </ListItem>
+                        </div>
+                    )}
                 </List>
                 <Divider />
                 {pageDrawerContent}

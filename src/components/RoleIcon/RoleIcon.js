@@ -26,7 +26,7 @@ const BoonIcon = ({ boon, size = 20 }) => {
     return(
         <Tooltip title={tooltipText()} placement={'top'} arrow>
             <img 
-                src={roleIconMap[boon.toLowerCase()]} 
+                src={roleIconMap[boon.toLowerCase().split(' ').join('-')]} 
                 alt={boonNameFormatted} 
                 width={size} 
                 height={size}

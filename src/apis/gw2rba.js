@@ -183,3 +183,13 @@ export const verifyApiKey = async ({accountName, apiKey}) => {
     const verified = await mongoSession.user.functions.verifyApiKey(accountName, apiKey);
     return verified;
 }
+
+export const getEncountersByAccountName = async (accountName) => {
+
+    if (!mongoSession.user || !mongoSession.db) {
+        await login();
+    }
+
+    const encounters = await mongoSession.db.collection('encounters').find({ accountNames: accountName });
+    return encounters;
+};

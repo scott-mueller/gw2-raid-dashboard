@@ -8,7 +8,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 import styles from './styles';
 
-const BossTableHead = ({ order, orderBy, onRequestSort }) => {
+const EncountersTableHead = ({ order, orderBy, onRequestSort }) => {
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
     };
@@ -16,11 +16,13 @@ const BossTableHead = ({ order, orderBy, onRequestSort }) => {
     const headCells = [
         { id: 'icon', disablePadding: true, label: ''},
         { id: 'bossName', numeric: false, disablePadding: true, label: 'Boss Name' },
-        { id: 'successRate', numeric: true, disablePadding: false, label: 'Success Rate' },
-        { id: 'avgBossDps', numeric: true, disablePadding: false, label: 'Avg Boss Dps' },
-        { id: 'avgCleaveDps', numeric: true, disablePadding: false, label: 'Avg Cleave Dps' },
-        { id: 'downs', numeric: true, disablePadding: false, label: 'Downs' },
-        { id: 'deaths', numeric: true, disablePadding: false, label: 'Deaths' },
+        { id: 'successFail', numeric: true, disablePadding: false, label: 'Success / Fail' },
+        { id: 'profession', numeric: true, disablePadding: false, label: 'Profession' },
+        { id: 'roles', numeric: true, disablePadding: false, label: 'Roles' },
+        { id: 'targetDps', numeric: true, disablePadding: false, label: 'Target DPS' },
+        { id: 'cleaveDps', numeric: true, disablePadding: false, label: 'Cleave DPS' },
+        { id: 'duration', numeric: true, disablePadding: false, label: 'Duration' },
+        { id: 'timeStart', numeric: true, disablePadding: false, label: 'Start Time' },
     ];
   
     return (
@@ -55,4 +57,4 @@ const BossTableHead = ({ order, orderBy, onRequestSort }) => {
     );
 }
 
-export default BossTableHead;
+export default EncountersTableHead;

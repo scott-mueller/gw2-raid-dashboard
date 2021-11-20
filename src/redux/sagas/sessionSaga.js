@@ -11,7 +11,8 @@ import {
     FETCH_USER_BY_SESSION_TOKEN,
     FETCH_USER_BY_SESSION_TOKEN_RESPONSE,
     VERIFY_API_KEY,
-    VERIFY_API_KEY_RESPONSE, 
+    VERIFY_API_KEY_RESPONSE,
+    CLEAR_ENCOUNTERS_LIST
 } from '../actions';
 
 const signUp = function*(action) {
@@ -48,6 +49,7 @@ const signIn = function*(action) {
 
 const signOut = function*(action) {
     yield call(removeSessionToken, action.payload);
+    yield put({type: CLEAR_ENCOUNTERS_LIST})
 };
 
 const fetchBySessionToken = function*(action) {
