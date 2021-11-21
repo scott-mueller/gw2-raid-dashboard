@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Paper, TableContainer, Table, TableBody, TableRow, TableCell, TablePagination, Chip } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Paper, TableContainer, Table, TableBody, TableRow, TableCell, TablePagination, Chip } from '@mui/material';
 
 import EncountersTableHead from './EncountersTableHead';
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';

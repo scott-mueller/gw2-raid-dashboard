@@ -4,11 +4,7 @@ const styles = {
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
-    },
-    paperRootOverrides: {
-        backgroundColor: '#f0f6ff'
-    },
-    fixedHeight: {
+        background: '#E6EEF0',
         height: 205,
     },
     cardText: {
@@ -21,16 +17,6 @@ const styles = {
         fontWeight: 200,
         fontSize: '2.2em',
         textDecoration: 'underline'
-    },
-    titleGrid: {
-        paddingBottom: 0
-    },
-    contentGrid: {
-        paddingTop: 0,
-        paddingBottom: 0
-    },
-    subheadingGrid: {
-        paddingTop: 0
     },
     cardContent: {
         display: 'block',

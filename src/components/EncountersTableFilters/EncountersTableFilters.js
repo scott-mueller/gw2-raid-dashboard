@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ButtonGroup, Paper, Button } from '@material-ui/core';
+import { ButtonGroup, Paper, Button } from '@mui/material';
 
 const EncountersTableFilters = () => {
 

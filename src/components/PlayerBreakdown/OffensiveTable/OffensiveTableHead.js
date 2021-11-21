@@ -1,23 +1,16 @@
 import React from 'react';
-import { css } from '@emotion/css';
 
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box } from '@mui/system';
+import {
+	TableHead,
+	TableCell,
+	TableRow,
+	TableSortLabel
+} from '@mui/material'
 
 import styles from '../styles';
 
-const useStyles = makeStyles((theme) => ({
-  tableItem: styles.tableItem,
-  firstTableItem: styles.firstTableItem,
-  lastTableItem: styles.lastTableItem,
-  professionIcons: styles.professionIcons,
-}));
-
 const OffensiveTableHead = ({ order, orderBy, onRequestSort }) => {
-    const classes = useStyles();
 
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
@@ -26,15 +19,15 @@ const OffensiveTableHead = ({ order, orderBy, onRequestSort }) => {
     const getTableHeadClass = (headCell) => {
 
       if (headCell.type === 'firstCell') {
-        return classes.firstTableItem;
+        return styles.firstTableItem;
       }
       if (headCell.type === 'lastCell') {
-        return classes.lastTableItem;
+        return styles.lastTableItem;
       }
       if (headCell.type === 'profession') {
-        return classes.professionIcons
+        return styles.professionIcons
       }
-      return classes.tableItem
+      return styles.tableItem
     }
   
     const headCells = [
@@ -53,7 +46,7 @@ const OffensiveTableHead = ({ order, orderBy, onRequestSort }) => {
         <TableRow>
           {headCells.map((headCell) => (
             <TableCell
-              classes={{root: getTableHeadClass(headCell)}}
+              sx={getTableHeadClass(headCell)}
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
               padding={headCell.disablePadding ? 'none' : 'normal'}
@@ -61,16 +54,16 @@ const OffensiveTableHead = ({ order, orderBy, onRequestSort }) => {
             >
                 {headCell.label !== '' && (
                     <TableSortLabel
-                        className={css(styles.tablelHeadLabel)}
+                        sx={styles.tablelHeadLabel}
                         active={orderBy === headCell.id}
                         direction={orderBy === headCell.id ? order : 'desc'}
                         onClick={createSortHandler(headCell.id)}
                     >
                         {headCell.label}
                         {orderBy === headCell.id ? (
-                            <span className={css(styles.visuallyHidden)}>
-                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                            </span>
+                            <Box component={'span'} sx={styles.visuallyHidden}>
+                              {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                            </Box>
                         ) : null}
                     </TableSortLabel>
                 )}

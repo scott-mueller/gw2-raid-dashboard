@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment-timezone';
-import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import { Box } from '@mui/system';
+import Paper from '@mui/material/Paper';
 
 import { formatDPS } from '../../utils';
 import styles from './styles';
@@ -29,15 +28,8 @@ Number.prototype.formatMsToString = function () {
     //return m.padStart(2, '0') + 'm ' + s.padStart(2, '0') + 's ' + ms.padStart(3, '0') + 'ms';
 };
 
-const useStyles = makeStyles({
-    root: {
-      background: '#E6EEF0',
-    }
-  });
-
 const OverviewStatsCard = ({ variant }) => {
     const stats = useSelector((state) => state?.collectorStats?.stats?.stats);
-    const classes = useStyles();
     
     if (!stats) {
         return (<div></div>)
@@ -47,39 +39,39 @@ const OverviewStatsCard = ({ variant }) => {
     switch (variant) {
         case 'successRate': {
             return (
-                <Paper classes={{ root: classes.root}}className={css(styles.paper, styles.fixedHeight)}>
-                    <div className={css(styles.cardText, styles.cardTitle)}>
+                <Paper sx={styles.paper}>
+                    <Box sx={{...styles.cardText, ...styles.cardTitle}}>
                         Success Rate
-                    </div>
-                    <div className={css(styles.cardText, styles.cardContent)}>
+                    </Box>
+                    <Box sx={{...styles.cardText, ...styles.cardContent}}>
                         {`${((stats.successCount / stats.logCount) * 100).toFixed(0)}%`}
-                    </div>
-                    <div className={css(styles.cardText, styles.cardSubheading)}>{`${stats.successCount} of ${stats.logCount} Logs`}</div>
+                    </Box>
+                    <Box sx={{...styles.cardText, ...styles.cardSubheading}}>{`${stats.successCount} of ${stats.logCount} Logs`}</Box>
                 </Paper>
             )
         }
         case 'avgBossDps': {
             return (
-                <Paper classes={{ root: classes.root}}className={css(styles.paper, styles.fixedHeight)}>
-                    <div className={css(styles.cardText, styles.cardTitle)}>Avg Boss Dps</div>
-                    <div className={css(styles.cardText, styles.cardContent, styles.dps)}>{`${formatDPS((stats.totalBossDps / stats.logCount).toFixed(0))}`}</div>
+                <Paper sx={styles.paper}>
+                    <Box sx={{...styles.cardText, ...styles.cardTitle}}>Avg Boss Dps</Box>
+                    <Box sx={{...styles.cardText, ...styles.cardContent, ...styles.dps}}>{`${formatDPS((stats.totalBossDps / stats.logCount).toFixed(0))}`}</Box>
                 </Paper>
             );
         }
         case 'avgCleaveDps': {
             return (
-                <Paper classes={{ root: classes.root}}className={css(styles.paper, styles.fixedHeight)}>
-                    <div className={css(styles.cardText, styles.cardTitle)}>Avg Cleave Dps</div>
-                    <div className={css(styles.cardText, styles.cardContent, styles.dps)}>{`${formatDPS((stats.totalCleaveDps / stats.logCount).toFixed(0))}`}</div>
+                <Paper sx={styles.paper}>
+                    <Box sx={{...styles.cardText, ...styles.cardTitle}}>Avg Cleave Dps</Box>
+                    <Box sx={{...styles.cardText, ...styles.cardContent, ...styles.dps}}>{`${formatDPS((stats.totalCleaveDps / stats.logCount).toFixed(0))}`}</Box>
                 </Paper>
             );
         }
         case 'encounterTime': {
             return (
-                <Paper classes={{ root: classes.root}}className={css(styles.paper, styles.fixedHeight)}>
-                    <div className={css(styles.cardText, styles.cardTitle)}>Time in Combat</div>
-                    <div className={css(styles.cardText, styles.cardContent, styles.combatTime)}>{stats.combatTime.formatMsToString()}</div>
-                    <div className={css(styles.cardText, styles.cardSubheading)}>{`${moment(stats.lastEncounterEnd).diff(stats.firstEncounterStart).formatMsToString()} Total Elapsed Time`}</div>
+                <Paper sx={styles.paper}>
+                    <Box sx={{...styles.cardText, ...styles.cardTitle}}>Time in Combat</Box>
+                    <Box sx={{...styles.cardText, ...styles.cardContent, ...styles.combatTime}}>{stats.combatTime.formatMsToString()}</Box>
+                    <Box sx={{...styles.cardText, ...styles.cardSubheading}}>{`${moment(stats.lastEncounterEnd).diff(stats.firstEncounterStart).formatMsToString()} Total Elapsed Time`}</Box>
                 </Paper>
             )
         }

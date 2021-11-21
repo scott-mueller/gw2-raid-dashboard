@@ -2,11 +2,12 @@
 import React, { useEffect, useState, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { css } from '@emotion/css';
 import { useCookies } from 'react-cookie';
 
 // material-ui
-import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider, adaptV4Theme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import { Box } from '@mui/system';
 import {
     AppBar,
     Divider,
@@ -21,10 +22,10 @@ import {
     Modal,
     Menu,
     MenuItem
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // internal tools
 import useWindowDimensions from '../../hooks/useWindowDimensions';
@@ -35,7 +36,6 @@ import CustomButton from '../CustomButton/CustomButton';
 import Footer from './Footer';
 
 const useStyles = makeStyles((theme) => ({
-    ...styles,
     content: {
         flexGrow: 1,
         display: 'flex',
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const sidebarTheme = createTheme({
+const sidebarTheme = createTheme(adaptV4Theme({
     breakpoints: {
         values: {
             xs: 0,
@@ -79,9 +79,9 @@ const sidebarTheme = createTheme({
             main: '#F57600'
         }
     }
-});
+}));
 
-const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, children }) => {
+const HeaderAndSidebarTemplate = ({ window, pageDrawerContent, pageTitleText, children }) => {
     const classes = useStyles();
     const { width } = useWindowDimensions();
     const history = useHistory();
@@ -145,63 +145,78 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
             {width > 700 ? (
                 <Toolbar />
             ) : (
-                <div className={css({ display: 'flex', justifyContent: 'right', paddingRight: '10px', paddingtop: '10px' })}>
-                    <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setMobileDrawerStatus(false)}>
-                        <CloseIcon classes={{root: classes.menuIcon}} fontSize="large"/>
+                <Box sx={{ display: 'flex', justifyContent: 'right', paddingRight: '10px', paddingtop: '10px' }}>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={() => setMobileDrawerStatus(false)}
+                        size="large">
+                        <CloseIcon sx={styles.menuIcon} fontSize="large"/>
                     </IconButton>
-                </div>
+                </Box>
             )}
 
-            <div className={classes.drawerContainer}>
+            <Box sx={styles.drawerContainer}>
 
                 <List
                     component="nav"
                     aria-labelledby="nested-list-subheader"
-                    className={classes.root}
+                    sx={styles.root}
                 >
                     {width < 700 && !userSession.user?.username && (
-                        <ListItem button  onClick={() => setMobileDrawerStatus(false)} classes={{ root: classes.mobileLoginListItem, gutters: classes.gutters }}>
+                        <ListItem button  onClick={() => setMobileDrawerStatus(false)} sx={styles.mobileLoginListItem}>
                             <CustomButton onClick={() => setLoginModalOpen(true)}>
                                 Login / Sign up
                             </CustomButton>
                         </ListItem>
                     )}
-                    <ListItem button onClick={() => history.push('/')} classes={{ gutters: classes.gutters }}>
-                        <ListItemText primary="Home" classes={{ primary: classes.listText }}/>
+                    <ListItem button onClick={() => history.push('/')} sx={styles.gutters}>
+                        <ListItemText primary="Home" sx={styles.listText}/>
                     </ListItem>
                     {userSession.user?._id && (
                         <div>
-                            <ListItem button onClick={() => history.push('/encounters')} classes={{ gutters: classes.gutters }}>
-                                <ListItemText primary="Encounters" classes={{ primary: classes.listText }}/>
+                            <ListItem button onClick={() => history.push('/encounters')} sx={styles.gutters}>
+                                <ListItemText primary="Encounters" sx={styles.listText}/>
                             </ListItem>
-                            <ListItem button onClick={() => history.push('/collector-list')} classes={{ gutters: classes.gutters }}>
-                                <ListItemText primary="Collector List" classes={{ primary: classes.listText }}/>
+                            <ListItem button onClick={() => history.push('/collector-list')} sx={styles.gutters}>
+                                <ListItemText primary="Collector List" sx={styles.listText}/>
                             </ListItem>
                         </div>
                     )}
                 </List>
                 <Divider />
                 {pageDrawerContent}
-            </div>
+            </Box>
         </div>
     );
 
     return (
         <div>
             <ThemeProvider theme={sidebarTheme}>
-                <AppBar classes={{colorPrimary: classes.colorPrimary}}>
+                <AppBar sx={styles.colorPrimary}>
                     <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => handleMenuClick()}>
-                            <MenuIcon classes={{root: classes.menuIcon}} fontSize="large"/>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            onClick={() => handleMenuClick()}
+                            size="large">
+                            <MenuIcon sx={styles.menuIcon} fontSize="large"/>
                         </IconButton>
-                        <div className={css(width < 700 ? styles.titleTextSmall : styles.titleText)}>{pageTitleText}</div>
+                        <Box sx={width < 700
+                            ? styles.titleTextSmall
+                            : styles.titleText
+                        }>
+                            {pageTitleText}
+                        </Box>
                         {userSession.user?.username ? (
-                            <div className={css({ display: 'flex', alignItems: 'center' })}>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 {width > 700 && (
-                                    <div className={css(styles.titleTextSmall)}>{userSession.user.username}</div>
+                                    <Box sx={styles.titleTextSmall}>{userSession.user.username}</Box>
                                 )}
-                                <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
-                                    <AccountCircleIcon classes={{root: classes.menuIcon}} fontSize="large"/>
+                                <IconButton onClick={(event) => setAnchorEl(event.currentTarget)} size="large">
+                                    <AccountCircleIcon sx={styles.menuIcon} fontSize="large"/>
                                 </IconButton>
                                 <Menu
                                     open={userMenuOpen}
@@ -217,9 +232,9 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                                     }}
                                     onClose={() => setAnchorEl(null)}
                                 >
-                                    <MenuItem className={css(styles.listText)} onClick={() => { setAnchorEl(null); handleLogout() }}>Logout</MenuItem>
+                                    <MenuItem sx={styles.listText} onClick={() => { setAnchorEl(null); handleLogout() }}>Logout</MenuItem>
                                 </Menu>
-                            </div>
+                            </Box>
                         ) : (
                             <>
                                 {width > 700 && (
@@ -234,7 +249,7 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                 </AppBar>
                 <Modal
                     open={loginModalOpen}
-                    className={css({ overflow: 'auto', height: '100%' })}
+                    sx={{ overflow: 'auto', height: '100%' }}
                     onClose={() => setLoginModalOpen(false)}
                 >
                     <LoginSignup internalOnClose={() => setLoginModalOpen(false)}/>
@@ -245,15 +260,15 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                         variant="temporary"
                         anchor={'left'}
                         open={mobileDrawerStatus}
-                        classes={{ paper: classes.drawerPaper }}
+                        sx={styles.drawer}
                         ModalProps={{ keepMounted: true }}
                     >
                         {drawerContent}
                     </Drawer>
                 </Hidden>
-                <Hidden xsDown implementation="css">
+                <Hidden smDown implementation="css">
                     <Drawer
-                        classes={{ paper: classes.drawerPaper }}
+                        sx={styles.drawer}
                         variant="persistent"
                         open={drawerStatus}
                     >
@@ -269,18 +284,18 @@ const GlobalHeaderAndSidebar = ({ window, pageDrawerContent, pageTitleText, chil
                         : drawerStatus ? classes.content : classes.contentDrawerClosed
                 }
             >
-                <div id={'content'} className={css({ flex: '1 0 auto', paddingBottom: '10px' })}>
-                    <div className={css(styles.appBarSpacer)} />
-                            <Container maxWidth="lg" classes={{ maxWidthLg: classes.containerLg }} className={css(styles.container)}>
+                <Box id={'content'} sx={{ flex: '1 0 auto', paddingBottom: '10px' }}>
+                    <Box sx={styles.appBarSpacer} />
+                            <Container maxWidth="lg" sx={styles.container}>
                                 {children}
                             </Container>
-                </div>
-                <div id={'footer'} className={css({ flexShrink: 0 })}>
+                </Box>
+                <Box id={'footer'} sx={{ flexShrink: 0 }}>
                     <Footer />
-                </div>
+                </Box>
             </main>
         </div>
-    )
+    );
 };
 
-export default GlobalHeaderAndSidebar;
+export default HeaderAndSidebarTemplate;

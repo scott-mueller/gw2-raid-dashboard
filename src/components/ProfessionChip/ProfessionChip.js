@@ -1,17 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Chip } from '@material-ui/core';
+import { Box } from '@mui/system';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Chip } from '@mui/material';
 
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
 import { APPLY_PROFESSION_FILTER } from '../../redux/actions/index';
 import styles from './styles';
-
-
 
 const chipColor = (profession) => {
 
@@ -80,14 +77,7 @@ const chipColor = (profession) => {
     }
 };
 
-const useStyles = makeStyles((theme) => ({
-    chipRoot: {
-        fontFamily: 'Oxanium',
-    }
-}));
-
 const ProfessionChip = ({ profession, variant, disabled }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const chipTheme = createTheme({
@@ -101,8 +91,12 @@ const ProfessionChip = ({ profession, variant, disabled }) => {
     return (
         <ThemeProvider theme={chipTheme}>
             <Chip
-                classes={{root: classes.chipRoot}}
-                icon={<div className={css(styles.iconStyle)}><ProfessionIcon professionName={profession} size={25}/></div>}
+                sx={styles.chipRoot}
+                icon={
+                    <Box sx={styles.iconStyle}>
+                        <ProfessionIcon professionName={profession} size={25}/>
+                    </Box>
+                }
                 label={profession}
                 color={'primary'}
                 onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
@@ -110,7 +104,7 @@ const ProfessionChip = ({ profession, variant, disabled }) => {
                 variant={variant}
             />
         </ThemeProvider>
-    )
+    );
 };
 
 export default ProfessionChip

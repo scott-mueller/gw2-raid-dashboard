@@ -1,32 +1,22 @@
 import React, { useState } from 'react';
-import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import { Box } from '@mui/system';
+import {
+    Table,
+    TableBody,
+    TableHead,
+    TableCell,
+    TableContainer,
+    TableRow,
+    TableSortLabel
+} from '@mui/material';
 
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
 import { getComparator, stableSort, formatDPS } from '../../utils';
 import styles from './styles';
 
-const useStyles = makeStyles((theme) => ({
-    tableItem: styles.tableItem,
-    alternatingColor: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: '#E6EEF0',
-        },
-    }
-}));
-
 const TimelineEncounterSimpleTable = ({ players = [] }) => {
-    const classes = useStyles();
-
     const [order, setOrder] = useState('desc');
     const [orderBy, setOrderBy] = useState('bossDps');
 
@@ -74,11 +64,11 @@ const TimelineEncounterSimpleTable = ({ players = [] }) => {
                     <TableRow>
                         {headCells.map((headCell) => (
                             <TableCell
-                            classes={{root: classes.tableItem}}
-                            key={headCell.id}
-                            align={headCell.numeric ? 'right' : 'left'}
-                            padding={headCell.disablePadding ? 'none' : 'normal'}
-                            sortDirection={orderBy === headCell.id ? order : false}
+                                sx={styles.tableItem}
+                                key={headCell.id}
+                                align={headCell.numeric ? 'right' : 'left'}
+                                padding={headCell.disablePadding ? 'none' : 'normal'}
+                                sortDirection={orderBy === headCell.id ? order : false}
                             >
                             {headCell.id !== 'icon' && (
                                 <TableSortLabel
@@ -88,9 +78,9 @@ const TimelineEncounterSimpleTable = ({ players = [] }) => {
                                 >
                                     {headCell.label}
                                     {orderBy === headCell.id ? (
-                                    <span className={css(styles.visuallyHidden)}>
+                                    <Box component={'span'} sx={styles.visuallyHidden}>
                                         {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                    </span>
+                                    </Box>
                                     ) : null}
                                 </TableSortLabel>
                             )}
@@ -101,19 +91,19 @@ const TimelineEncounterSimpleTable = ({ players = [] }) => {
                 <TableBody>
                     {stableSort(tableData, getComparator(order, orderBy))
                         .map((row, index) => (
-                            <TableRow classes={{root: classes.alternatingColor}} key={row.name}>
-                                <TableCell classes={{root: classes.tableItem}} component="th" scope="row">
+                            <TableRow sx={styles.alternatingColor} key={row.name}>
+                                <TableCell sx={styles.tableItem} component="th" scope="row">
                                     {row.name}
                                 </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">
-                                    <div className={css({display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
+                                <TableCell sx={styles.tableItem} align="right">
+                                    <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                         <ProfessionIcon professionName={row.profession.toLowerCase()} size={20}/>
-                                    </div>
+                                    </Box>
                                 </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.bossDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.cleaveDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.revives}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.bossDps.displayVal}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.cleaveDps.displayVal}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.downs}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.revives}</TableCell>
                             </TableRow>
                         ))}
                 </TableBody>

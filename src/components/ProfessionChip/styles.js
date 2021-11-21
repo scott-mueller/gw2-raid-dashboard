@@ -4,6 +4,9 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    chipRoot: {
+        fontFamily: 'Oxanium',
     }
 };
 

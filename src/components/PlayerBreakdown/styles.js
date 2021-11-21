@@ -1,10 +1,15 @@
+import { globalStyles } from "../../globalStyles";
+
 const styles = {
+    ...globalStyles,
+
     //PlayerBreakdown
     paper: {
         padding: '12px',
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
+        background: '#E6EEF0',
     },
     text: {
         fontFamily: 'Oxanium',
@@ -13,9 +18,11 @@ const styles = {
         textDecoration: 'underline',
         paddingLeft: '10px'
     },
-    tabContainer: {
-        display: 'flex',
-        justifyContent: 'center'
+    tabRoot: {
+        fontFamily: 'Oxanium',
+        fontSize: '1em',
+        fontWeight: '700',
+        minHeight: '40px'
     },
     playerDetailsOuterContainer: {
         display: 'flex',
@@ -80,21 +87,22 @@ const styles = {
         alignItems: 'center',
         width: '125px'
     },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
+    alternatingColor: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: 'white',
+        },
+        '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            cursor: 'pointer'
+        }
     },
 
     //PlayerDetailsCard
     playerDetailsContainer: {
         width: '85%',
+    },
+    gridContainer: {
+        padding: '16px'
     },
     detailsTitle: {
         fontFamily: 'Oxanium',

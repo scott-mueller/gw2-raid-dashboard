@@ -1,12 +1,11 @@
 // node_modules
 import React, { useEffect, useState, useRef } from 'react';
-import { css } from '@emotion/css';
 import queryString from 'query-string'
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
-import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Box } from '@mui/system';
 import {
     CssBaseline,
     Grid,
@@ -15,7 +14,7 @@ import {
     ListItemText,
     ListItemIcon,
     Collapse
-} from '@material-ui/core';
+} from '@mui/material';
 
 // internal components
 import ProfessionIcon from '../../components/ProfessionIcon/ProfessionIcon';
@@ -30,23 +29,7 @@ import { FETCH_COLLECTOR_DATA } from '../../redux/actions';
 import styles from './styles';
 import { sortProfessionAggrigatesByFrequency } from '../../utils';
 
-const useStyles = makeStyles(() => ({ ...styles }));
-
-const collectorTheme = createTheme({
-    breakpoints: {
-        values: {
-            xs: 0,
-            sm: 600,
-            md: 960,
-            lg: 1520,
-            xl: 1920,
-        }
-    },
-});
-
 const Collector = () => {
-    const classes = useStyles();
-
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const { search } = useLocation();
     const dispatch = useDispatch();
@@ -75,23 +58,23 @@ const Collector = () => {
 
     const drawerContent = (
         <div>
-            <div className={css(styles.drawerHeading)}>{`Collector: ${collector?._id}`}</div>
+            <Box sx={styles.drawerHeading}>{`Collector: ${collector?._id}`}</Box>
             <List
                 component="nav"
                 aria-labelledby="nested-list-subheader"
-                className={classes.root}
+                sx={styles.root}
             >
-                <ListItem button onClick={() => overviewRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
-                    <ListItemText primary="Overview" classes={{ primary: classes.listText }}/>
+                <ListItem button onClick={() => overviewRef.current.scrollIntoView({ behavior: 'smooth' })} sx={styles.gutters}>
+                    <ListItemText primary="Overview" sx={styles.listText}/>
                 </ListItem>
-                <ListItem button onClick={() => timelineRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
-                    <ListItemText primary="Timeline" classes={{ primary: classes.listText }}/>
+                <ListItem button onClick={() => timelineRef.current.scrollIntoView({ behavior: 'smooth' })} sx={styles.gutters}>
+                    <ListItemText primary="Timeline" sx={styles.listText}/>
                 </ListItem>
-                <ListItem button onClick={() => bossTableRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
-                    <ListItemText primary="Boss Table" classes={{ primary: classes.listText }}/>
+                <ListItem button onClick={() => bossTableRef.current.scrollIntoView({ behavior: 'smooth' })} sx={styles.gutters}>
+                    <ListItemText primary="Boss Table" sx={styles.listText}/>
                 </ListItem>
-                <ListItem button onClick={() => playerBreakddownRef.current.scrollIntoView({ behavior: 'smooth' })} classes={{ gutters: classes.gutters }}>
-                    <ListItemText primary="Player Breakdown" classes={{ primary: classes.listText }}/>
+                <ListItem button onClick={() => playerBreakddownRef.current.scrollIntoView({ behavior: 'smooth' })} sx={styles.gutters}>
+                    <ListItemText primary="Player Breakdown" sx={styles.listText}/>
                 </ListItem>
                 <Collapse in={true} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
@@ -100,11 +83,11 @@ const Collector = () => {
                             const sortedProfessions = sortProfessionAggrigatesByFrequency(player.professionAggrigates || {});
 
                             return (
-                                <ListItem button onClick={() => sidebarAccountClick(account)} className={classes.nested}>
+                                <ListItem button onClick={() => sidebarAccountClick(account)} sx={styles.nested}>
                                     <ListItemIcon>
                                         <ProfessionIcon professionName={sortedProfessions[0]} size={25}/>
                                     </ListItemIcon>
-                                    <ListItemText primary={collector.stats.accounts[account].accountName} classes={{ primary: classes.listText }}/>
+                                    <ListItemText primary={collector.stats.accounts[account].accountName} sx={styles.listText}/>
                                 </ListItem>
                             )
                         })}
@@ -117,36 +100,34 @@ const Collector = () => {
     return (
         <div>
             <CssBaseline />
-            <ThemeProvider theme={collectorTheme}>
-                <HeaderAndSidebarTemplate pageTitleText={`Collector: ${collector?._id}`} pageDrawerContent={drawerContent}>
-                    <Grid container spacing={3}>
-                        <Grid ref={overviewRef} classes={{ root: classes.scrollMargin }} item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="successRate"/>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="avgBossDps"/>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="avgCleaveDps"/>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <OverviewStatsCard variant="encounterTime"/>
-                        </Grid>
-                        <Grid ref={timelineRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                            <BossTimeline />
-                        </Grid>
-                        <Grid ref={bossTableRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                            <BossTable />
-                        </Grid>
-
-                        <Grid ref={playerBreakddownRef} classes={{ root: classes.scrollMargin }} item xs={12}>
-                            <PlayerBreakdown ref={playerDetailsCardRef} collectorId={collector?._id} setSelectedPlayer={setSelectedPlayer} selectedPlayer={selectedPlayer}/>
-                        </Grid>
+            <HeaderAndSidebarTemplate pageTitleText={`Collector: ${collector?._id}`} pageDrawerContent={drawerContent}>
+                <Grid container spacing={3}>
+                    <Grid ref={overviewRef} sx={styles.scrollMargin} item xs={12} md={6} lg={3}>
+                        <OverviewStatsCard variant="successRate"/>
                     </Grid>
-                </HeaderAndSidebarTemplate>
-            </ThemeProvider>
+                    <Grid item xs={12} md={6} lg={3}>
+                        <OverviewStatsCard variant="avgBossDps"/>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={3}>
+                        <OverviewStatsCard variant="avgCleaveDps"/>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={3}>
+                        <OverviewStatsCard variant="encounterTime"/>
+                    </Grid>
+                    <Grid ref={timelineRef} sx={styles.scrollMargin} item xs={12}>
+                        <BossTimeline />
+                    </Grid>
+                    <Grid ref={bossTableRef} sx={styles.scrollMargin} item xs={12}>
+                        <BossTable />
+                    </Grid>
+
+                    <Grid ref={playerBreakddownRef} sx={styles.scrollMargin} item xs={12}>
+                        <PlayerBreakdown ref={playerDetailsCardRef} collectorId={collector?._id} setSelectedPlayer={setSelectedPlayer} selectedPlayer={selectedPlayer}/>
+                    </Grid>
+                </Grid>
+            </HeaderAndSidebarTemplate>
         </div>
-    )
+    );
 };
 
 export default Collector;

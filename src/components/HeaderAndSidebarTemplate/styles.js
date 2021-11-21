@@ -21,6 +21,9 @@ const styles = {
     container: {
         paddingTop: '10px',
         paddingBottom: '10px',
+        '& .MuiContainer-maxWidthLg': {
+            maxWidth: '1500px'
+        }
     },
     colorPrimary: {
         backgroundColor: 'black'
@@ -32,14 +35,13 @@ const styles = {
         color: '#F57600',
     },
     drawer: {
-        width: '300px',
-    },
-    drawerPaper: {
-        width: '300px',
-        zIndex: 0,
-        background: '#E6EEF0',
-        flexShrink: 0,
-        'overflow-x': 'hidden'
+        '& .MuiDrawer-paper' : {
+            width: '300px',
+            zIndex: 0,
+            background: '#E6EEF0',
+            flexShrink: 0,
+            'overflow-x': 'hidden'
+        }
     },
     drawerContainer: {
         padding: '16px',
@@ -50,15 +52,17 @@ const styles = {
         'overflow-x': 'hidden'
     },
     mobileLoginListItem: {
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     gutters: {
         paddingLeft: '0px',
         paddingRight: '0px',
     },
     listText: {
-        fontFamily: 'Oxanium',
-        fontWeight: '700',
+        '& .MuiListItemText-primary': {
+            fontFamily: 'Oxanium',
+            fontWeight: '700',
+        },
     },
     root: {
         width: '100%',

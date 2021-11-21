@@ -1,4 +1,8 @@
+import { globalStyles } from "../../globalStyles";
+
 const styles = {
+    ...globalStyles,
+
     accordionContainer: {
         fontFamily: 'Oxanium',
         fontWeight: 400,
@@ -107,23 +111,58 @@ const styles = {
         fontSize: '1.2em',
         paddingLeft: '10px'
     },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
     tableItem: {
         fontFamily: 'Oxanium',
         fontSize: '1em',
         fontWeight: '400',
         paddingLeft: '10px',
         paddingRight: '10px'
+    },
+    muiBreadcrumbs: {
+        '& .MuiBreadcrumbs-ol': {
+            flexWrap: 'nowrap',
+            padding: '10px',
+            paddingBottom: '40px',
+            paddingTop: '0px'
+        }
+    },
+    number: {
+        flexBasis: '10%',
+        flexShrink: 0,
+    },
+    duration: {
+        fontFamily: 'Oxanium',
+        fontWeight: 400,
+        flexBasis: '30%',
+        flexShrink: 0,
+    },
+    timeStartEnd: {
+        flexBasis: '40%',
+        flexShrink: 0,
+    },
+    chips: {
+        flexBasis: '20%',
+        flexShrink: 0,
+    },
+    accordionSummaryContent: {
+        '& .MuiAccordionSummary-content' : {
+            alignItems: 'center'
+        }
+    },
+    chipRootSuccess: {
+        fontFamily: 'Oxanium',
+        fontWeight: 400,
+        backgroundColor: '#4caf50'
+    },
+    chipRootFail: {
+        fontFamily: 'Oxanium',
+        fontWeight: 400,
+        backgroundColor: '#ef5350'
+    },
+    alternatingColor: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: '#E6EEF0',
+        },
     }
 };
 

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { css } from '@emotion/css';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
+import { Box } from '@mui/system';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+} from '@mui/material';
 
 import OffensiveTableHead from './OffensiveTableHead';
 import ProfessionIconGroup from '../../ProfessionIconGroup/ProfessionIconGroup';
@@ -14,27 +15,7 @@ import ProfessionIconGroup from '../../ProfessionIconGroup/ProfessionIconGroup';
 import { getComparator, stableSort } from '../../../utils';
 import styles from '../styles';
 
-const useStyles = makeStyles(() => ({
-    root: {
-      background: '#E6EEF0',
-    },
-    tableItem: styles.tableItem,
-    firstTableItem: styles.firstTableItem,
-    lastTableItem: styles.lastTableItem,
-    professionIcons: styles.professionIcons,
-    alternatingColor: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: 'white',
-        },
-        '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.04)',
-            cursor: 'pointer'
-        }
-    },
-}));
-
 const OffensiveTable = ({ tableData, setSelectedPlayer }) => {
-    const classes = useStyles();
     const [order, setOrder] = useState('desc');
     const [orderBy, setOrderBy] = useState('name');
 
@@ -45,9 +26,9 @@ const OffensiveTable = ({ tableData, setSelectedPlayer }) => {
     };
 
     return (
-        <TableContainer className={css(styles.tableContainer)}>
+        <TableContainer sx={styles.tableContainer}>
             <Table
-                className={css(styles.offensiveTable)}
+                sx={styles.offensiveTable}
                 size={'medium'}
                 aria-label="enhanced table"
             >
@@ -61,24 +42,24 @@ const OffensiveTable = ({ tableData, setSelectedPlayer }) => {
                     {stableSort(tableData, getComparator(order, orderBy))
                         .map((row) => (
                             <TableRow 
-                                classes={{root: classes.alternatingColor}}
+                                sx={styles.alternatingColor}
                                 key={row.name}
                                 onClick={() => setSelectedPlayer(row.fullAccount)}
                             >
-                                <TableCell classes={{root: classes.firstTableItem}} component="th" scope="row">
+                                <TableCell sx={styles.firstTableItem} component="th" scope="row">
                                     {row.name}
                                 </TableCell>
-                                <TableCell classes={{root: classes.professionIcons}} align="left">
-                                    <div className={css(styles.professioniconContainer)}>
+                                <TableCell sx={styles.professionIcons} align="left">
+                                    <Box sx={styles.professioniconContainer}>
                                         <ProfessionIconGroup nameArray={row.professions.displayVal || []} size={30}/>
-                                    </div>
+                                    </Box>
                                 </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.encounterCount}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.avgBossDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.scholarUptime}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.flankingUptime}</TableCell>
-                                <TableCell classes={{root: classes.lastTableItem}} align="right">{row.breakbar.displayVal}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.encounterCount}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.avgBossDps.displayVal}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.avgCleaveDps.displayVal}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.scholarUptime}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.flankingUptime}</TableCell>
+                                <TableCell sx={styles.lastTableItem} align="right">{row.breakbar.displayVal}</TableCell>
 
                             </TableRow>
                         ))}

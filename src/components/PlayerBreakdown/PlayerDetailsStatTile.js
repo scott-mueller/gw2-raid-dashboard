@@ -1,7 +1,7 @@
 import React from 'react';
-import { css } from '@emotion/css';
 
-import Paper from '@material-ui/core/Paper';
+import { Box } from '@mui/system';
+import Paper from '@mui/material/Paper';
 
 import styles from './styles';
 
@@ -11,13 +11,13 @@ const PlayerDetailsStatTile = ({ primaryTitle, primaryData, secondaryTitle, seco
 
     return(
         <Paper elevation={4}>
-            <div className={css(styles.tileContainer)}>
-                <div className={css(styles.primaryTitle)}>{primaryTitle}</div>
-                <div className={css(styles.primaryData)}>{primaryData}</div>
+            <Box sx={styles.tileContainer}>
+                <Box sx={styles.primaryTitle}>{primaryTitle}</Box>
+                <Box sx={styles.primaryData}>{primaryData}</Box>
                 {secondaryTitle !== undefined && secondaryData !== undefined && (
-                    <div className={css(styles.secondaryTitle)}>{`${secondaryTitle}: ${secondaryData}`}</div>
+                    <Box sx={styles.secondaryTitle}>{`${secondaryTitle}: ${secondaryData}`}</Box>
                 )}
-            </div>
+            </Box>
         </Paper>
     );
 };
