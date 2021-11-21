@@ -124,6 +124,52 @@ const styles = {
         fontWeight: '400',
         paddingLeft: '10px',
         paddingRight: '10px'
+    },
+    muiBreadcrumbs: {
+        '& .MuiBreadcrumbs-ol': {
+            flexWrap: 'nowrap',
+            padding: '10px',
+            paddingBottom: '40px',
+            paddingTop: '0px'
+        }
+    },
+    number: {
+        flexBasis: '10%',
+        flexShrink: 0,
+    },
+    duration: {
+        fontFamily: 'Oxanium',
+        fontWeight: 400,
+        flexBasis: '30%',
+        flexShrink: 0,
+    },
+    timeStartEnd: {
+        flexBasis: '40%',
+        flexShrink: 0,
+    },
+    chips: {
+        flexBasis: '20%',
+        flexShrink: 0,
+    },
+    accordionSummaryContent: {
+        '& .MuiAccordionSummary-content' : {
+            alignItems: 'center'
+        }
+    },
+    chipRootSuccess: {
+        fontFamily: 'Oxanium',
+        fontWeight: 400,
+        backgroundColor: '#4caf50'
+    },
+    chipRootFail: {
+        fontFamily: 'Oxanium',
+        fontWeight: 400,
+        backgroundColor: '#ef5350'
+    },
+    alternatingColor: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: '#E6EEF0',
+        },
     }
 };
 

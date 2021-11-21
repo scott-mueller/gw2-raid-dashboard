@@ -1,5 +1,6 @@
 import React from 'react';
-import { css } from '@emotion/css';
+
+import { Box } from '@mui/system';
 import Tooltip from '@mui/material/Tooltip';
 
 import professionIconMap from '../../utils/professionIconMap';
@@ -21,20 +22,19 @@ const ProfessionIconGroup = ({ nameArray, size = 20, displayMax = 5 }) => {
 
     const tooltipText = (name) => (
         <React.Fragment>
-            <div className={css(styles.tooltip)}>
+            <Box sx={styles.tooltip}>
                 {name}
-            </div>
+            </Box>
         </React.Fragment>
     );
     
     const validatedDisplayMax = displayMax > nameArray.length ? nameArray.length : displayMax;
     const opacityIncrement = Math.ceil(100/(validatedDisplayMax >= 5 ? validatedDisplayMax : 5));
-    console.log(opacityIncrement);
     let opacity = 100;
     let zIndex = 50;
 
     return(
-        <div className={css(styles.container)}>
+        <Box sx={styles.container}>
             {professionNamesFormatted.slice(0, validatedDisplayMax).map((name) => {
                 
                 const className = professionNamesFormatted.indexOf(name) === 0 ?
@@ -46,8 +46,9 @@ const ProfessionIconGroup = ({ nameArray, size = 20, displayMax = 5 }) => {
 
                 return (
                     <Tooltip title={tooltipText(name.formatted)} placement={'top'} arrow>
-                        <img 
-                            className={css(className)}
+                        <Box
+                            component={'img'} 
+                            sx={className}
                             src={professionIconMap[name.original.toLowerCase()]} 
                             alt={name.formatted} 
                             width={size} 
@@ -56,7 +57,7 @@ const ProfessionIconGroup = ({ nameArray, size = 20, displayMax = 5 }) => {
                     </Tooltip>
                 )
             })}
-        </div>
+        </Box>
     );
 };
 

@@ -8,8 +8,10 @@ const styles = {
         paddingRight: '0px',
     },
     listText: {
-        fontFamily: 'Oxanium',
-        fontWeight: '700',
+        '& .MuiListItemText-primary': {
+            fontFamily: 'Oxanium',
+            fontWeight: '700',
+        },
     },
     root: {
         width: '100%',

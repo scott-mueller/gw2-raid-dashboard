@@ -1,36 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { css } from '@emotion/css';
 
-import makeStyles from '@mui/styles/makeStyles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Box } from '@mui/system';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Paper,
+} from '@mui/material';
 
 import BossTableHead from './BossTableHead';
 import { formatDPS, getComparator, stableSort } from '../../utils';
 import styles from './styles';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-      background: '#E6EEF0',
-    },
-    tableItem: styles.tableItem,
-    tableIconRow: {
-        paddingLeft: '16px',
-        paddingTop: '0px',
-        paddingBottom: '0px',
-        paddingRight: '16px'
-    },
-    alternatingColor: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: 'white',
-        },
-    }
-  }));
 
 const buildTableData = (bosses) => Object.keys(bosses).map((bossName) => {
     const boss = bosses[bossName];
@@ -55,7 +38,6 @@ const buildTableData = (bosses) => Object.keys(bosses).map((bossName) => {
 });
 
 const BossTable = () => {
-    const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('bossName');
 
@@ -75,11 +57,11 @@ const BossTable = () => {
     };
 
     return (
-        <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
-            <div className={css(styles.text)}>Boss Table</div>
-            <TableContainer className={css(styles.tableContainer)}>
+        <Paper sx={styles.paper}>
+            <Box sx={styles.text}>Boss Table</Box>
+            <TableContainer sx={styles.tableContainer}>
                 <Table
-                    className={css(styles.table)}
+                    sx={styles.table}
                     size={'medium'}
                     aria-label="enhanced table"
                 >
@@ -92,26 +74,27 @@ const BossTable = () => {
                     <TableBody>
                         {stableSort(tableData, getComparator(order, orderBy))
                             .map((row, index) => (
-                                <TableRow classes={{root: classes.alternatingColor}} key={row.bossName}>
-                                    <TableCell classes={{ root: classes.tableIconRow }}>
-                                        <div className={css(styles.bossIconContainer)}>
-                                            <img 
+                                <TableRow sx={styles.alternatingColor} key={row.bossName}>
+                                    <TableCell sx={styles.tableIconRow}>
+                                        <Box sx={styles.bossIconContainer}>
+                                            <Box
+                                                component={'img'}
                                                 src={row.icon.iconLink} 
                                                 alt={row.icon.iconAlt} 
                                                 width={40} 
                                                 height={40} 
-                                                className={css(styles.bossImage)}
+                                                sx={styles.bossImage}
                                             />
-                                        </div>
+                                        </Box>
                                     </TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} component="th" scope="row" padding="none">
+                                    <TableCell sx={styles.tableItem} component="th" scope="row" padding="none">
                                         {row.bossName}
                                     </TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.successRate.displayVal}</TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgBossDps.displayVal}</TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.avgCleaveDps.displayVal}</TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
-                                    <TableCell classes={{root: classes.tableItem}} align="right">{row.deaths}</TableCell>
+                                    <TableCell sx={styles.tableItem} align="right">{row.successRate.displayVal}</TableCell>
+                                    <TableCell sx={styles.tableItem} align="right">{row.avgBossDps.displayVal}</TableCell>
+                                    <TableCell sx={styles.tableItem} align="right">{row.avgCleaveDps.displayVal}</TableCell>
+                                    <TableCell sx={styles.tableItem} align="right">{row.downs}</TableCell>
+                                    <TableCell sx={styles.tableItem} align="right">{row.deaths}</TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>

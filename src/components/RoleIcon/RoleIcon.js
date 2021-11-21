@@ -1,5 +1,6 @@
 import React from 'react';
-import { css } from '@emotion/css';
+
+import { Box } from '@mui/system';
 import Tooltip from '@mui/material/Tooltip';
 
 import roleIconMap from '../../utils/roleIconMap';
@@ -17,9 +18,9 @@ const BoonIcon = ({ boon, size = 20 }) => {
 
     const tooltipText = () => (
         <React.Fragment>
-            <div className={css(styles.tooltip)}>
+            <Box sx={styles.tooltip}>
                 {boonNameFormatted}
-            </div>
+            </Box>
         </React.Fragment>
     );
 

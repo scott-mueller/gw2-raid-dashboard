@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from '@emotion/css';
 
-import makeStyles from '@mui/styles/makeStyles';
+import { Box } from '@mui/system';
 import {
     Grid,
     TextField,
@@ -13,14 +12,9 @@ import CustomButton from '../CustomButton/CustomButton';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import styles from './styles';
 
-const useStyles = makeStyles(() => ({
-    ...styles,
-}));
-
 const usernameRegex = new RegExp(/^[a-zA-Z0-9_\-.]{0,30}$/);
 
 const Login = ({ internalOnClose }) => {
-    const classes = useStyles();
     const { width } = useWindowDimensions();
     const dispatch = useDispatch();
 
@@ -114,12 +108,12 @@ const Login = ({ internalOnClose }) => {
     };
 
     return (
-        <div id={'login'} className={css({ padding: '16px', display: 'flex', alignItems: 'center', height: '100%', maxHeight: '600px'})}>
+        <Box id={'login'} sx={{ padding: '16px', display: 'flex', alignItems: 'center', height: '100%', maxHeight: '600px'}}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center', height: '65px'})}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', height: '65px'}}>
                         <TextField
-                            classes={{root: classes.largeTextField}}
+                            sx={styles.largeTextField}
                             error={usernameError}
                             disabled={fetching}
                             variant={'outlined'}
@@ -131,12 +125,12 @@ const Login = ({ internalOnClose }) => {
                             onFocus={() => { setUsernameError(false); setUsernameHelperText(''); }}
                             onChange={(e) => handleFieldOnChange('username', e.target.value)}
                         />
-                    </div>
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center',height: '65px'})}>
+                    <Box sx={{display: 'flex', justifyContent: 'center',height: '65px'}}>
                         <TextField
-                            classes={{root: classes.largeTextField}}
+                            sx={styles.largeTextField}
                             disabled={fetching}
                             type={'password'} 
                             error={passwordError}
@@ -148,22 +142,22 @@ const Login = ({ internalOnClose }) => {
                             onFocus={() => { setPasswordError(false); setPasswordHelperText(''); }}
                             onChange={(e) => handleFieldOnChange('password', e.target.value)}
                         />
-                    </div>
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center'})}>
+                    <Box sx={{display: 'flex', justifyContent: 'center'}}>
                             <CustomButton submit={true} onClick={handleLogin}>Login</CustomButton>
-                    </div>
+                    </Box>
                 </Grid>
                 {width < 700 && (
                     <Grid item xs={12}>
-                        <div className={css({display: 'flex', justifyContent: 'center'})}>
+                        <Box sx={{display: 'flex', justifyContent: 'center'}}>
                             <CustomButton onClick={internalOnClose}>Cancel</CustomButton>
-                        </div>
+                        </Box>
                     </Grid>
                 )}
             </Grid>
-        </div>
+        </Box>
 
     )
 };

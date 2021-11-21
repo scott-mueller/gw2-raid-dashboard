@@ -1,40 +1,29 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { css } from '@emotion/css';
 
-import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
-import Paper from '@mui/material/Paper';
-
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Box } from '@mui/system';
+import {
+    Paper,
+    Tabs,
+    Tab
+} from '@mui/material';
 
 import OffensiveTable from './OffensiveTable/OffensiveTable';
 import SupportTable from './SupportTable/SupportTable';
 import PlayerDetailsCard from './PlayerDetailsCard';
 import RoleIcon from '../RoleIcon/RoleIcon';
+
 import { formatDPS, sortProfessionAggrigatesByFrequency } from '../../utils';
 import styles from './styles';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      background: '#E6EEF0',
-    },
-    tabRoot: {
-        fontFamily: 'Oxanium',
-        fontSize: '1em',
-        fontWeight: '700',
-        minHeight: '40px'
-    }
-}));
-
-const tabsTheme = createTheme(adaptV4Theme({
+const tabsTheme = createTheme({
     palette: {
         secondary: {
             main: '#F57600'
         }
     }
-}));
+});
 
 const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => {
     const account = accounts[accountName];
@@ -77,7 +66,6 @@ const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => 
 });
 
 const PlayerBreakdown = forwardRef(({ collectorId, setSelectedPlayer, selectedPlayer }, ref) => {
-    const classes = useStyles();
     const [currentTab, setCurrentTab] = React.useState(0);
 
     const accounts = useSelector((state) => state?.collectorStats?.stats?.stats?.accounts);
@@ -89,25 +77,21 @@ const PlayerBreakdown = forwardRef(({ collectorId, setSelectedPlayer, selectedPl
         }
     }, [accounts])
 
-    console.log(currentTab)
-
     return (
-        <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
-            <div className={css(styles.text)}>Player Breakdown Table</div>
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={tabsTheme}>
-                    <Tabs
-                        centered
-                        value={currentTab}
-                        onChange={(e, newVal) => setCurrentTab(newVal)}
-                        textColor="secondary"
-                        indicatorColor="secondary"
-                    >
-                        <Tab icon={<div className={css({ paddingRight: '5px' })}><RoleIcon boon={'power-dps'} size={20}/></div>} iconPosition="start" classes={{root: classes.tabRoot}} label="Damage Stats"/>
-                        <Tab icon={<div className={css({ paddingRight: '5px' })}><RoleIcon boon={'healer'} size={20}/></div>} iconPosition="start" classes={{root: classes.tabRoot}} label="Support Stats"/>
-                    </Tabs>
-                </ThemeProvider>
-            </StyledEngineProvider>
+        <Paper sx={styles.paper}>
+            <Box sx={styles.text}>Player Breakdown Table</Box>
+            <ThemeProvider theme={tabsTheme}>
+                <Tabs
+                    centered
+                    value={currentTab}
+                    onChange={(e, newVal) => setCurrentTab(newVal)}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                >
+                    <Tab icon={<Box sx={{ paddingRight: '5px' }}><RoleIcon boon={'power-dps'} size={20}/></Box>} iconPosition="start" sx={styles.tabRoot} label="Damage Stats"/>
+                    <Tab icon={<Box sx={{ paddingRight: '5px' }}><RoleIcon boon={'healer'} size={20}/></Box>} iconPosition="start" sx={styles.tabRoot} label="Support Stats"/>
+                </Tabs>
+            </ThemeProvider>
             {currentTab === 0 && (
                 <OffensiveTable tableData={tableData} setSelectedPlayer={setSelectedPlayer}/>
             )}
@@ -115,11 +99,11 @@ const PlayerBreakdown = forwardRef(({ collectorId, setSelectedPlayer, selectedPl
                 <SupportTable tableData={tableData} setSelectedPlayer={setSelectedPlayer}/>
             )}
             {selectedPlayer ? (
-                <div ref={ref} className={css(styles.playerDetailsOuterContainer)}>
+                <Box ref={ref} sx={styles.playerDetailsOuterContainer}>
                     <PlayerDetailsCard player={selectedPlayer} collectorId={collectorId} resetOnClick={() => setSelectedPlayer(null)}/>
-                </div>
+                </Box>
             ) : (
-                <p className={css(styles.detailsNoneSelected)}>
+                <p sx={styles.detailsNoneSelected}>
                     Select a player to view details...
                 </p>
             )}

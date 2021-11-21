@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from '@emotion/css';
 import { equals, uniq } from 'ramda';
 
-import { adaptV4Theme } from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 import styles from './styles';
+import { Box } from '@mui/system';
 import {
     APPLY_ROLE_FILTER,
     FETCH_ENCOUNTERS_FOR_PLAYER_IN_COLLECTOR,
     RESET_PROFESSION_AND_ROLE_FILTERS
 } from '../../redux/actions';
-import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Chip } from '@mui/material';
 import ProfessionIconGroup from '../ProfessionIconGroup/ProfessionIconGroup';
 import PlayerDetailsStatTile from './PlayerDetailsStatTile';
@@ -23,59 +21,7 @@ import ProfessionChip from '../ProfessionChip/ProfessionChip';
 import RoleIcon from '../RoleIcon/RoleIcon';
 import CustomButton from '../CustomButton/CustomButton';
 
-const useStyles = makeStyles((theme) => ({
-    number: {
-        flexBasis: '10%',
-        flexShrink: 0,
-    },
-    duration: {
-        fontSize: theme.typography.pxToRem(15),
-        fontFamily: 'Oxanium',
-        fontWeight: 400,
-        flexBasis: '30%',
-        flexShrink: 0,
-    },
-    timeStartEnd: {
-        flexBasis: '40%',
-        flexShrink: 0,
-    },
-    chips: {
-        flexBasis: '20%',
-        flexShrink: 0,
-    },
-    chipRootSuccess: {
-        fontFamily: 'Oxanium',
-        fontWeight: 400,
-        backgroundColor: '#4caf50'
-    },
-    chipRootFail: {
-        fontFamily: 'Oxanium',
-        fontWeight: 400,
-        backgroundColor: '#ef5350'
-    },
-    accordionContent: {
-        alignItems: 'center'
-    },
-    gridContainer: {
-        padding: '16px'
-    },
-    chipRootTest: {
-        background: 'green',
-        '&:hover, &:focus': {
-            background: 'red'
-        },
-    },
-    chipOutlinedTest: {
-        '&:active': {
-            background: 'blue'
-        }
-    },
-    chipRoot: {
-        fontFamily: 'Oxanium',
-    }
-}));
-
-const detailsCardTheme = createTheme(adaptV4Theme({
+const detailsCardTheme = createTheme({
     breakpoints: {
         values: {
             xs: 0,
@@ -85,15 +31,15 @@ const detailsCardTheme = createTheme(adaptV4Theme({
             xl: 1700,
         }
     }
-}));
+});
 
-const roleChipTheme = createTheme(adaptV4Theme({
+const roleChipTheme = createTheme({
     palette: {
         primary: {
             main: '#303F4B'
         }
     }
-}));
+});
 
 const computeStatsForFilteredList = (filteredEncounters, accountName) => {
 
@@ -143,7 +89,6 @@ const computeStatsForFilteredList = (filteredEncounters, accountName) => {
 };
 
 const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const filteredEncounters = useSelector((state) => state?.collectorStats?.selectedPlayer?.filteredEncounters);
@@ -238,88 +183,84 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
     ];
 
     return (
-        <div className={css(styles.playerDetailsContainer)}>
+        <Box sx={styles.playerDetailsContainer}>
             <Paper elevation={18}>
-                <Grid container spacing={3} classes={{ container: classes.gridContainer }}>
+                <Grid container spacing={3} sx={styles.gridContainer}>
                     <Grid item xs={12}>
                         <Grid container spacing={2}>
-                            <Grid className={css(styles.filterTitleGrid)} item sm={12} md={6}>
-                                <div className={css(styles.detailsTitle)}>{player.accountName}</div>
+                            <Grid sx={styles.filterTitleGrid} item sm={12} md={6}>
+                                <Box sx={styles.detailsTitle}>{player.accountName}</Box>
                             </Grid>
                             <Grid item sm={12} md={6}>
-                                <div className={css(styles.professionIconGroupLarge)}>
+                                <Box sx={styles.professionIconGroupLarge}>
                                     <ProfessionIconGroup nameArray={sortedProfessions || []} size={60}/>
-                                </div>
+                                </Box>
                             </Grid>
                             <Grid item xs={12}>
-                                <div className={css(styles.filterContainer)}>
-                                    <Paper className={css(styles.filterPaper)} elevation={4}>
-                                        <div className={css(styles.filterTitle)}>Performance Filters</div>
-                                        <div className={css(styles.chipGroup)}>
+                                <Box sx={styles.filterContainer}>
+                                    <Paper sx={styles.filterPaper} elevation={4}>
+                                        <Box sx={styles.filterTitle}>Performance Filters</Box>
+                                        <Box sx={styles.chipGroup}>
                                                 {Object.keys(player.professionAggrigates).map((profession) => (
-                                                    <div className={css(styles.chipContainer)}>
+                                                    <Box sx={styles.chipContainer}>
                                                         <ProfessionChip 
                                                             profession={profession} 
                                                             disabled={!presentProfessions.includes(profession)} 
                                                             variant={activeFilters.profession === profession ? 'outlined' : 'default'}
                                                         />
-                                                    </div>
+                                                    </Box>
                                                 ))}
-                                            </div>
-                                        <div className={css(styles.chipGroup, { paddingTop: '5px', paddingBottom: '5px' })}>
-                                            <StyledEngineProvider injectFirst>
-                                                <ThemeProvider theme={roleChipTheme}>
-                                                    {Object.keys(player.roleMap).map((role) => (
-                                                        <div className={css(styles.chipContainer)}>
-                                                            <Chip
-                                                                classes={{root: classes.chipRoot}}
-                                                                icon={<div className={css(styles.roleChipIcon)}><RoleIcon boon={role} size={22}/></div>}
-                                                                label={role.split('-').join(' ')}
-                                                                color={'primary'}
-                                                                onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
-                                                                disabled={!presentRoles.includes(role.split('-').join(' '))}
-                                                                variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </ThemeProvider>
-                                            </StyledEngineProvider>
-                                        </div>
+                                            </Box>
+                                        <Box sx={{...styles.chipGroup, paddingTop: '5px', paddingBottom: '5px' }}>
+                                            <ThemeProvider theme={roleChipTheme}>
+                                                {Object.keys(player.roleMap).map((role) => (
+                                                    <Box sx={styles.chipContainer}>
+                                                        <Chip
+                                                            sx={{ fontFamily: 'Oxanium' }}
+                                                            icon={<Box sx={styles.roleChipIcon}><RoleIcon boon={role} size={22}/></Box>}
+                                                            label={role.split('-').join(' ')}
+                                                            color={'primary'}
+                                                            onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
+                                                            disabled={!presentRoles.includes(role.split('-').join(' '))}
+                                                            variant={activeFilters.roles.includes(role.split('-').join(' ')) ? 'outlined' : 'default'}
+                                                        />
+                                                    </Box>
+                                                ))}
+                                            </ThemeProvider>
+                                        </Box>
                                     </Paper>
-                                </div>
+                                </Box>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <div>
-                            <StyledEngineProvider injectFirst>
-                                <ThemeProvider theme={detailsCardTheme}>
-                                    <Grid container spacing={2}>
-                                        {statRows.map((row) => (
-                                            <Grid item xl={3} lg={4} md={6} xs={12}>
-                                                <PlayerDetailsStatTile
-                                                    primaryTitle={row.primaryTitle}
-                                                    primaryData={row.primaryData}
-                                                    secondaryTitle={row.secondaryTitle}
-                                                    secondaryData={row.secondaryData}/>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                </ThemeProvider>
-                            </StyledEngineProvider>
-                        </div>
+                        <Box>
+                            <ThemeProvider theme={detailsCardTheme}>
+                                <Grid container spacing={2}>
+                                    {statRows.map((row) => (
+                                        <Grid item xl={3} lg={4} md={6} xs={12}>
+                                            <PlayerDetailsStatTile
+                                                primaryTitle={row.primaryTitle}
+                                                primaryData={row.primaryData}
+                                                secondaryTitle={row.secondaryTitle}
+                                                secondaryData={row.secondaryData}/>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </ThemeProvider>
+                        </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <div className={css(styles.resetCloseButtonGroup)}>
-                            <div className={css(styles.resetButton)}>
+                        <Box sx={styles.resetCloseButtonGroup}>
+                            <Box sx={styles.resetButton}>
                                 <CustomButton onClick={()=> dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS })}>Reset Filters</CustomButton>
-                            </div>
+                            </Box>
                             <CustomButton onClick={resetOnClick}>Close</CustomButton>
-                        </div>
+                        </Box>
                     </Grid>
                 </Grid>
             </Paper>
-        </div>
+        </Box>
     );
 };
 

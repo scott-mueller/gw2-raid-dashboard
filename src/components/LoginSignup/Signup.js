@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from '@emotion/css';
 
-import makeStyles from '@mui/styles/makeStyles';
+import { Box } from '@mui/system';
 import {
     TextField,
     Grid,
@@ -15,16 +14,11 @@ import CustomButton from '../CustomButton/CustomButton';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import styles from './styles';
 
-const useStyles = makeStyles(() => ({
-    ...styles,
-}));
-
 const usernameRegex = new RegExp(/^[a-zA-Z0-9_\-.]{0,30}$/);
 const accountNameRegex = new RegExp(/^[a-zA-Z ]{3,27}.[0-9]{4}$/);
 const apiKeyRegex = new RegExp(/^[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{20}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}$/);
 
 const Signup = ({ internalOnClose }) => {
-    const classes = useStyles();
     const { width } = useWindowDimensions();
     const dispatch = useDispatch();
 
@@ -189,19 +183,19 @@ const Signup = ({ internalOnClose }) => {
 
     const signupTooltipText = () => (
         <React.Fragment>
-            <div className={css(styles.tooltip)}>
+            <Box sx={styles.tooltip}>
                 {'You must verify your Guild Wars 2 account before signing up'}
-            </div>
+            </Box>
         </React.Fragment>
     );
 
     return (
-        <div id={'signup'} className={css({ padding: '16px' })}>
+        <Box id={'signup'} sx={{ padding: '16px' }}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center', height: '65px'})}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', height: '65px'}}>
                         <TextField
-                            classes={{root: classes.largeTextField}}
+                            sx={styles.largeTextField}
                             disabled={fetching}
                             error={usernameError}
                             autoFocus
@@ -213,12 +207,12 @@ const Signup = ({ internalOnClose }) => {
                             value={username}
                             onChange={(e) => handleFieldOnChange('username', e.target.value)}
                         />
-                    </div>
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center',height: '65px'})}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', height: '65px'}}>
                         <TextField
-                            classes={{root: classes.largeTextField}}
+                            sx={styles.largeTextField}
                             disabled={fetching}
                             type={'password'}
                             error={passwordError}
@@ -230,12 +224,12 @@ const Signup = ({ internalOnClose }) => {
                             onFocus={() => { setPasswordError(false); setPasswordHelperText(''); }}
                             onChange={(e) => handleFieldOnChange('password', e.target.value)}
                         />
-                    </div>
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center', height: '65px'})}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', height: '65px'}}>
                         <TextField
-                            classes={{root: classes.largeTextField}}
+                            sx={styles.largeTextField}
                             disabled={fetching}
                             type={'password'}
                             error={passwordError}
@@ -247,17 +241,17 @@ const Signup = ({ internalOnClose }) => {
                             onFocus={() => { setPasswordError(false); setPasswordHelperText(''); }}
                             onChange={(e) => handleFieldOnChange('retypePassword', e.target.value)}
                         />
-                    </div>
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center', width: '100%'})}>
-                        <Paper elevation={5} className={css({ padding: '10px', width: '96%' })}>
-                            <div className={css(styles.accountVerifyHeader)}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                        <Paper elevation={5} sx={{ padding: '10px', width: '96%' }}>
+                            <Box sx={styles.accountVerifyHeader}>
                                 {verifiedApiKey ? 'Guild Wars 2 Account Verified' : 'Please Verify Your Guild Wars 2 Account'}
-                            </div>
-                            <div className={css({display: 'flex', justifyContent: 'center', paddingTop: '8px', paddingBottom: '8px', height: '85px'})}>
+                            </Box>
+                            <Box sx={{display: 'flex', justifyContent: 'center', paddingTop: '8px', paddingBottom: '8px', height: '85px'}}>
                                 <TextField
-                                    classes={{root: classes.largeTextField}}
+                                    sx={styles.largeTextField}
                                     error={accountNameError}
                                     variant={'outlined'}
                                     disabled={verifiedApiKey || fetching}
@@ -268,10 +262,10 @@ const Signup = ({ internalOnClose }) => {
                                     onFocus={() => { setAccountNameError(false); setAccountNameHelperText(''); }}
                                     onChange={(e) => handleFieldOnChange('accountName', e.target.value)}
                                 />
-                            </div>
-                            <div className={css({display: 'flex', justifyContent: 'center', paddingTop: '8px', paddingBottom: '8px', height: '85px'})}>
+                            </Box>
+                            <Box sx={{display: 'flex', justifyContent: 'center', paddingTop: '8px', paddingBottom: '8px', height: '85px'}}>
                                     <TextField
-                                        classes={{root: classes.extraLargeTextField}}
+                                        sx={styles.extraLargeTextField}
                                         error={apiKeyError} variant={'outlined'}
                                         disabled={verifiedApiKey || fetching}
                                         label={'Guild Wars 2 Api Key'}
@@ -282,15 +276,15 @@ const Signup = ({ internalOnClose }) => {
                                         onFocus={() => { setApiKeyError(false); setApiKeyHelperText(''); }}
                                         onChange={(e) => handleFieldOnChange('apiKey', e.target.value)}
                                     />
-                            </div>
-                            <div className={css({display: 'flex', justifyContent: 'right', paddingTop: '5px', paddingBottom: '5px'})}>
+                            </Box>
+                            <Box sx={{display: 'flex', justifyContent: 'right', paddingTop: '5px', paddingBottom: '5px'}}>
                                 <CustomButton disabled={verifiedApiKey || fetching} onClick={() => verifyApiKey()}>Verify Api Key</CustomButton>
-                            </div>
+                            </Box>
                         </Paper>
-                    </div>
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
-                    <div className={css({display: 'flex', justifyContent: 'center', paddingTop: '20px'})}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', paddingTop: '20px'}}>
                         {!verifiedApiKey ? (
                             <Tooltip title={signupTooltipText()} placement={'top'} arrow>
                                 <span>
@@ -301,17 +295,17 @@ const Signup = ({ internalOnClose }) => {
                             <CustomButton onClick={() => handleSignup()}>Sign Up</CustomButton>
                         )}
 
-                    </div>
+                    </Box>
                 </Grid>
                 {width < 700 && (
                     <Grid item xs={12}>
-                        <div className={css({display: 'flex', justifyContent: 'center'})}>
+                        <Box sx={{display: 'flex', justifyContent: 'center'}}>
                             <CustomButton onClick={internalOnClose}>Cancel</CustomButton>
-                        </div>
+                        </Box>
                     </Grid>
                 )}
             </Grid>
-        </div>
+        </Box>
     )
 };
 

@@ -5,6 +5,7 @@ const styles = {
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
+        background: '#E6EEF0',
     },
     text: {
         fontFamily: 'Oxanium',
@@ -12,6 +13,12 @@ const styles = {
         fontSize: '2.2em',
         textDecoration: 'underline',
         paddingLeft: '10px'
+    },
+    tabRoot: {
+        fontFamily: 'Oxanium',
+        fontSize: '1em',
+        fontWeight: '700',
+        minHeight: '40px'
     },
     playerDetailsOuterContainer: {
         display: 'flex',
@@ -87,10 +94,22 @@ const styles = {
         top: 20,
         width: 1,
     },
+    alternatingColor: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: 'white',
+        },
+        '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            cursor: 'pointer'
+        }
+    },
 
     //PlayerDetailsCard
     playerDetailsContainer: {
         width: '85%',
+    },
+    gridContainer: {
+        padding: '16px'
     },
     detailsTitle: {
         fontFamily: 'Oxanium',

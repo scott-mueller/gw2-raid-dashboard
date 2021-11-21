@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { css } from '@emotion/css';
 
-import makeStyles from '@mui/styles/makeStyles';
-import Paper from '@mui/material/Paper';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
+import { Box } from '@mui/system';
+import {
+    Tooltip,
+    Paper,
+    Breadcrumbs,
+} from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+
 import TimelineCard from './TimelineCard';
 import TimelineDetails from './TimelineDetails';
 
 import styles from './styles';
-import { Tooltip } from '@mui/material';
-
-const useStyles = makeStyles((theme) => ({
-    ol:{ 
-        flexWrap: 'nowrap',
-        padding: '10px',
-        paddingBottom: '40px',
-        paddingTop: '0px'
-    }
-  }));
 
 const createBreadcrumbsArray = (timeline) => {
 
@@ -48,7 +41,6 @@ const createBreadcrumbsArray = (timeline) => {
 };
 
 const BossTimeline = () => {
-    const classes = useStyles();
 
     const timeline = useSelector((state) => state?.collectorStats?.stats?.stats?.timeline);
 
@@ -77,12 +69,12 @@ const BossTimeline = () => {
         switch(item) {
             case 'start': {
                 return  (
-                    <p className={css(styles.timelineCardSubtext)}>Start</p>
+                    <Box component={'p'} sx={styles.timelineCardSubtext}>Start</Box>
                 )
             }
             case 'end': {
                 return  (
-                    <p className={css(styles.timelineCardSubtext)}>End</p>
+                    <Box component={'p'} sx={styles.timelineCardSubtext}>End</Box>
                 )
             }
             case 'lineBreak': {
@@ -100,9 +92,9 @@ const BossTimeline = () => {
 
     const tooltipText = (text) => (
         <React.Fragment>
-            <div className={css(styles.timelineCardTooltip)}>
+            <Box sx={styles.timelineCardTooltip}>
                 {text}
-            </div>
+            </Box>
         </React.Fragment>
     );
 
@@ -119,26 +111,26 @@ const BossTimeline = () => {
         );
     }
     return (
-        <Paper className={css(styles.paper)}>
-            <div className={css(styles.headerText)}>Timeline</div>
-            <div id={'bossTimelineContainer'} className={css(containerStyle)}>
-                <div className={css(styles.breadcrumbs)}>
+        <Paper sx={styles.paper}>
+            <Box sx={styles.headerText}>Timeline</Box>
+            <Box id={'bossTimelineContainer'} sx={containerStyle}>
+                <Box sx={styles.breadcrumbs}>
                     {createBreadcrumbsArray(timeline).map((row) => (
-                        <Breadcrumbs classes={{ol: classes.ol}} id={'bossTimelineContent'} maxItems={30} separator={separator}>
+                        <Breadcrumbs sx={styles.muiBreadcrumbs} id={'bossTimelineContent'} maxItems={30} separator={separator}>
                             {row.map((item) => generateBreadcrumbItem(item))}
                         </Breadcrumbs>
                     ))}
-                </div>
+                </Box>
 
-            </div>
+            </Box>
             {selectedBoss ?
-                <div className={css(detailsContainerStyle)}>
+                <Box sx={detailsContainerStyle}>
                     <TimelineDetails boss={selectedBoss} resetOnClick={() => setSelectedBoss(null)} />
-                </div>
+                </Box>
             : 
-                <p className={css(styles.detailsNoneSelected)}>
+                <Box component={'p'} sx={styles.detailsNoneSelected}>
                     Select a boss to view details...
-                </p>
+                </Box>
             }
         </Paper>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
-import { css } from '@emotion/css';
+
+import { Box } from '@mui/system';
 import Tooltip from '@mui/material/Tooltip';
 
 import professionIconMap from '../../utils/professionIconMap';
@@ -17,9 +18,9 @@ const ProfessionIcon = ({ professionName, size = 20 }) => {
 
     const tooltipText = () => (
         <React.Fragment>
-            <div className={css(styles.tooltip)}>
+            <Box sx={styles.tooltip}>
                 {professionNameFormatted}
-            </div>
+            </Box>
         </React.Fragment>
     );
 

@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react';
-import { css } from '@emotion/css';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment-timezone';
 
-import makeStyles from '@mui/styles/makeStyles';
-import styles from './styles';
-
-import { FETCH_ENCOUNTERS_FOR_TIMELINE_DETAILS } from '../../redux/actions';
-
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+import { Box } from '@mui/system';
+import {
+    Grid,
+    Paper,
+    Link,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Chip
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Chip from '@mui/material/Chip';
 
 import TimelineEncounterSimpleTable from './TimelineEncounterSimpleTable';
 import CustomButton from '../CustomButton/CustomButton';
+
+import { FETCH_ENCOUNTERS_FOR_TIMELINE_DETAILS } from '../../redux/actions';
+import styles from './styles';
 
 // eslint-disable-next-line no-extend-native
 Number.prototype.formatMsToString = function () {
@@ -39,46 +39,10 @@ Number.prototype.formatMsToString = function () {
     //return m.padStart(2, '0') + 'm ' + s.padStart(2, '0') + 's ' + ms.padStart(3, '0') + 'ms';
 };
 
-const useStyles = makeStyles((theme) => ({
-    number: {
-        flexBasis: '10%',
-        flexShrink: 0,
-    },
-    duration: {
-        fontSize: theme.typography.pxToRem(15),
-        fontFamily: 'Oxanium',
-        fontWeight: 400,
-        flexBasis: '30%',
-        flexShrink: 0,
-    },
-    timeStartEnd: {
-        flexBasis: '40%',
-        flexShrink: 0,
-    },
-    chips: {
-        flexBasis: '20%',
-        flexShrink: 0,
-    },
-    chipRootSuccess: {
-        fontFamily: 'Oxanium',
-        fontWeight: 400,
-        backgroundColor: '#4caf50'
-    },
-    chipRootFail: {
-        fontFamily: 'Oxanium',
-        fontWeight: 400,
-        backgroundColor: '#ef5350'
-    },
-    accordionContent: {
-          alignItems: 'center'
-    }
-  }));
-
 const TimelineDetails = ({ boss, resetOnClick }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {
 
@@ -102,47 +66,50 @@ const TimelineDetails = ({ boss, resetOnClick }) => {
     });
 
     return (
-        <div id={'bossTimelineDetailsContent'} className={css(styles.detailsContainer)}>
+        <Box id={'bossTimelineDetailsContent'} sx={styles.detailsContainer}>
             <Paper elevation={18}>
                 <Grid container spacing={3}>
                     <Grid item xs={9}>
-                        <div className={css(styles.detailsContent)}>
-                            <div className={css(styles.detailsTitle)}>{boss.name}</div>
-                            <div className={css(styles.detailsContentText)}>{`${boss.count} Log${boss.count === 1 ? '' : '(s)'} in Group`}</div>
-                            <div className={css(styles.detailsContentText)}>{`Group started: ${moment(boss.firstEncounterStart).tz(timeZone).format('MMMM Do YYYY, H:mm:ss')}`}</div>
-                            <div className={css(styles.detailsContentText)}>{`Group Ended: ${moment(boss.lastEncounterEnd).tz(timeZone).format('MMMM Do YYYY, H:mm:ss')}`}</div>
-                            <div className={css(styles.detailsContentText)}>{`Time in Combat: ${boss.combatTime.formatMsToString()}`}</div>
-                            <div className={css(styles.detailsContentText)}>{`Elapsed Time: ${moment(boss.lastEncounterEnd).diff(boss.firstEncounterStart).formatMsToString()}`}</div>
-                        </div>
+                        <Box sx={styles.detailsContent}>
+                            <Box sx={styles.detailsTitle}>{boss.name}</Box>
+                            <Box sx={styles.detailsContentText}>{`${boss.count} Log${boss.count === 1 ? '' : '(s)'} in Group`}</Box>
+                            <Box sx={styles.detailsContentText}>{`Group started: ${moment(boss.firstEncounterStart).tz(timeZone).format('MMMM Do YYYY, H:mm:ss')}`}</Box>
+                            <Box sx={styles.detailsContentText}>{`Group Ended: ${moment(boss.lastEncounterEnd).tz(timeZone).format('MMMM Do YYYY, H:mm:ss')}`}</Box>
+                            <Box sx={styles.detailsContentText}>{`Time in Combat: ${boss.combatTime.formatMsToString()}`}</Box>
+                            <Box sx={styles.detailsContentText}>{`Elapsed Time: ${moment(boss.lastEncounterEnd).diff(boss.firstEncounterStart).formatMsToString()}`}</Box>
+                        </Box>
                     </Grid>
                     <Grid item xs={3}>
-                        <div className={css({display: 'flex', justifyContent: 'right', paddingRight: '12px'})}>
-                            <img 
+                        <Box sx={{display: 'flex', justifyContent: 'right', paddingRight: '12px'}}>
+                            <Box
+                                component={'img'}
                                 src={boss.icon} 
                                 alt={boss.name}
                                 width={150} 
                                 height={150}
-                                className={css(styles.bossDetailsImage)}
+                                sx={styles.bossDetailsImage}
                             />
-                        </div>
+                        </Box>
 
                     </Grid>
                     <Grid item xs={12}>
-                        <div className={css(styles.accordionContainer)}>
+                        <Box sx={styles.accordionContainer}>
                             {sortedEncounters.map((encounter) => (
                                 <Accordion expanded={expanded === encounter.encounterId} onChange={handlePanelChange(encounter.encounterId)}>
                                     <AccordionSummary
-                                        classes={{content: classes.accordionContent}}
+                                        sx={styles.accordionSummaryContent}
                                         expandIcon={<ExpandMoreIcon />}
                                         aria-controls="panel1a-content"
                                         id="panel1a-header"
                                     >
-                                        <div className={classes.number}>{sortedEncounters.indexOf(encounter) + 1}</div>
-                                        <div className={classes.duration}>{`Duration: ${encounter.durationMs.formatMsToString()}`}</div>
-                                        <div className={classes.timeStartEnd}>
+                                        <Box sx={styles.number}>{sortedEncounters.indexOf(encounter) + 1}</Box>
+                                        <Box sx={styles.duration}>{`Duration: ${encounter.durationMs.formatMsToString()}`}</Box>
+                                        <Box sx={styles.timeStartEnd}>
                                             {`Start: ${moment(encounter.utcTimeStart).tz(timeZone).format('H:mm:ss')} / End: ${moment(encounter.utcTimeEnd).tz(timeZone).format('H:mm:ss')}`}
-                                        </div>
-                                        <div className={classes.chips}><Chip classes={{root: encounter.success ? classes.chipRootSuccess : classes.chipRootFail}} label={encounter.success ? 'Success' : 'Fail'}></Chip></div>
+                                        </Box>
+                                        <Box sx={styles.chips}>
+                                            <Chip sx={encounter.success ? styles.chipRootSuccess : styles.chipRootFail} label={encounter.success ? 'Success' : 'Fail'} />
+                                        </Box>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <div>
@@ -161,17 +128,17 @@ const TimelineDetails = ({ boss, resetOnClick }) => {
                                     </AccordionDetails>
                                 </Accordion>
                             ))}
-                        </div>
+                        </Box>
 
                     </Grid>
                     <Grid item xs={12}>
-                        <div className={css({textAlign: 'right', paddingRight: '10px', paddingBottom: '12px'})}>
+                        <Box sx={{textAlign: 'right', paddingRight: '10px', paddingBottom: '12px'}}>
                             <CustomButton onClick={resetOnClick}>Close</CustomButton>
-                        </div>
+                        </Box>
                     </Grid>
                 </Grid>
             </Paper>
-        </div>
+        </Box>
     );
 };
 

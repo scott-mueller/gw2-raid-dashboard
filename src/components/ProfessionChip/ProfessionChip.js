@@ -1,18 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { css } from '@emotion/css';
 
-import { adaptV4Theme } from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
-import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { Box } from '@mui/system';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Chip } from '@mui/material';
 
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
 import { APPLY_PROFESSION_FILTER } from '../../redux/actions/index';
 import styles from './styles';
-
-
 
 const chipColor = (profession) => {
 
@@ -81,38 +77,33 @@ const chipColor = (profession) => {
     }
 };
 
-const useStyles = makeStyles((theme) => ({
-    chipRoot: {
-        fontFamily: 'Oxanium',
-    }
-}));
-
 const ProfessionChip = ({ profession, variant, disabled }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
-    const chipTheme = createTheme(adaptV4Theme({
+    const chipTheme = createTheme({
         palette: {
             primary: {
                 main: chipColor(profession)
             }
         }
-    }));
+    });
 
     return (
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={chipTheme}>
-                <Chip
-                    classes={{root: classes.chipRoot}}
-                    icon={<div className={css(styles.iconStyle)}><ProfessionIcon professionName={profession} size={25}/></div>}
-                    label={profession}
-                    color={'primary'}
-                    onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
-                    disabled={disabled}
-                    variant={variant}
-                />
-            </ThemeProvider>
-        </StyledEngineProvider>
+        <ThemeProvider theme={chipTheme}>
+            <Chip
+                sx={styles.chipRoot}
+                icon={
+                    <Box sx={styles.iconStyle}>
+                        <ProfessionIcon professionName={profession} size={25}/>
+                    </Box>
+                }
+                label={profession}
+                color={'primary'}
+                onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
+                disabled={disabled}
+                variant={variant}
+            />
+        </ThemeProvider>
     );
 };
 

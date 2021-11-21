@@ -1,16 +1,17 @@
 import React from "react";
-import { css } from '@emotion/css';
+
+import { Box } from '@mui/system';
 import { Grid } from "@mui/material";
 
 const Footer = () => {
     return (
-        <div className={css({padding: '16px', color: '#F57600', background: 'black'})}>
+        <Box sx={{padding: '16px', color: '#F57600', background: 'black'}}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <div className={css({ fontFamily: 'Oxanium', fontWeight: '400', textAlign: 'center' })}>Created by Scott Mueller (Rhavoreth.1350)</div>
+                    <Box sx={{ fontFamily: 'Oxanium', fontWeight: '400', textAlign: 'center' }}>Created by Scott Mueller (Rhavoreth.1350)</Box>
                 </Grid>
             </Grid>
-        </div>
+        </Box>
     )
 };
 

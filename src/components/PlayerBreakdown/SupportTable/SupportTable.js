@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { css } from '@emotion/css';
 
-import makeStyles from '@mui/styles/makeStyles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
+import { Box } from '@mui/system';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+} from '@mui/material';
 
 import SupportTableHead from './SupportTableHead';
 import ProfessionIconGroup from '../../ProfessionIconGroup/ProfessionIconGroup';
@@ -14,27 +15,7 @@ import ProfessionIconGroup from '../../ProfessionIconGroup/ProfessionIconGroup';
 import { getComparator, stableSort } from '../../../utils';
 import styles from '../styles';
 
-const useStyles = makeStyles(() => ({
-    root: {
-      background: '#E6EEF0',
-    },
-    tableItem: styles.tableItem,
-    firstTableItem: styles.firstTableItem,
-    lastTableItem: styles.lastTableItem,
-    professionIcons: styles.professionIcons,
-    alternatingColor: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: 'white',
-        },
-        '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.04)',
-            cursor: 'pointer'
-        }
-    },
-}));
-
 const SupportTable = ({ tableData, setSelectedPlayer }) => {
-    const classes = useStyles();
     const [order, setOrder] = useState('desc');
     const [orderBy, setOrderBy] = useState('name');
 
@@ -45,9 +26,9 @@ const SupportTable = ({ tableData, setSelectedPlayer }) => {
     };
 
     return (
-        <TableContainer className={css(styles.tableContainer)}>
+        <TableContainer sx={styles.tableContainer}>
             <Table
-                className={css(styles.supportTable)}
+                sx={styles.supportTable}
                 size={'medium'}
                 aria-label="enhanced table"
             >
@@ -61,26 +42,26 @@ const SupportTable = ({ tableData, setSelectedPlayer }) => {
                     {stableSort(tableData, getComparator(order, orderBy))
                         .map((row) => (
                             <TableRow 
-                                classes={{root: classes.alternatingColor}}
+                                sx={styles.alternatingColor}
                                 key={row.name}
                                 onClick={() => setSelectedPlayer(row.fullAccount)}
                             >
-                                <TableCell classes={{root: classes.firstTableItem}} component="th" scope="row">
+                                <TableCell sx={styles.firstTableItem} component="th" scope="row">
                                     {row.name}
                                 </TableCell>
-                                <TableCell classes={{root: classes.professionIcons}} align="left">
-                                    <div className={css(styles.professioniconContainer)}>
+                                <TableCell sx={styles.professionIcons} align="left">
+                                    <Box sx={styles.professioniconContainer}>
                                         <ProfessionIconGroup nameArray={row.professions.displayVal || []} size={30}/>
-                                    </div>
+                                    </Box>
                                 </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.encounterCount}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.downs}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.firstDowns}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.deaths}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.firstDeaths}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.revives}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.reviveTime}</TableCell>
-                                <TableCell classes={{root: classes.lastTableItem}} align="right">{row.totalDamageTaken.displayVal}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.encounterCount}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.downs}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.firstDowns}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.deaths}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.firstDeaths}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.revives}</TableCell>
+                                <TableCell sx={styles.tableItem} align="right">{row.reviveTime}</TableCell>
+                                <TableCell sx={styles.lastTableItem} align="right">{row.totalDamageTaken.displayVal}</TableCell>
                             </TableRow>
                         ))}
                 </TableBody>

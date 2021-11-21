@@ -8,6 +8,7 @@ const styles = {
         borderRadius: '10px',
     },
     paper: {
+        background: '#E6EEF0',
         padding: '12px',
         display: 'flex',
         overflow: 'auto',
@@ -33,6 +34,12 @@ const styles = {
         fontSize: '1em',
         fontWeight: '700'
     },
+    tableIconRow: {
+        paddingLeft: '16px',
+        paddingTop: '0px',
+        paddingBottom: '0px',
+        paddingRight: '16px'
+    },
     tableItem: {
         fontFamily: 'Oxanium',
         fontSize: '1em',
@@ -49,6 +56,11 @@ const styles = {
         top: 20,
         width: 1,
     },
+    alternatingColor: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: 'white',
+        },
+    }
 };
 
 export default styles;

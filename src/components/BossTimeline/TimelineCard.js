@@ -1,6 +1,7 @@
 import React from 'react';
-import { css } from '@emotion/css';
-import Tooltip from '@mui/material/Tooltip';
+
+import { Box } from '@mui/system';
+import { Tooltip } from '@mui/material';
 
 import styles from './styles';
 
@@ -8,24 +9,25 @@ const TimelineCard = ({ boss, onClick }) => {
 
     const tooltipText = () => (
         <React.Fragment>
-            <div className={css(styles.timelineCardTooltip)}>{boss.name}</div>
+            <Box sx={styles.timelineCardTooltip}>{boss.name}</Box>
         </React.Fragment>
     );
 
     return (
-        <div className={css(styles.timelineCardContainer)}>
+        <Box sx={styles.timelineCardContainer}>
             <Tooltip title={tooltipText()} placement={'top'} arrow>
-                <img 
+                <Box
+                    component={'img'} 
                     src={boss.icon} 
                     alt={boss.name} 
                     width={40} 
                     height={40}
-                    className={css(styles.bossImage)}
+                    sx={styles.bossImage}
                     onClick={() => onClick()}
                 />
             </Tooltip>
-            <p className={css(styles.timelineCardSubtext)}>{boss.count}</p>
-        </div>
+            <Box component={'p'} sx={styles.timelineCardSubtext}>{boss.count}</Box>
+        </Box>
     );
 };
 
