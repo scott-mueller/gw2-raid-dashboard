@@ -9,7 +9,17 @@ import Routes from './routes';
 
 import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
 
-const theme = createTheme();
+const theme = createTheme({
+  breakpoints: {
+    values: {
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1520,
+        xl: 1920,
+    }
+  },
+});
 
 const store = configureStore();
 
