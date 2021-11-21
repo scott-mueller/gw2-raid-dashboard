@@ -20,6 +20,7 @@ import { formatDPS, sortProfessionAggrigatesByFrequency } from '../../utils';
 import ProfessionChip from '../ProfessionChip/ProfessionChip';
 import RoleIcon from '../RoleIcon/RoleIcon';
 import CustomButton from '../CustomButton/CustomButton';
+import useForceUpdate from '../../hooks/useForceUpdate';
 
 const detailsCardTheme = createTheme({
     breakpoints: {
@@ -90,6 +91,8 @@ const computeStatsForFilteredList = (filteredEncounters, accountName) => {
 
 const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
     const dispatch = useDispatch();
+
+    const forceUpdate = useForceUpdate();
 
     const filteredEncounters = useSelector((state) => state?.collectorStats?.selectedPlayer?.filteredEncounters);
     const filteredStats = computeStatsForFilteredList(filteredEncounters, player.accountName);
@@ -198,7 +201,7 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Box sx={styles.filterContainer}>
-                                    <Paper sx={styles.filterPaper} elevation={4}>
+                                    <Paper onClick={() => forceUpdate()} sx={styles.filterPaper} elevation={4}>
                                         <Box sx={styles.filterTitle}>Performance Filters</Box>
                                         <Box sx={styles.chipGroup}>
                                                 {Object.keys(player.professionAggrigates).map((profession) => (
@@ -253,7 +256,7 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                     <Grid item xs={12}>
                         <Box sx={styles.resetCloseButtonGroup}>
                             <Box sx={styles.resetButton}>
-                                <CustomButton onClick={()=> dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS })}>Reset Filters</CustomButton>
+                                <CustomButton onClick={()=> { forceUpdate(); dispatch({ type: RESET_PROFESSION_AND_ROLE_FILTERS }); }}>Reset Filters</CustomButton>
                             </Box>
                             <CustomButton onClick={resetOnClick}>Close</CustomButton>
                         </Box>
