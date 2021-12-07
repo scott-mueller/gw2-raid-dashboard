@@ -191,5 +191,5 @@ export const getEncountersByAccountName = async (accountName) => {
     }
 
     const encounters = await mongoSession.db.collection('encounters').find({ accountNames: accountName });
-    return encounters;
+    return encounters.filter((encounter) => new RegExp(/^[a-zA-Z ,]+$/).test(encounter.bossName));
 };

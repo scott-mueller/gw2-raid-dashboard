@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { css } from '@emotion/css';
 
 import makeStyles from '@mui/styles/makeStyles';
-import { Paper, TableContainer, Table, TableBody, TableRow, TableCell, TablePagination, Chip } from '@mui/material';
+import { Paper, TableContainer, Table, TableBody, TableRow, TableCell, TablePagination, Chip, Skeleton, Stack } from '@mui/material';
 
 import EncountersTableHead from './EncountersTableHead';
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
@@ -81,7 +81,7 @@ const buildTableData = (encounters, session) => encounters.map((encounter) => {
             sortVal: encounter.durationMs
         },
         timeStart: {
-            displayVal: moment(encounter.utcTimeStart).tz(timeZone).format('MMM Do YYYY, H:mm:ss'),
+            displayVal: moment(encounter.utcTimeStart).tz(timeZone).format('MMM Do YY, H:mm:ss'),
             sortVal: new Date(encounter.utcTimeStart).getTime()
         }
     }
@@ -95,7 +95,8 @@ const EncountersTable = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const encounters = useSelector((state) => state.encounters.encounters);
+    const encounters = useSelector((state) => state.encounters.filteredEncounters);
+    const fetching = useSelector((state) => state.encounters.fetching);
     const session = useSelector((state) => state.session);
 
     useEffect(() => {
@@ -121,76 +122,96 @@ const EncountersTable = () => {
       };
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, tableData.length - page * rowsPerPage);
+    const isFetching = fetching === true && encounters.length === 0;
 
     return (
         <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
-            <TableContainer>
-                <Table size={'medium'}>
-                    <EncountersTableHead
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={handleRequestSort}
-                        rowCount={tableData.length}
+            {isFetching ? (
+                    <Stack spacing={1}>
+                        <Skeleton variant="text" height={30}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={40}/>
+                  </Stack>
+            ) : (
+                <>
+                    <TableContainer>
+                        <Table size={'medium'}>
+                            <EncountersTableHead
+                                order={order}
+                                orderBy={orderBy}
+                                onRequestSort={handleRequestSort}
+                                rowCount={tableData.length}
+                            />
+                            <TableBody>
+                            {stableSort(tableData, getComparator(order, orderBy))
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, index) => (
+                                    <TableRow classes={{root: classes.alternatingColor}} key={row.id}>
+                                        <TableCell classes={{ root: classes.tableIconRow }}>
+                                            <div className={css(styles.bossIconContainer)}>
+                                                <img 
+                                                    src={row.icon.iconLink} 
+                                                    alt={row.icon.iconAlt} 
+                                                    width={40} 
+                                                    height={40} 
+                                                    className={css(styles.bossImage)}
+                                                />
+                                            </div>
+                                        </TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} component="th" scope="row" padding="none">
+                                            {row.bossName}
+                                        </TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} align="right">
+                                            <div className={classes.chips}>
+                                                <Chip classes={{root: row.successFail.displayVal ? classes.chipRootSuccess : classes.chipRootFail}} label={row.successFail.displayVal ? 'Success' : 'Fail'} />
+                                            </div>
+                                        </TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} align="right">
+                                            <div className={css(styles.bossIconContainer, { justifyContent: 'right' })}>
+                                                <ProfessionIcon professionName={row.profession} size={30}/>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} align="right">
+                                            <div className={css(styles.bossIconContainer, { justifyContent: 'right' })}>
+                                                {row.roles.displayVal.map((role) => (
+                                                    <RoleIcon boon={role} size={22} />
+                                                ))}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} align="right">{row.targetDps.displayVal}</TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} align="right">{row.cleaveDps.displayVal}</TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} align="right">{row.duration.displayVal}</TableCell>
+                                        <TableCell classes={{root: classes.tableItem}} align="right">{row.timeStart.displayVal}</TableCell>
+                                    </TableRow>
+                                ))}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: (53) * emptyRows }}>
+                                <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={tableData.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                    <TableBody>
-                    {stableSort(tableData, getComparator(order, orderBy))
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row, index) => (
-                            <TableRow classes={{root: classes.alternatingColor}} key={row.id}>
-                                <TableCell classes={{ root: classes.tableIconRow }}>
-                                    <div className={css(styles.bossIconContainer)}>
-                                        <img 
-                                            src={row.icon.iconLink} 
-                                            alt={row.icon.iconAlt} 
-                                            width={40} 
-                                            height={40} 
-                                            className={css(styles.bossImage)}
-                                        />
-                                    </div>
-                                </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} component="th" scope="row" padding="none">
-                                    {row.bossName}
-                                </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">
-                                    <div className={classes.chips}>
-                                        <Chip classes={{root: row.successFail.displayVal ? classes.chipRootSuccess : classes.chipRootFail}} label={row.successFail.displayVal ? 'Success' : 'Fail'} />
-                                    </div>
-                                </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">
-                                    <div className={css(styles.bossIconContainer, { justifyContent: 'right' })}>
-                                        <ProfessionIcon professionName={row.profession} size={30}/>
-                                    </div>
-                                </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">
-                                    <div className={css(styles.bossIconContainer, { justifyContent: 'right' })}>
-                                        {row.roles.displayVal.map((role) => (
-                                            <RoleIcon boon={role} size={22} />
-                                        ))}
-                                    </div>
-                                </TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.targetDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.cleaveDps.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.duration.displayVal}</TableCell>
-                                <TableCell classes={{root: classes.tableItem}} align="right">{row.timeStart.displayVal}</TableCell>
-                            </TableRow>
-                        ))}
-                    {emptyRows > 0 && (
-                        <TableRow style={{ height: (53) * emptyRows }}>
-                        <TableCell colSpan={6} />
-                        </TableRow>
-                    )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={tableData.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+                </>
+            )}
         </Paper>
     )
 };

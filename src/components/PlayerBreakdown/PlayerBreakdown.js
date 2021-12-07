@@ -103,9 +103,9 @@ const PlayerBreakdown = forwardRef(({ collectorId, setSelectedPlayer, selectedPl
                     <PlayerDetailsCard player={selectedPlayer} collectorId={collectorId} resetOnClick={() => setSelectedPlayer(null)}/>
                 </Box>
             ) : (
-                <p sx={styles.detailsNoneSelected}>
+                <Box component={'p'} sx={styles.detailsNoneSelected}>
                     Select a player to view details...
-                </p>
+                </Box>
             )}
         </Paper>
   );

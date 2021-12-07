@@ -204,16 +204,16 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                                     <Paper onClick={() => forceUpdate()} sx={styles.filterPaper} elevation={4}>
                                         <Box sx={styles.filterTitle}>Performance Filters</Box>
                                         <Box sx={styles.chipGroup}>
-                                                {Object.keys(player.professionAggrigates).map((profession) => (
-                                                    <Box sx={styles.chipContainer}>
-                                                        <ProfessionChip 
-                                                            profession={profession} 
-                                                            disabled={!presentProfessions.includes(profession)} 
-                                                            variant={activeFilters.profession === profession ? 'outlined' : 'default'}
-                                                        />
-                                                    </Box>
-                                                ))}
-                                            </Box>
+                                            {Object.keys(player.professionAggrigates).map((profession) => (
+                                                <Box sx={styles.chipContainer}>
+                                                    <ProfessionChip 
+                                                        profession={profession} 
+                                                        disabled={!presentProfessions.includes(profession)} 
+                                                        variant={activeFilters.profession === profession ? 'outlined' : 'default'}
+                                                    />
+                                                </Box>
+                                            ))}
+                                        </Box>
                                         <Box sx={{...styles.chipGroup, paddingTop: '5px', paddingBottom: '5px' }}>
                                             <ThemeProvider theme={roleChipTheme}>
                                                 {Object.keys(player.roleMap).map((role) => (

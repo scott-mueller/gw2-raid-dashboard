@@ -8,6 +8,9 @@ import * as serviceWorker from './serviceWorker';
 import Routes from './routes';
 
 import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
+import DateAdapter from '@mui/lab/AdapterMoment';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
 
 const theme = createTheme({
   breakpoints: {
@@ -29,7 +32,9 @@ ReactDOM.render(
       <Provider store={store}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
+            <LocalizationProvider dateAdapter={DateAdapter}>
             <Routes />
+            </LocalizationProvider>
           </ThemeProvider>
         </StyledEngineProvider>
       </Provider>

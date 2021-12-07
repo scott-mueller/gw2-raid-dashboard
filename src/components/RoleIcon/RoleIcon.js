@@ -6,7 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import roleIconMap from '../../utils/roleIconMap';
 import styles from './styles';
 
-const BoonIcon = ({ boon, size = 20 }) => {
+const RoleIcon = ({ boon, size = 20 }) => {
 
     const boonNameFormatted = boon
         .toLowerCase()
@@ -36,4 +36,4 @@ const BoonIcon = ({ boon, size = 20 }) => {
     );
 };
 
-export default BoonIcon;
+export default RoleIcon;

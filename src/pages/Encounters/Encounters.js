@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
     CssBaseline,
-    Grid
 } from '@mui/material';
+
+import { Grid } from '@mui/material';
 
 import HeaderAndSidebarTemplate from '../../components/HeaderAndSidebarTemplate/HeaderAndSidebarTemplate';
 import EncountersTable from '../../components/EncountersTable/EncountersTable';
 import { FETCH_ENCOUNTERS_BY_ACCOUNT_NAME } from '../../redux/actions';
-import EncountersTableFilters from '../../components/EncountersTableFilters/EncountersTableFilters';
+import EncountersTableFilters from '../../components/EncountersTableSidebarFilters/EncountersTableSidebarFilters';
+import styles from './styles';
+
 
 const Encounters = () => {
 
@@ -25,10 +28,13 @@ const Encounters = () => {
     return (
         <div>
             <CssBaseline />
-            <HeaderAndSidebarTemplate pageTitleText={'Encounters'}>
+            <HeaderAndSidebarTemplate pageTitleText={'Encounters'} pageDrawerContent={<EncountersTableFilters />}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <EncountersTableFilters />
+                        <h1>Summary Cards</h1>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <h1>Selected Filters here</h1>
                     </Grid>
                     <Grid item xs={12}>
                         <EncountersTable />
