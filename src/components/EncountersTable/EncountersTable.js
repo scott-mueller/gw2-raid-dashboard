@@ -93,7 +93,7 @@ const EncountersTable = () => {
     const [orderBy, setOrderBy] = useState('timeStart');
     const [tableData, setTableData] = useState([]);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(15);
 
     const encounters = useSelector((state) => state.encounters.filteredEncounters);
     const fetching = useSelector((state) => state.encounters.fetching);
@@ -202,7 +202,7 @@ const EncountersTable = () => {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[10, 25, 100]}
+                        rowsPerPageOptions={[10, 15, 25, 50, 100]}
                         component="div"
                         count={tableData.length}
                         rowsPerPage={rowsPerPage}

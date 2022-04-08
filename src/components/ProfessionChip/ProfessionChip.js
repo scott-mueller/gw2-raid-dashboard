@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { Box } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -7,7 +6,6 @@ import { Chip } from '@mui/material';
 
 import ProfessionIcon from '../ProfessionIcon/ProfessionIcon';
 
-import { APPLY_PROFESSION_FILTER } from '../../redux/actions/index';
 import styles from './styles';
 
 const chipColor = (profession) => {
@@ -77,8 +75,7 @@ const chipColor = (profession) => {
     }
 };
 
-const ProfessionChip = ({ profession, variant, disabled }) => {
-    const dispatch = useDispatch();
+const ProfessionChip = ({ profession, variant, disabled, onClick }) => {
 
     const chipTheme = createTheme({
         palette: {
@@ -99,7 +96,7 @@ const ProfessionChip = ({ profession, variant, disabled }) => {
                 }
                 label={profession}
                 color={'primary'}
-                onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
+                onClick={onClick}
                 disabled={disabled}
                 variant={variant}
             />

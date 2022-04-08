@@ -9,6 +9,7 @@ import styles from './styles';
 import { Box } from '@mui/system';
 import {
     APPLY_ROLE_FILTER,
+    APPLY_PROFESSION_FILTER,
     FETCH_ENCOUNTERS_FOR_PLAYER_IN_COLLECTOR,
     RESET_PROFESSION_AND_ROLE_FILTERS
 } from '../../redux/actions';
@@ -210,6 +211,7 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
                                                         profession={profession} 
                                                         disabled={!presentProfessions.includes(profession)} 
                                                         variant={activeFilters.profession === profession ? 'outlined' : 'default'}
+                                                        onClick={() => dispatch({ type: APPLY_PROFESSION_FILTER, payload: profession})}
                                                     />
                                                 </Box>
                                             ))}

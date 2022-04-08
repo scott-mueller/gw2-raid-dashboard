@@ -51,6 +51,7 @@ const EncountersTableSidebarFilters = () => {
     const encounters = useSelector((state) => state.encounters.encounters);
     const filteredEncounters = useSelector((state) => state.encounters.filteredEncounters);
     const session = useSelector((state) => state.session);
+    const activeFilters = useSelector((state) => state.encounters.filters);
 
     const uniqueRoles = uniq(session.user.accounts ? encounters.reduce((acc, encounter) => {
         const accountName = session.user.accounts ? session.user?.accounts[0].accountName : '';
@@ -66,7 +67,7 @@ const EncountersTableSidebarFilters = () => {
 
     const uniqueProfessions = uniq(session.user.accounts ? encounters.reduce((acc, encounter) => {
         const accountName = session.user.accounts ? session.user?.accounts[0].accountName : '';
-        const player = encounter.players.filter((player) => player.accountName === accountName)[0];
+        const player = encounter.players.find((player) => player.accountName === accountName);
         return [...acc, player.profession]
     }, []): []);
 
@@ -101,7 +102,7 @@ const EncountersTableSidebarFilters = () => {
         let lowerBoundIndex = masterDurationList.indexOf(masterDurationList.find((el) => el.index === durationLowerBound));
         const upperBoundIndex = masterDurationList.indexOf(masterDurationList.find((el) => el.index === durationUpperBound));
         if (upperBoundIndex < lowerBoundIndex) {
-            setDurationUpperBound('>10');
+            setDurationUpperBound('>10m');
         }
         if (durationUpperBound !== 'any') {
             lowerBoundIndex++;
@@ -225,7 +226,16 @@ const EncountersTableSidebarFilters = () => {
                         labelId="min-duration-select-label"
                         value={durationLowerBound}
                         label={'Min'}
-                        onChange={(e) => setDurationLowerBound(e.target.value)}
+                        onChange={(e) => {
+                            setDurationLowerBound(e.target.value);
+                            dispatch({
+                                type: APPLY_ENCOUNTERS_FILTER,
+                                payload: {
+                                    filterType: 'duration-lower',
+                                    filterValue: e.target.value
+                                }
+                            });
+                        }}
                     >
                         {generateDurationLowerBoundList()}
                     </Select>
@@ -237,7 +247,16 @@ const EncountersTableSidebarFilters = () => {
                         labelId="max-duration-select-label"
                         value={durationUpperBound}
                         label={'Max'}
-                        onChange={(e) => setDurationUpperBound(e.target.value)}
+                        onChange={(e) => {
+                            setDurationUpperBound(e.target.value);
+                            dispatch({
+                                type: APPLY_ENCOUNTERS_FILTER,
+                                payload: {
+                                    filterType: 'duration-upper',
+                                    filterValue: e.target.value
+                                }
+                            });
+                        }}
                     >
                         {generateDurationUpperBoundList()}
                     </Select>
@@ -245,7 +264,16 @@ const EncountersTableSidebarFilters = () => {
                 <FormControlLabel
                     control={<Switch 
                         color="primary"
-                        onChange={(e) => setHideFalseStarts(e.target.checked)}
+                        onChange={(e) => {
+                            setHideFalseStarts(e.target.checked);
+                            dispatch({
+                                type: APPLY_ENCOUNTERS_FILTER,
+                                payload: {
+                                    filterType: 'hide-false-starts',
+                                    filterValue: e.target.checked
+                                }
+                            });
+                        }}
                         checked={hideFalseStarts}
                     />}
                     label="Hide False Starts"
@@ -257,7 +285,16 @@ const EncountersTableSidebarFilters = () => {
                         <Select
                             value={falseStartDuration}
                             variant={'standard'}
-                            onChange={(e) => setFalseStartDuration(e.target.value)}
+                            onChange={(e) => {
+                                setFalseStartDuration(e.target.value);
+                                dispatch({
+                                    type: APPLY_ENCOUNTERS_FILTER,
+                                    payload: {
+                                        filterType: 'false-start-duration',
+                                        filterValue: e.target.value
+                                    }
+                                });
+                            }}
                         >
                             <MenuItem value={10}>10s</MenuItem>
                             <MenuItem value={20}>20s</MenuItem>
@@ -324,9 +361,15 @@ const EncountersTableSidebarFilters = () => {
                                     icon={<Box sx={styles.roleChipIcon}><RoleIcon boon={role} size={22}/></Box>}
                                     label={role.split('-').join(' ')}
                                     color={'primary'}
-                                    //onClick={() => dispatch({ type: APPLY_ROLE_FILTER, payload: role.split('-').join(' ')})}
+                                    onClick={() => dispatch({
+                                        type: APPLY_ENCOUNTERS_FILTER,
+                                        payload: {
+                                            filterType: 'role',
+                                            filterValue: role
+                                        }
+                                    })}
                                     disabled={!presentRoles.includes(role.split('-').join(' '))}
-                                    variant={'default'}
+                                    variant={activeFilters.roles.includes(role) ? 'outlined' : 'default'}
                                 />
                             </Box>
                         ))}
@@ -341,7 +384,14 @@ const EncountersTableSidebarFilters = () => {
                             <ProfessionChip 
                                 profession={profession} 
                                 disabled={!presentProfessions.includes(profession)} 
-                                variant={'default'}
+                                variant={activeFilters.professions.includes(profession) ? 'outlined' : 'default'}
+                                onClick={() => dispatch({
+                                    type: APPLY_ENCOUNTERS_FILTER,
+                                    payload: {
+                                        filterType: 'profession',
+                                        filterValue: profession
+                                    }
+                                })}
                             />
                         </Box>
                     ))}
