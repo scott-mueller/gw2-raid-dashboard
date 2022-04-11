@@ -13,6 +13,7 @@ const chipColor = (profession) => {
     switch (profession) {
 
         case 'Guardian':
+        case 'Willbender':
         case 'Firebrand':
         case 'Dragonhunter': {
             return '#006666';
@@ -33,25 +34,29 @@ const chipColor = (profession) => {
         }
 
         case 'Engineer':
-        case 'Scrapper': 
+        case 'Scrapper':
+        case 'Mechanist':
         case 'Holosmith': {
             return '#663300';
         }
 
         case 'Ranger':
         case 'Druid':
+        case 'Untamed':
         case 'Soulbeast': {
             return '#336600';
         }
 
         case 'Thief':
         case 'Daredevil':
+        case 'Specter':
         case 'Deadeye': {
             return '#993333';
         }
 
         case 'Elementalist':
         case 'Tempest':
+        case 'Catalyst':
         case 'Weaver': {
             return '#CC0000';
         }
@@ -64,6 +69,7 @@ const chipColor = (profession) => {
         }
 
         case 'Necromancer':
+        case 'Harbinger':
         case 'Reaper':
         case 'Scourge': {
             return '#006633';

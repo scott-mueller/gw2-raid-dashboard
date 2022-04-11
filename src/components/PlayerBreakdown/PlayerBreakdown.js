@@ -53,8 +53,8 @@ const buildTableData = (accounts) => Object.keys(accounts).map((accountName) => 
         revives: account.revives,
         reviveTime: parseFloat(account.reviveTime.toFixed(1)),
         breakbar: {
-            displayVal: formatDPS(account.totalBreakbarDamage),
-            sortVal: parseInt(account.totalBreakbarDamage)
+            displayVal: formatDPS(parseFloat(account.totalBreakbarDamage.toFixed(1))),
+            sortVal: parseFloat(account.totalBreakbarDamage.toFixed(0))
         },
         totalDamageTaken: {
             displayVal: formatDPS(account.totalDamageTaken),

@@ -30,6 +30,11 @@ import Virtuoso120 from '../img/profession-icons/120px/120px-Virtuoso.png';
 import Warrior120 from '../img/profession-icons/120px/120px-Warrior.png';
 import Weaver120 from '../img/profession-icons/120px/120px-Weaver.png';
 import Willbender120 from '../img/profession-icons/120px/120px-Willbender.png';
+import Untamed120 from '../img/profession-icons/120px/120px-Untamed.png';
+import Specter120 from '../img/profession-icons/120px/120px-Specter.png';
+import Mechanist120 from '../img/profession-icons/120px/120px-Mechanist.png';
+import Catalyst120 from '../img/profession-icons/120px/120px-Catalyst.png';
+
 
 const professionIconMap = {
     berserker: Berserker120,
@@ -64,6 +69,11 @@ const professionIconMap = {
     warrior: Warrior120,
     weaver: Weaver120,
     willbender: Willbender120,
+    untamed: Untamed120,
+    specter: Specter120,
+    mechanist: Mechanist120,
+    catalyst: Catalyst120
+    
 };
 
 export default professionIconMap;

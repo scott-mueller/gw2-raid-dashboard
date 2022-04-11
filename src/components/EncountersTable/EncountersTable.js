@@ -128,18 +128,10 @@ const EncountersTable = () => {
         <Paper classes={{ root: classes.root}} className={css(styles.paper)}>
             {isFetching ? (
                     <Stack spacing={1}>
-                        <Skeleton variant="text" height={30}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
-                        <Skeleton variant="rectangular" height={40}/>
+                        <Skeleton variant="rectangular" height={65}/>
+                        <Skeleton variant="rectangular" height={65}/>
+                        <Skeleton variant="rectangular" height={65}/>
+                        <Skeleton variant="rectangular" height={65}/>
                   </Stack>
             ) : (
                 <>

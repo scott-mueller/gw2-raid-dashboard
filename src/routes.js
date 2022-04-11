@@ -13,10 +13,10 @@ export default function Routes() {
 
   return (
     <Router basename="/">
-            <Route exact path="/" component={Home} />
-			<Route path="/encounters" component={Encounters} />
-            <Route path="/collector" component={Collector} />
-			<Route path="/collector-list" component={CollectorList} />
+      <Route exact path="/" component={Home} />
+			{/*<Route path="/encounters" component={Encounters} />*/}
+      <Route path="/collector" component={Collector} />
+			{/*<Route path="/collector-list" component={CollectorList} />*/}
 
 			{/* Reference only */}
             <Route path="/dashboard-demo" component={Dashboard} />

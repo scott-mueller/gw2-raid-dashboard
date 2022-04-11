@@ -164,22 +164,22 @@ const HeaderAndSidebarTemplate = ({ window, pageDrawerContent, pageTitleText, ch
                     aria-labelledby="nested-list-subheader"
                     sx={styles.root}
                 >
-                    {width < 700 && !userSession.user?.username && (
+                    {/*width < 700 && !userSession.user?.username && (
                         <ListItem button  onClick={() => setMobileDrawerStatus(false)} sx={styles.mobileLoginListItem}>
                             <CustomButton onClick={() => setLoginModalOpen(true)}>
                                 Login / Sign up
                             </CustomButton>
                         </ListItem>
-                    )}
-                    <ListItem button onClick={() => history.push('/')} sx={styles.gutters}>
+                    )*/}
+                    {/*<ListItem button onClick={() => history.push('/')} sx={styles.gutters} disabled>
                         <ListItemText primary="Home" sx={styles.listText}/>
-                    </ListItem>
+                    </ListItem>*/}
                     {userSession.user?._id && (
                         <div>
-                            <ListItem button onClick={() => history.push('/encounters')} sx={styles.gutters}>
+                            <ListItem button onClick={() => history.push('/encounters')} sx={styles.gutters} disabled>
                                 <ListItemText primary="Encounters" sx={styles.listText}/>
                             </ListItem>
-                            <ListItem button onClick={() => history.push('/collector-list')} sx={styles.gutters}>
+                            <ListItem button onClick={() => history.push('/collector-list')} sx={styles.gutters} disabled>
                                 <ListItemText primary="Collector List" sx={styles.listText}/>
                             </ListItem>
                         </div>
@@ -210,7 +210,7 @@ const HeaderAndSidebarTemplate = ({ window, pageDrawerContent, pageTitleText, ch
                         }>
                             {pageTitleText}
                         </Box>
-                        {userSession.user?.username ? (
+                        {/*userSession.user?.username ? (
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 {width > 700 && (
                                     <Box sx={styles.titleTextSmall}>{userSession.user.username}</Box>
@@ -243,7 +243,7 @@ const HeaderAndSidebarTemplate = ({ window, pageDrawerContent, pageTitleText, ch
                                     </CustomButton>
                                 )}
                             </>
-                        )}
+                        )*/}
 
                     </Toolbar>
                 </AppBar>

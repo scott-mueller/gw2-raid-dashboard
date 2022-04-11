@@ -156,9 +156,9 @@ const PlayerDetailsCard = ({ player, collectorId, resetOnClick }) => {
         },
         {
             primaryTitle: 'Total Breakbar Damage',
-            primaryData: formatDPS(filteredStats.totalBreakbarDamage),
+            primaryData: formatDPS(parseFloat(filteredStats.totalBreakbarDamage).toFixed(1)),
             secondaryTitle: 'Average Per Encounter',
-            secondaryData: formatDPS((filteredStats.totalBreakbarDamage / filteredStats.encounterCount).toFixed(0))
+            secondaryData: formatDPS((parseFloat(filteredStats.totalBreakbarDamage) / filteredStats.encounterCount).toFixed(0))
         },
         {
             primaryTitle: 'Downs',
