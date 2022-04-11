@@ -11,7 +11,7 @@ import HeaderAndSidebarTemplate from '../../components/HeaderAndSidebarTemplate/
 import EncountersTable from '../../components/EncountersTable/EncountersTable';
 import { FETCH_ENCOUNTERS_BY_ACCOUNT_NAME } from '../../redux/actions';
 import EncountersTableFilters from '../../components/EncountersTableSidebarFilters/EncountersTableSidebarFilters';
-import styles from './styles';
+//import styles from './styles';
 
 
 const Encounters = () => {
